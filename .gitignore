@@ -55,6 +55,7 @@ npm-debug.log
 
 # Doc #
 /doc/
+temp/
 
 # IDE #
 .idea/
