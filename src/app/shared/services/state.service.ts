@@ -1,9 +1,13 @@
+import { Subject } from 'rxjs/Subject';
 import { HmrState } from 'angular2-hmr';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { set, get, has, cloneDeep } from 'lodash';
 
 @Injectable()
 export class State {
+  private _subject: Subject<any>;
+
   // @HmrState() is used by HMR to track the state of any object during HMR (hot module replacement)
   @HmrState() _state = { };
 
@@ -15,6 +19,8 @@ export class State {
         'footer': false
       }
     };
+
+    this._subject = new Subject();
   }
 
   // already return a clone of the current state
@@ -31,7 +37,12 @@ export class State {
   }
 
   set(prop: string, value: any) {
-    return set(this._state, prop, value);
+    let _state = set(this._state, prop, value);
+
+    this._subject.next(_state);
+    this._subject.complete();
+
+    return _state;
   }
 
   _clone(object) {
@@ -40,5 +51,9 @@ export class State {
 
   has(prop?: string): boolean {
     return has(this._state, prop);
+  }
+
+  observe(): Observable<any> {
+    return this._subject.asObservable();
   }
 }

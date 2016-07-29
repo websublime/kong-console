@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BaseComponent } from './base.component';
+import { Descriptor } from './descriptor';
 
 @Injectable()
-export abstract class BaseContainer extends BaseComponent {
-  protected _props: any;
+export abstract class Container extends Descriptor {
 
-  constructor(props?: any, state?: any) {
+  constructor() {
     super();
   }
 
