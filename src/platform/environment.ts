@@ -1,12 +1,16 @@
 
 // Angular 2
 // rc2 workaround
-import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
+import { Configurator } from '../app/shared';
 import { enableProdMode } from '@angular/core';
+import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
+
 // Environment Providers
 let PROVIDERS = [
   // common env directives
 ];
+
+const Config = new Configurator();
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
@@ -17,8 +21,12 @@ if ('production' === ENV) {
   disableDebugTools();
   enableProdMode();
 
+  Config.setOption('API.URL', '');
+  Config.setOption('API.ADMIN.URL', '');
+
   PROVIDERS = [
     ...PROVIDERS,
+    {provide: Configurator, useValue: Config}
     // custom providers in production
   ];
 
@@ -32,9 +40,13 @@ if ('production' === ENV) {
     return cmpRef;
   };
 
+  Config.setOption('API.URL', 'http://192.168.99.100:8000');
+  Config.setOption('API.ADMIN.URL', 'http://192.168.99.100:8001');
+
   // Development
   PROVIDERS = [
     ...PROVIDERS,
+    {provide: Configurator, useValue: Config}
     // custom providers in development
   ];
 
