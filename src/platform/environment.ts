@@ -21,6 +21,7 @@ if ('production' === ENV) {
   disableDebugTools();
   enableProdMode();
 
+  Config.setOption('ENVIRONMENT', 'PROD');
   Config.setOption('API.URL', '');
   Config.setOption('API.ADMIN.URL', '');
 
@@ -40,6 +41,7 @@ if ('production' === ENV) {
     return cmpRef;
   };
 
+  Config.setOption('ENVIRONMENT', 'DEV');
   Config.setOption('API.URL', 'http://192.168.99.100:8000');
   Config.setOption('API.ADMIN.URL', 'http://192.168.99.100:8001');
 
