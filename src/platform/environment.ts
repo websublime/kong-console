@@ -10,7 +10,7 @@ let PROVIDERS = [
   // common env directives
 ];
 
-const Config = new Configurator();
+const CONFIG = new Configurator();
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
@@ -21,13 +21,13 @@ if ('production' === ENV) {
   disableDebugTools();
   enableProdMode();
 
-  Config.setOption('ENVIRONMENT', 'PROD');
-  Config.setOption('API.URL', '');
-  Config.setOption('API.ADMIN.URL', '');
+  CONFIG.setOption('ENVIRONMENT', 'PROD');
+  CONFIG.setOption('API.URL', '');
+  CONFIG.setOption('API.ADMIN.URL', '');
 
   PROVIDERS = [
     ...PROVIDERS,
-    {provide: Configurator, useValue: Config}
+    {provide: Configurator, useValue: CONFIG}
     // custom providers in production
   ];
 
@@ -41,14 +41,14 @@ if ('production' === ENV) {
     return cmpRef;
   };
 
-  Config.setOption('ENVIRONMENT', 'DEV');
-  Config.setOption('API.URL', 'http://192.168.99.100:8000');
-  Config.setOption('API.ADMIN.URL', 'http://192.168.99.100:8001');
+  CONFIG.setOption('ENVIRONMENT', 'DEV');
+  CONFIG.setOption('API.URL', 'http://192.168.99.100:8000');
+  CONFIG.setOption('API.ADMIN.URL', 'http://192.168.99.100:8001');
 
   // Development
   PROVIDERS = [
     ...PROVIDERS,
-    {provide: Configurator, useValue: Config}
+    {provide: Configurator, useValue: CONFIG}
     // custom providers in development
   ];
 
