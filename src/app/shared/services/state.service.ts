@@ -6,10 +6,10 @@ import { set, get, has, cloneDeep } from 'lodash';
 
 @Injectable()
 export class State {
-  private _subject: Subject<any>;
-
   // @HmrState() is used by HMR to track the state of any object during HMR (hot module replacement)
-  @HmrState() _state = { };
+  @HmrState() _state = {};
+
+  private _subject: Subject<any>;
 
   constructor() {
     this._state = {
