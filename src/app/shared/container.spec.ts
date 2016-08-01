@@ -46,4 +46,10 @@ describe('> Container.', () => {
       expect(component.active).toBeTruthy();
     }, [true], component);
   });
+
+  it('# Change detection with minimum parameters.', () => {
+    component.changeDetection((args: undefined) => {
+      expect(args).toBeUndefined();
+    });
+  });
 });
