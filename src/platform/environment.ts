@@ -1,13 +1,12 @@
-
 // Angular 2
 // rc2 workaround
-import { Configurator } from '../app/shared';
-import { enableProdMode } from '@angular/core';
+import { Configurator, MonitorException } from '../app/shared';
+import { enableProdMode, ExceptionHandler } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
 // Environment Providers
 let PROVIDERS = [
-  // common env directives
+  // common providers
 ];
 
 const CONFIG = new Configurator();
@@ -27,7 +26,7 @@ if ('production' === ENV) {
 
   PROVIDERS = [
     ...PROVIDERS,
-    {provide: Configurator, useValue: CONFIG}
+    { provide: Configurator, useValue: CONFIG }
     // custom providers in production
   ];
 
@@ -48,7 +47,7 @@ if ('production' === ENV) {
   // Development
   PROVIDERS = [
     ...PROVIDERS,
-    {provide: Configurator, useValue: CONFIG}
+    { provide: Configurator, useValue: CONFIG }
     // custom providers in development
   ];
 
@@ -57,5 +56,6 @@ if ('production' === ENV) {
 export const decorateComponentRef = _decorateComponentRef;
 
 export const ENV_PROVIDERS = [
-  ...PROVIDERS
+  ...PROVIDERS,
+  { provide: ExceptionHandler, useClass: MonitorException }
 ];
