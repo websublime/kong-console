@@ -1,8 +1,11 @@
+import { Login } from './login/login.container';
 import { DataResolver } from './app.resolver';
 import { RouterConfig } from '@angular/router';
 import { WebpackAsyncRoute } from '@angularclass/webpack-toolkit';
 
-export const routes: RouterConfig = [];
+export const routes: RouterConfig = [
+  { path: '', component: Login}
+];
 /*export const routes: RouterConfig = [
   { path: '',      component: Home },
   { path: 'home',  component: Home },

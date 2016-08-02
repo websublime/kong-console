@@ -7,6 +7,7 @@ import { Configurator, Container } from '../shared';
   template: `
     <h1>Welcome to Angular2 Boilerplate</h1>
     <h2>Current environment is: {{env}}.</h2>
+    <router-outlet></router-outlet>
   `
 })
 export class App extends Container implements OnInit {

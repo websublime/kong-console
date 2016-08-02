@@ -1,6 +1,7 @@
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
+import { Service } from './service';
 import { SYMBOLS } from '../constants';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 const store = require('store');
 
 @Injectable()
-export class AuthService {
+export class AuthService extends Service {
   isLoggedIn: boolean = false;
 
   login(): Observable<any> {
