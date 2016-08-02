@@ -1,8 +1,12 @@
 export * from './adapter';
+export * from './rest.adapter';
 
-import { Provider, Injector } from '@angular/core';
 import { Adapter } from './adapter';
+import { Http } from '@angular/http';
+import { RestAdapter } from './rest.adapter';
+import { provide, Injector } from '@angular/core';
 
 export const ADAPTER_PROVIDER: any[] = [
-  new Provider(Adapter, { useClass: Adapter, deps: [Injector] })
+  provide(Adapter, { useClass: Adapter, deps: [Injector] }),
+  provide(RestAdapter, { useClass: RestAdapter, deps: [Http]})
 ];

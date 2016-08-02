@@ -7,6 +7,9 @@ interface SymbolsInterface {
   ROUTES: {
     LOGIN: string;
   };
+  ADAPTERS: {
+    REST: string;
+  };
   [key: string]: any;
 };
 
@@ -18,6 +21,9 @@ export const SYMBOLS: SymbolsInterface = <SymbolsInterface>{
   USER: 'user',
   ROUTES: {
     LOGIN: '/login'
+  },
+  ADAPTERS: {
+    REST: 'REST'
   }
 };
 
