@@ -1,13 +1,14 @@
 import { SYMBOLS } from '../constants';
 import { Observable } from 'rxjs/Observable';
 import { RestAdapter } from './rest.adapter';
+import { RequestOptionsArgs } from '@angular/http';
 import { Configurator } from '../core/configurator';
 import { Injectable, Injector } from '@angular/core';
 
 const ADAPTER = 'ADAPTER';
 
 export interface AdapterSignature {
-  get(path: string, params?: any): Observable<any>;
+  get(path: string, params?: RequestOptionsArgs): Observable<any>;
   post(path: string, params?: any): Observable<any>;
   put(path: string, params?: any): Observable<any>;
   delete(path: string, params?: any): Observable<any>;

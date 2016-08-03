@@ -20,8 +20,8 @@ export class RestAdapter implements AdapterSignature {
       return this._http.request(url, options).map(this._toResponse);
   }
 
-  get(path: string, params: any): Observable<ResourceResponse> {
-    return this._http.get(path).map(this._toResponse);
+  get(path: string, params: RequestOptionsArgs): Observable<ResourceResponse> {
+    return this._http.get(path, params).map(this._toResponse);
   }
 
   post(path: string, params: any): Observable<ResourceResponse> {
