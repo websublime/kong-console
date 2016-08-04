@@ -5,9 +5,11 @@ import { Configurator, Container } from '../shared';
   moduleId: __filename,
   selector: 'app',
   template: `
+    <div class="wrapper">
     <h1>Welcome to Angular2 Boilerplate</h1>
     <h2>Current environment is: {{env}}.</h2>
     <router-outlet></router-outlet>
+    </div>
   `
 })
 export class App extends Container implements OnInit {

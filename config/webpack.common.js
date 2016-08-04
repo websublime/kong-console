@@ -18,7 +18,7 @@ const HtmlElementsPlugin = require('./html-elements-plugin');
  * Webpack Constants
  */
 const METADATA = {
-  title: 'Angular2 Webpack Starter by @gdi2290 from @AngularClass',
+  title: 'Console Admin',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
 };
@@ -226,7 +226,10 @@ module.exports = {
      */
     new CopyWebpackPlugin([{
       from: 'src/assets',
-      to: 'assets'
+      to: 'assets',
+      ignore: [
+        { glob: 'build/**/*', dot: true }
+      ]
     }]),
 
     /*
