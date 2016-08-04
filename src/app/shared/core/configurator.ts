@@ -12,9 +12,7 @@ export interface Options {
 }
 
 /**
- * Class to centralized configurations values. It has a default
- * looking for options on window.__ENV if exist, this object will
- * be copied to collection options on class.
+ * Class to centralized configurations values.
  *
  * @export
  * @class Configurator
