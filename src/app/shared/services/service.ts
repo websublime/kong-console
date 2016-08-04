@@ -1,6 +1,15 @@
 import { Adapter } from '../adapters';
 import { Injectable, Injector } from '@angular/core';
 
+/**
+ * Class to be extended and have driver adapter
+ * defined to use to comunicate with any service you have defined on Configurator.
+ * Current only Rest driver exist.
+ *
+ * @export
+ * @abstract
+ * @class Service
+ */
 @Injectable()
 export abstract class Service {
   adapter: any;
@@ -10,9 +19,13 @@ export abstract class Service {
     console.log(injector, reflectiveInjector);
     let other = reflectiveInjector.resolveAndInstantiate(OtherDependency);*/
     this._initAdapter();
-    console.log(this.adapter);
   }
 
+  /**
+   * Define driver to be used.
+   *
+   * @private
+   */
   private _initAdapter(): void {
     let adapterProvider: Adapter = this._injector.get(Adapter);
 
