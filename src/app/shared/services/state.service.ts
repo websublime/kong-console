@@ -40,7 +40,7 @@ export class State {
     let _state = set(this._state, prop, value);
 
     this._subject.next(_state);
-    this._subject.complete();
+    // this._subject.complete();
 
     return _state;
   }

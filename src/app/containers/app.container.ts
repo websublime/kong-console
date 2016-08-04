@@ -1,25 +1,62 @@
 import { Component, OnInit } from '@angular/core';
-import { Configurator, Container } from '../shared';
+import { Container, State, SYMBOLS, makeSymbolPath } from '../shared';
+import { Header, Footer, SideBar, SideBarModel } from '../components';
 
 @Component({
   moduleId: __filename,
   selector: 'app',
-  template: `
-    <div class="wrapper">
-    <h1>Welcome to Angular2 Boilerplate</h1>
-    <h2>Current environment is: {{env}}.</h2>
-    <router-outlet></router-outlet>
-    </div>
-  `
+  templateUrl: './app.template.html',
+  directives: [Header, Footer, SideBar]
 })
 export class App extends Container implements OnInit {
-  env: string;
+  UIHEADER = SYMBOLS.HEADER;
+  UISIDEBAR = SYMBOLS.SIDEBAR;
+  UIFOOTER = SYMBOLS.FOOTER;
 
-  constructor(private _configurator: Configurator) {
+  sideBarModel: Array<SideBarModel> = [];
+
+  constructor(
+    private _appState: State
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.env = this._configurator.getOption('ENVIRONMENT', 'NONE');
+    this.sideBarModel = [
+      {
+        label: 'Tags',
+        url: '/admin/tags',
+        icon: 'fa fa-bookmark-o'
+      },
+      {
+        label: 'Portfolio',
+        url: '/admin/portfolio',
+        icon: 'fa fa-picture-o'
+      },
+      {
+        label: 'Pages',
+        url: '/admin/pages',
+        icon: 'fa fa-file-text'
+      },
+      {
+        label: 'Settings',
+        url: '/admin/settings',
+        icon: 'fa fa-cogs'
+      }
+    ];
+
+    this.setProp(this.UIFOOTER, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER])));
+    this.setProp(this.UIHEADER, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER])));
+    this.setProp(this.UISIDEBAR, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR])));
+
+    this._appState.observe().subscribe((rs: any) => {
+      this.changeDetection(
+        () => {
+          this.setProp(this.UIFOOTER, rs[SYMBOLS.UI][SYMBOLS.FOOTER]);
+          this.setProp(this.UIHEADER, rs[SYMBOLS.UI][SYMBOLS.HEADER]);
+          this.setProp(this.UISIDEBAR, rs[SYMBOLS.UI][SYMBOLS.SIDEBAR]);
+        }
+      );
+    });
   }
 }

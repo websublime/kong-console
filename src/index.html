@@ -16,11 +16,11 @@
 
   <!-- base url -->
   <base href="<%= webpackConfig.metadata.baseUrl %>">
-
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
-<body class="hold-transition skin-purple sidebar-mini">
+<body class="hold-transition fixed skin-purple sidebar-mini">
 
   <app>
     Loading...
@@ -38,9 +38,9 @@
   </script>-->
 
   <!-- jQuery 2.2.4 -->
-  <script src="assets/js/jquery-2.2.4.min.js"></script>
+  <script src="/assets/js/jquery-2.2.4.min.js"></script>
   <!-- Bootstrap 3.3.7 -->
-  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
 
   <% if (webpackConfig.metadata.isDevServer && webpackConfig.metadata.HMR !== true) { %>
   <!-- Webpack Dev Server reload -->
