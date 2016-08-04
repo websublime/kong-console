@@ -2,6 +2,7 @@ export * from './constants';
 export * from './core/monitor';
 export * from './core/container';
 export * from './core/descriptor';
+export * from './core/persistence';
 export * from './core/configurator';
 export * from './services/auth.guard';
 export * from './services/auth.service';
