@@ -109,21 +109,15 @@
     "karma-mocha-reporter": "^2.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "1.7.0",
-<<<<<<< HEAD
     "less": "^2.7.1",
-=======
     "lodash": "^4.15.0",
->>>>>>> upstream/master
     "parse5": "^1.5.1",
     "protractor": "^3.2.2",
     "raw-loader": "0.5.1",
     "remap-istanbul": "^0.6.3",
     "rimraf": "^2.5.2",
     "source-map-loader": "^0.1.5",
-<<<<<<< HEAD
-=======
     "store": "^1.3.20",
->>>>>>> upstream/master
     "style-loader": "^0.13.1",
     "to-string-loader": "^1.1.4",
     "ts-helpers": "1.1.1",
