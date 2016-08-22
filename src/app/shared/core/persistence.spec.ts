@@ -1,16 +1,12 @@
-import {
-  beforeEachProviders,
-  inject,
-  it
-} from '@angular/core/testing';
+import { inject, addProviders } from '@angular/core/testing';
 import { Persistence } from './persistence';
 
 describe('> Persistence', () => {
   let persistence: Persistence;
 
-  beforeEachProviders(() => [
+  beforeEach(() => addProviders([
     Persistence
-  ]);
+  ]));
 
   beforeEach(inject([Persistence], (_persistence: Persistence) => {
     persistence = _persistence;
