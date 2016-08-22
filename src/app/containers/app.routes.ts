@@ -6,24 +6,14 @@ import { Home } from './home';
 import { NoContent } from './no-content';*/
 
 import { DataResolver } from './app.resolver';
-import { RouterConfig } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
 import { WebpackAsyncRoute, provideWebpack } from '@angularclass/webpack-toolkit';
 
-export const routes: RouterConfig = [
-  { path: '', component: Login}
-];
-/*export const routes: RouterConfig = [
-=======
-// AngularClass
-import { provideWebpack } from '@angularclass/webpack-toolkit';
-import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
-
-
 export const ROUTES: Routes = [
->>>>>>> upstream/master:src/app/app.routes.ts
-  { path: '',      component: Home },
-  { path: 'home',  component: Home },
+
+  { path: '',      component: Login },
+  /*{ path: 'home',  component: Home },
   // make sure you match the component type string to the require in asyncRoutes
   { path: 'about', component: 'About',
     resolve: {
@@ -35,8 +25,8 @@ export const ROUTES: Routes = [
     children: [
       { path: '', component: 'Index' }  // must be included
     ]},
-  { path: '**',    component: NoContent },
-];*/
+  { path: '**',    component: NoContent },*/
+];
 
 // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
 // asyncRoutes is needed for our @angularclass/webpack-toolkit that will allow us to resolve

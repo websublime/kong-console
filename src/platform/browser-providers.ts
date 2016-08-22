@@ -2,11 +2,6 @@
  * These are globally available services in any component or any other service
  */
 
-<<<<<<< HEAD
-// Angular 2
-import { PathLocationStrategy, LocationStrategy } from '@angular/common';
-=======
->>>>>>> upstream/master
 // Angular 2 Http
 import { HTTP_PROVIDERS } from '@angular/http';
 // Angular 2 forms
