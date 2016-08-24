@@ -1,3 +1,5 @@
+import { AuthGuard } from '../shared';
+import { App } from './app.container';
 import { Login } from './login/login.container';
 
 /*import { WebpackAsyncRoute } from '@angularclass/webpack-toolkit';
@@ -12,7 +14,18 @@ import { WebpackAsyncRoute, provideWebpack } from '@angularclass/webpack-toolkit
 
 export const ROUTES: Routes = [
 
-  { path: '',      component: Login },
+  {
+    path: '', children: [
+      { path: '', component: Login },
+      {
+        path: 'admin',
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', component: App }
+        ]
+      }
+    ]
+  },
   /*{ path: 'home',  component: Home },
   // make sure you match the component type string to the require in asyncRoutes
   { path: 'about', component: 'About',

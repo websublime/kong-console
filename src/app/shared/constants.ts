@@ -6,6 +6,7 @@ interface SymbolsInterface {
   USER: string;
   ROUTES: {
     LOGIN: string;
+    ADMIN: string;
   };
   ADAPTERS: {
     REST: string;
@@ -20,7 +21,8 @@ export const SYMBOLS: SymbolsInterface = <SymbolsInterface>{
   FOOTER: 'footer',
   USER: 'user',
   ROUTES: {
-    LOGIN: '/login'
+    LOGIN: '/',
+    ADMIN: '/admin'
   },
   ADAPTERS: {
     REST: 'REST'

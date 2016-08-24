@@ -1,7 +1,12 @@
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AdapterRestSignature } from './adapter';
-import { Http, Request, RequestOptionsArgs, Response, Headers } from '@angular/http';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import {
+  Http, Request, RequestOptionsArgs, Response, Headers, ResponseType
+} from '@angular/http';
 
 /**
  * Rest response resource signature
@@ -9,9 +14,12 @@ import { Http, Request, RequestOptionsArgs, Response, Headers } from '@angular/h
  * @export
  * @interface ResourceResponse
  */
-export interface ResourceResponse {
+export interface ResourceResponse<ResourceModel> {
   headers: Headers;
-  data: any;
+  type: ResponseType;
+  status: number;
+  data: ResourceModel;
+  ok: boolean;
 }
 
 /**
@@ -34,8 +42,29 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {Response} response
    * @returns {ResourceResponse}
    */
-  protected _toResponse(response: Response): ResourceResponse {
-    return { headers: response.headers, data: response.json() };
+  protected _toResponse(response: Response): ResourceResponse<any> {
+    return {
+      headers: response.headers,
+      data: response.json(),
+      status: response.status,
+      type: response.type,
+      ok: response.ok
+    };
+  }
+
+  /**
+   * Interceptor for Http errors.
+   *
+   * @protected
+   * @param {*} error
+   * @returns {ErrorObservable}
+   */
+  protected _handleError(error: any): ErrorObservable {
+    let errMsg = (error.message) ? error.message :
+    error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg); // log to console instead
+
+    return Observable.throw(error);
   }
 
   /**
@@ -45,8 +74,8 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {RequestOptionsArgs} [options]
    * @returns {Observable<any>}
    */
-  request(url: string | Request, options?: RequestOptionsArgs): Observable<any> {
-      return this._http.request(url, options).map(this._toResponse);
+  request(url: string | Request, options?: RequestOptionsArgs): Observable<ResourceResponse<any>> {
+      return this._http.request(url, options).map(this._toResponse).catch(this._handleError);
   }
 
   /**
@@ -56,8 +85,8 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {RequestOptionsArgs} params
    * @returns {Observable<ResourceResponse>}
    */
-  get(path: string, params: RequestOptionsArgs): Observable<ResourceResponse> {
-    return this._http.get(path, params).map(this._toResponse);
+  get(path: string, params?: RequestOptionsArgs): Observable<ResourceResponse<any>> {
+    return this._http.get(path, params).map(this._toResponse).catch(this._handleError);
   }
 
   /**
@@ -68,8 +97,8 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {RequestOptionsArgs} options
    * @returns {Observable<ResourceResponse>}
    */
-  post(path: string, params: any, options: RequestOptionsArgs): Observable<ResourceResponse> {
-    return this._http.post(path, params, options).map(this._toResponse);
+  post(path: string, params?: any, options?: RequestOptionsArgs): Observable<ResourceResponse<any>> {
+    return this._http.post(path, params, options).map(this._toResponse).catch(this._handleError);
   }
 
   /**
@@ -80,8 +109,8 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {RequestOptionsArgs} options
    * @returns {Observable<ResourceResponse>}
    */
-  put(path: string, params: any, options: RequestOptionsArgs): Observable<ResourceResponse> {
-    return this._http.put(path, params).map(this._toResponse);
+  put(path: string, params: any, options: RequestOptionsArgs): Observable<ResourceResponse<any>> {
+    return this._http.put(path, params).map(this._toResponse).catch(this._handleError);
   }
 
   /**
@@ -91,7 +120,19 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {RequestOptionsArgs} params
    * @returns {Observable<ResourceResponse>}
    */
-  delete(path: string, params: RequestOptionsArgs): Observable<ResourceResponse> {
-    return this._http.delete(path, params).map(this._toResponse);
+  delete(path: string, params: RequestOptionsArgs): Observable<ResourceResponse<any>> {
+    return this._http.delete(path, params).map(this._toResponse).catch(this._handleError);
+  }
+
+  /**
+   * Http patch method.
+   *
+   * @param {string} path
+   * @param {*} [body]
+   * @param {RequestOptionsArgs} [options]
+   * @returns {Observable<ResourceResponse>}
+   */
+  patch(path: string, body?: any, options?: RequestOptionsArgs): Observable<ResourceResponse<any>> {
+    return this._http.patch(path, body, options).map(this._toResponse).catch(this._handleError);
   }
 }

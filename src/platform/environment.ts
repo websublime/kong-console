@@ -1,7 +1,7 @@
 // Angular 2
 // rc2 workaround
-import { Configurator, MonitorException } from '../app/shared';
-import { enableProdMode, ExceptionHandler } from '@angular/core';
+import { Configurator } from '../app/shared';
+import { enableProdMode } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
 // Environment Providers
@@ -23,7 +23,7 @@ if ('production' === ENV) {
   CONFIG.setOption('ADAPTER', 'REST');
   CONFIG.setOption('ENVIRONMENT', 'PROD');
   CONFIG.setOption('API.URL', '');
-  CONFIG.setOption('API.ADMIN.URL', '');
+  // CONFIG.setOption('API.ADMIN.URL', '');
 
   PROVIDERS = [
     ...PROVIDERS,
@@ -43,8 +43,8 @@ if ('production' === ENV) {
 
   CONFIG.setOption('ADAPTER', 'REST');
   CONFIG.setOption('ENVIRONMENT', 'DEV');
-  CONFIG.setOption('API.URL', 'http://192.168.99.100:8000');
-  CONFIG.setOption('API.ADMIN.URL', 'http://192.168.99.100:8001');
+  CONFIG.setOption('API.URL', 'http://192.168.99.100:8000/kong');
+  // CONFIG.setOption('API.ADMIN.URL', 'http://192.168.99.100:8000/kong');
 
   // Development
   PROVIDERS = [
@@ -58,6 +58,5 @@ if ('production' === ENV) {
 export const decorateComponentRef = _decorateComponentRef;
 
 export const ENV_PROVIDERS = [
-  ...PROVIDERS,
-  { provide: ExceptionHandler, useClass: MonitorException }
+  ...PROVIDERS
 ];

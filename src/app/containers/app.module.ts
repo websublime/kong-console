@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MonitorException, Persistence } from '../shared';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ExceptionHandler } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -46,7 +47,9 @@ const APP_PROVIDERS = [
     PLATFORM_PROVIDERS,
     ENV_PROVIDERS,
     ROUTING_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    { provide: ExceptionHandler, useClass: MonitorException },
+    { provide: Persistence, useClass: Persistence }
   ]
 })
 export class AppModule {

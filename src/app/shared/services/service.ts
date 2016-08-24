@@ -11,8 +11,8 @@ import { Injectable, Injector } from '@angular/core';
  * @class Service
  */
 @Injectable()
-export abstract class Service {
-  adapter: any;
+export abstract class Service<GenericDriver> {
+  adapter: GenericDriver;
 
   constructor(private _injector: Injector) {
     /*let reflectiveInjector: ReflectiveInjector = <ReflectiveInjector>injector;

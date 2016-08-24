@@ -1,7 +1,15 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { Container, AuthService, State, SYMBOLS, makeSymbolPath } from '../../shared';
+import {
+  Container,
+  AuthService,
+  State,
+  SYMBOLS,
+  makeSymbolPath,
+  CredentialsBasic,
+  KongModel
+} from '../../shared';
 
 @Component({
   moduleId: __filename,
@@ -36,15 +44,28 @@ export class Login extends Container implements OnInit {
       return;
     }
 
+    let credentials: CredentialsBasic = <CredentialsBasic>{
+      username: form.get('mail'),
+      password: form.get('password')
+    };
+
     this._authService
-      .login()
+      .login(credentials)
       .subscribe(
-        (rs: any) => {
-          // this._router.navigate(['/admin']);
-          console.log('Logged in');
+        (rs: KongModel) => {
+          console.log(rs);
+          this._router.navigate(['/admin']);
         },
         (error: Error) => {
+          console.log('--ERROR--');
           console.log(error);
+        },
+        () => {
+          if (this._authService.isLoggedIn) {
+            this._appState.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), true);
+            this._appState.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), true);
+            this._appState.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), true);
+          }
         }
       );
   }
