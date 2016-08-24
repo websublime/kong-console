@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Container, State, SYMBOLS, makeSymbolPath } from '../shared';
 import { Header, Footer, SideBar, SideBarModel } from '../components';
+import { Container, State, SYMBOLS, makeSymbolPath, AuthService, MenuModel } from '../shared';
 
 @Component({
   moduleId: __filename,
@@ -16,34 +17,16 @@ export class App extends Container implements OnInit {
   sideBarModel: Array<SideBarModel> = [];
 
   constructor(
-    private _appState: State
+    private _appState: State,
+    private _authService: AuthService,
+    private _router: Router
   ) {
     super();
   }
 
   ngOnInit() {
-    this.sideBarModel = [
-      {
-        label: 'Tags',
-        url: '/admin/tags',
-        icon: 'fa fa-bookmark-o'
-      },
-      {
-        label: 'Portfolio',
-        url: '/admin/portfolio',
-        icon: 'fa fa-picture-o'
-      },
-      {
-        label: 'Pages',
-        url: '/admin/pages',
-        icon: 'fa fa-file-text'
-      },
-      {
-        label: 'Settings',
-        url: '/admin/settings',
-        icon: 'fa fa-cogs'
-      }
-    ];
+    let menuModel = new MenuModel();
+    this.sideBarModel = menuModel.getAttribute('menu');
 
     this.setProp(this.UIFOOTER, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER])));
     this.setProp(this.UIHEADER, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER])));
@@ -58,5 +41,12 @@ export class App extends Container implements OnInit {
         }
       );
     });
+  }
+
+  signOut(event: MouseEvent): void {
+    event.preventDefault();
+
+    this._authService.logout();
+    this._router.navigate([SYMBOLS.ROUTES.LOGIN]);
   }
 }

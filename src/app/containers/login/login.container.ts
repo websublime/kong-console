@@ -18,6 +18,7 @@ import {
 })
 export class Login extends Container implements OnInit {
   loginForm: FormGroup;
+  invalid: boolean = false;
 
   constructor(
     public fb: FormBuilder,
@@ -29,6 +30,10 @@ export class Login extends Container implements OnInit {
   }
 
   ngOnInit() {
+    if (!this._authService.isLoggedIn) {
+      this._authService.logout();
+    }
+
     this._appState.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), false);
     this._appState.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), false);
     this._appState.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), false);
@@ -54,11 +59,11 @@ export class Login extends Container implements OnInit {
       .subscribe(
         (rs: KongModel) => {
           console.log(rs);
-          this._router.navigate(['/admin']);
+          this.invalid = false;
+          this._router.navigate([SYMBOLS.ROUTES.ADMIN]);
         },
         (error: Error) => {
-          console.log('--ERROR--');
-          console.log(error);
+          this.invalid = true;
         },
         () => {
           if (this._authService.isLoggedIn) {

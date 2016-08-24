@@ -9,6 +9,7 @@ export * from './services/auth.service';
 export * from './services/state.service';
 
 export * from './models/kong.model';
+export * from './models/menu.model';
 
 import { ADAPTER_PROVIDER } from './adapters';
 import { AuthGuard } from './services/auth.guard';

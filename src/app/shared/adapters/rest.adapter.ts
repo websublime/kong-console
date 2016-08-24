@@ -97,9 +97,11 @@ export class RestAdapter implements AdapterRestSignature {
    * @param {RequestOptionsArgs} options
    * @returns {Observable<ResourceResponse>}
    */
+  /* tslint:disable */
   post(path: string, params?: any, options?: RequestOptionsArgs): Observable<ResourceResponse<any>> {
     return this._http.post(path, params, options).map(this._toResponse).catch(this._handleError);
   }
+  /* tslint:enable */
 
   /**
    * Http put method.

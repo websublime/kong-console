@@ -28,14 +28,34 @@ export class AuthService extends Service<RestAdapter> {
   }
 
   login(credentials: CredentialsBasic): Observable<KongModel> {
-    const BASEAPIURL = this._configurator.getOption('API.URL');
 
     let encoded: string = btoa(
       `${credentials.username.value.split('@')[0]}:${credentials.password.value}`
     );
 
+    return this._performLogin({ key: encoded, user: credentials.username.value });
+  }
+
+  logout(): void {
+    this.isLoggedIn = false;
+    this._persistence.clear();
+  }
+
+  hasLocal(): boolean {
+    return !!this._persistence.get(SYMBOLS.USER);
+  }
+
+  verify(): Observable<KongModel> {
+    let localData: {key: string, user: string} = this._persistence.get(SYMBOLS.USER);
+
+    return this._performLogin(localData);
+  }
+
+  private _performLogin(persistence: {key: string, user: string}): Observable<KongModel> {
+    const BASEAPIURL = this._configurator.getOption('API.URL');
+
     let headers = new Headers();
-    headers.append('Authorization', 'Basic ' + encoded);
+    headers.append('Authorization', 'Basic ' + persistence.key);
     // headers.append('Content-Type', 'application/json');
     let reqOptions = new RequestOptions({ headers: headers, withCredentials: false });
 
@@ -45,24 +65,16 @@ export class AuthService extends Service<RestAdapter> {
         if (response.ok) {
           this.isLoggedIn = true;
 
-          this._persistence.set(SYMBOLS.USER, {
-            key: encoded,
-            user: credentials.username.value
-          });
+          if (!this.hasLocal()) {
+            this._persistence.set(SYMBOLS.USER, {
+              key: persistence.key,
+              user: persistence.user
+            });
+          }
         }
       })
       .flatMap((response) => {
         return Observable.of(new KongModel(response.data));
       });
   }
-
-  logout(): void {
-    this.isLoggedIn = false;
-  }
-
-  hasLocal(): boolean {
-    return !!this._persistence.get(SYMBOLS.USER);
-  }
-
-  verify() {}
 }

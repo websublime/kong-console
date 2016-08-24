@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { BaseModel } from './base.model';
+import { Injectable } from '@angular/core';
 
 interface KongModelTimer {
   running: number;
@@ -94,7 +94,9 @@ export class KongModel extends BaseModel {
   timers?: KongModelTimer;
   version?: string;
   configuration?: KongModelConfiguration;
+  /* tslint:disable */
   lua_version?: string;
+  /* tslint:enable */
   tagline?: string;
   hostname?: string;
   plugins?: KongModelPlugins;

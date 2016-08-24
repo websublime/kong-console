@@ -4,7 +4,7 @@
   <!-- Header Navbar -->
   <nav class="navbar navbar-static-top" role="navigation">
     <!-- Sidebar toggle button-->
-    <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
+    <a (click)="toggle($event)" class="sidebar-toggle" data-toggle="offcanvas" role="button">
       <span class="sr-only">Toggle navigation</span>
     </a>
     <ng-content select="nav-left"></ng-content>
