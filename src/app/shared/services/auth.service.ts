@@ -3,12 +3,12 @@ import { Service } from './service';
 import { SYMBOLS } from '../constants';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { KongModel } from '../models/kong.model';
 import { Persistence } from '../core/persistence';
 import { Configurator } from '../core/configurator';
-import { RestAdapter } from '../adapters/rest.adapter';
 import { Injectable, Injector } from '@angular/core';
+import { RestAdapter } from '../adapters/rest.adapter';
 import { Headers, RequestOptions } from '@angular/http';
-import { KongModel } from '../models/kong.model';
 
 export interface CredentialsBasic {
   password: FormControl;

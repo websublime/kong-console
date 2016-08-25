@@ -57,8 +57,8 @@ export class Login extends Container implements OnInit {
     this._authService
       .login(credentials)
       .subscribe(
-        (rs: KongModel) => {
-          console.log(rs);
+        (model: KongModel) => {
+          this._appState.set(makeSymbolPath([SYMBOLS.DATA, SYMBOLS.MODELS.KONG]), model);
           this.invalid = false;
           this._router.navigate([SYMBOLS.ROUTES.ADMIN]);
         },

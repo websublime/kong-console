@@ -15,6 +15,7 @@ import { PLATFORM_PROVIDERS } from '../../platform/browser';
 // App is our top level component
 import { App } from './app.container';
 import { Login } from './login/login.container';
+import { HomeContainer } from './home/home.container';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { State, AUTH_PROVIDERS, DATA_PROVIDERS } from '../shared';
 
@@ -34,7 +35,7 @@ const APP_PROVIDERS = [
 @NgModule({
   bootstrap: [ App ],
   declarations: [
-    App, Login
+    App, Login, HomeContainer
   ],
   imports: [ // import Angular's modules
     BrowserModule,

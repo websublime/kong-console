@@ -1,7 +1,14 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Header, Footer, SideBar, SideBarModel } from '../components';
-import { Container, State, SYMBOLS, makeSymbolPath, AuthService, MenuModel } from '../shared';
+import {
+  Container,
+  State,
+  SYMBOLS,
+  makeSymbolPath,
+  AuthService,
+  MenuModel
+} from '../shared';
 
 @Component({
   moduleId: __filename,
@@ -25,9 +32,6 @@ export class App extends Container implements OnInit {
   }
 
   ngOnInit() {
-    let menuModel = new MenuModel();
-    this.sideBarModel = menuModel.getAttribute('menu');
-
     this.setProp(this.UIFOOTER, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER])));
     this.setProp(this.UIHEADER, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER])));
     this.setProp(this.UISIDEBAR, this._appState.get(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR])));
@@ -41,6 +45,9 @@ export class App extends Container implements OnInit {
         }
       );
     });
+
+    let menuModel = new MenuModel();
+    this.sideBarModel = menuModel.getAttribute('menu');
   }
 
   signOut(event: MouseEvent): void {

@@ -7,9 +7,11 @@ export * from './core/configurator';
 export * from './services/auth.guard';
 export * from './services/auth.service';
 export * from './services/state.service';
+export * from './services/status.service';
 
 export * from './models/kong.model';
 export * from './models/menu.model';
+export * from './models/status.model';
 
 import { ADAPTER_PROVIDER } from './adapters';
 import { AuthGuard } from './services/auth.guard';
