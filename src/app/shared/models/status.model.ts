@@ -1,7 +1,7 @@
 import { BaseModel } from './base.model';
 import { Injectable } from '@angular/core';
 
-interface StatusModelResourceDatabase {
+export interface StatusModelResourceDatabase {
   oauth2_tokens: number;
   jwt_secrets: number;
   response_ratelimiting_metrics: number;
@@ -18,7 +18,7 @@ interface StatusModelResourceDatabase {
   plugins: number;
 }
 
-interface StatusModelResourceServer {
+export interface StatusModelResourceServer {
   connections_accepted: number;
   connections_active: number;
   connections_handled: number;
