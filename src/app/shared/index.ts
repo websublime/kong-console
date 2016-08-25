@@ -1,9 +1,13 @@
 export * from './constants';
+
 export * from './core/monitor';
 export * from './core/container';
 export * from './core/descriptor';
 export * from './core/persistence';
 export * from './core/configurator';
+
+export * from './directives/size.directive';
+
 export * from './services/auth.guard';
 export * from './services/auth.service';
 export * from './services/state.service';

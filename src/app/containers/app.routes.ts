@@ -1,7 +1,7 @@
 import { AuthGuard } from '../shared';
 import { App } from './app.container';
 import { Login } from './login/login.container';
-import { HomeContainer } from './home/home.container';
+import { AdminContainer, HomeContainer } from './+admin';
 
 /*import { WebpackAsyncRoute } from '@angularclass/webpack-toolkit';
 import { Routes, RouterModule } from '@angular/router';
@@ -20,6 +20,7 @@ export const ROUTES: Routes = [
       { path: '', component: Login },
       {
         path: 'admin',
+        component: AdminContainer,
         canActivate: [AuthGuard],
         children: [
           { path: '', component: HomeContainer }

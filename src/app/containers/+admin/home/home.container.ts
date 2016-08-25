@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Container, StatusService } from '../../shared';
+import { Container, StatusService } from '../../../shared';
 
 @Component({
   moduleId: __filename,
