@@ -4,6 +4,7 @@
   </div>
 </div>
 <div class="row">
+  <!-- APIS -->
   <div class="col-md-6">
     <div class="box">
       <div class="box-header with-border">
@@ -27,5 +28,28 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6"></div>
+  <!-- CONSUMERS -->
+  <div class="col-md-6">
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">CONSUMERS</h3>
+      </div>
+      <div class="box-body">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th>Username</th>
+              <th>Custom ID</th>
+              <th>ID</th>
+            </tr>
+            <tr *ngFor="let modelConsumer of consumersModel">
+              <td>{{modelConsumer.username}}</td>
+              <td>{{modelConsumer.custom_id}}</td>
+              <td>{{modelConsumer.id}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

@@ -41,11 +41,6 @@ export class ApisService extends Service<RestAdapter> {
 
     return this.adapter.get(`${baseUrl}/apis`, reqOptions)
       .flatMap((list) => {
-        /*let collection = <ApisModelCollection>list.data;
-        collection.data.forEach((api, index) => {
-          collection.data[index] = new ApisModel(api);
-        });*/
-
         return Observable.of(new ApisModel(list.data));
       });
   }

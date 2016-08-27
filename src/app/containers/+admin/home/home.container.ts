@@ -2,23 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { SmallBox, SmallBoxModel } from '../../../components';
 import {
   StatusModel, StatusModelResourceServer, StatusModelResourceDatabase,
-  Container, StatusService, ApisService, ApisModel, ApisModelResource
+  Container, StatusService, ApisService, ApisModel, ApisModelResource,
+  ConsumerService, ConsumersModel, ConsumerModelResource
 } from '../../../shared';
 
 @Component({
   moduleId: __filename,
   selector: 'home',
   templateUrl: './home.template.html',
-  providers: [StatusService, ApisService],
+  providers: [StatusService, ApisService, ConsumerService],
   directives: [SmallBox]
 })
 export class HomeContainer extends Container implements OnInit {
   boxModel: Array<SmallBoxModel>;
   apisModel: Array<ApisModelResource>;
+  consumersModel: Array<ConsumerModelResource>;
 
   constructor(
     private _apisService: ApisService,
-    private _statusService: StatusService
+    private _statusService: StatusService,
+    private _consumerService: ConsumerService
   ) {
     super();
   }
@@ -60,6 +63,11 @@ export class HomeContainer extends Container implements OnInit {
     this._apisService.apis()
       .subscribe((apisModel: ApisModel) => {
         this.apisModel = apisModel.collection.data;
+      });
+
+    this._consumerService.consumers()
+      .subscribe((consumerModel: ConsumersModel) => {
+        this.consumersModel = consumerModel.collection.data;
       });
   }
 }
