@@ -1,21 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Container, StatusService } from '../../../shared';
 import { SmallBox, SmallBoxModel } from '../../../components';
 import {
-  StatusModel, StatusModelResourceServer, StatusModelResourceDatabase
+  StatusModel, StatusModelResourceServer, StatusModelResourceDatabase,
+  Container, StatusService, ApisService, ApisModel, ApisModelResource
 } from '../../../shared';
 
 @Component({
   moduleId: __filename,
   selector: 'home',
   templateUrl: './home.template.html',
-  providers: [StatusService],
+  providers: [StatusService, ApisService],
   directives: [SmallBox]
 })
 export class HomeContainer extends Container implements OnInit {
   boxModel: Array<SmallBoxModel>;
+  apisModel: Array<ApisModelResource>;
 
-  constructor(private _statusService: StatusService) {
+  constructor(
+    private _apisService: ApisService,
+    private _statusService: StatusService
+  ) {
     super();
   }
 
@@ -51,6 +55,11 @@ export class HomeContainer extends Container implements OnInit {
             classBg: 'small-box bg-red'
           }
         ];
+      });
+
+    this._apisService.apis()
+      .subscribe((apisModel: ApisModel) => {
+        this.apisModel = apisModel.collection.data;
       });
   }
 }

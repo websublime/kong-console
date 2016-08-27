@@ -1,38 +1,38 @@
 import { BaseModel } from './base.model';
 import { Injectable } from '@angular/core';
 
-interface KongModelTimer {
+export interface KongModelTimer {
   running: number;
   pending: number;
 }
 
-interface KongModelConfigurationDnsResolver {
+export interface KongModelConfigurationDnsResolver {
   address: string;
   dnsmasq: boolean;
   port: number;
 }
 
-interface KongModelConfigurationPostgres {
+export interface KongModelConfigurationPostgres {
   host: string;
   database: string;
   user: string;
   port: number;
 }
 
-interface KongModelConfigurationCluster {
+export interface KongModelConfigurationCluster {
   'auto-join': boolean;
   profile: string;
   ttl_on_failure: number;
 }
 
-interface KongModelConfigurationDao {
+export interface KongModelConfigurationDao {
   host: string;
   database: string;
   user: string;
   port: number;
 }
 
-interface KongModelConfiguration {
+export interface KongModelConfiguration {
   send_anonymous_reports: boolean;
   dns_resolver: KongModelConfigurationDnsResolver;
   postgres: KongModelConfigurationPostgres;
@@ -74,7 +74,7 @@ interface KongModelConfiguration {
   cluster_listen_rpc: string;
 }
 
-interface KongModelPlugins {
+export interface KongModelPlugins {
   enabled_in_cluster: Array<string>;
   available_on_server: Array<string>;
 }

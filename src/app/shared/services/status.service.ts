@@ -13,7 +13,7 @@ export class StatusService extends Service<RestAdapter> {
     super(inject);
   }
 
-  status(): Observable<any> {
+  status(): Observable<StatusModel> {
     let baseUrl: string = this._configurator.getOption('API.URL');
     let localData: {key: string, user: string} = JSON.parse(getLocalStorage(SYMBOLS.USER));
 

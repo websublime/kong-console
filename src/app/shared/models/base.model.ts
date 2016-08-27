@@ -2,7 +2,15 @@ import { Subject } from 'rxjs/Subject';
 import { get, has, set } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
+export interface BaseModelCollection<ResourceModelCollection> {
+  data: Array<any|ResourceModelCollection>;
+  total: number;
+  next?: string;
+}
+
 export abstract class BaseModel {
+  collection?: BaseModelCollection<any>;
+
   private _subject: Subject<any>;
 
   constructor() {

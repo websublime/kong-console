@@ -22,24 +22,19 @@ export class MenuModel extends BaseModel {
     } else {
       this.menu = [
         {
-          label: 'Tags',
-          url: '/admin/tags',
-          icon: 'fa fa-bookmark-o'
+          label: 'Apis',
+          url: '/admin/apis',
+          icon: 'fa fa-gg'
         },
         {
-          label: 'Portfolio',
-          url: '/admin/portfolio',
-          icon: 'fa fa-picture-o'
+          label: 'Consumers',
+          url: '/admin/consumers',
+          icon: 'fa fa-spoon'
         },
         {
-          label: 'Pages',
-          url: '/admin/pages',
-          icon: 'fa fa-file-text'
-        },
-        {
-          label: 'Settings',
-          url: '/admin/settings',
-          icon: 'fa fa-cogs'
+          label: 'Plugins',
+          url: '/admin/plugins',
+          icon: 'fa fa-plug'
         }
       ];
     }

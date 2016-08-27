@@ -9,10 +9,12 @@ export * from './core/configurator';
 export * from './directives/size.directive';
 
 export * from './services/auth.guard';
+export * from './services/apis.service';
 export * from './services/auth.service';
 export * from './services/state.service';
 export * from './services/status.service';
 
+export * from './models/apis.model';
 export * from './models/kong.model';
 export * from './models/menu.model';
 export * from './models/status.model';
