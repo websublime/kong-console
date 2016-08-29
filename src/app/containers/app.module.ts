@@ -15,11 +15,11 @@ import { ROUTES } from './app.routes';
 // App is our top level component
 import { App } from './app.container';
 import { Login } from './login/login.container';
-import { AdminContainer, HomeContainer } from './+admin';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { State, AUTH_PROVIDERS, DATA_PROVIDERS } from '../shared';
-
-// export * from './containers';
+import {
+  AdminContainer, HomeContainer, ApisContainer, NewApiContainer
+} from './+admin';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -35,7 +35,8 @@ const APP_PROVIDERS = [
 @NgModule({
   bootstrap: [ App ],
   declarations: [
-    App, Login, HomeContainer, AdminContainer
+    App, Login, HomeContainer, AdminContainer,
+    ApisContainer, NewApiContainer
   ],
   imports: [ // import Angular's modules
     BrowserModule,

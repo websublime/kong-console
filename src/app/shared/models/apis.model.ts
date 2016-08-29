@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { BaseModel, BaseModelCollection } from './base.model';
 
 export interface ApisModelResource {
-  id: string;
-  name: string;
-  request_host: string;
-  request_path: string;
-  upstream_url: string;
+  id?: string;
+  name?: string;
+  request_host?: string;
+  request_path?: string;
+  upstream_url?: string;
+  preserve_host?: boolean;
+  strip_request_path?: boolean;
 }
 
 @Injectable()
@@ -15,6 +17,8 @@ export class ApisModel extends BaseModel {
   id?: string;
   name?: string;
   /* tslint:disable */
+  strip_request_path?: boolean;
+  preserve_host?: boolean;
   request_host?: string;
   request_path?: string;
   upstream_url?: string;

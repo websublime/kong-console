@@ -21,6 +21,16 @@ export class AdminContainer extends Container implements OnInit {
         title: 'Dashboard',
         info: 'Resume view',
         label: 'Control Panel'
+      },
+      '/admin/apis': {
+        title: 'APIS',
+        info: 'Register REST apis',
+        label: 'Apis List'
+      },
+      '/admin/apis/new': {
+        title: 'New API',
+        info: 'Create a new REST api',
+        label: 'New Rest API'
       }
     };
 

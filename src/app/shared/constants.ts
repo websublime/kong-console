@@ -10,6 +10,10 @@ interface SymbolsInterface {
   ROUTES: {
     LOGIN: string;
     ADMIN: string;
+    APIS: {
+      INDEX: string;
+      NEW: string;
+    }
   };
   ADAPTERS: {
     REST: string;
@@ -30,7 +34,11 @@ export const SYMBOLS: SymbolsInterface = <SymbolsInterface>{
   DATA: 'models',
   ROUTES: {
     LOGIN: '/',
-    ADMIN: '/admin'
+    ADMIN: '/admin',
+    APIS: {
+      INDEX: '/admin/apis',
+      NEW: '/admin/apis/new'
+    }
   },
   ADAPTERS: {
     REST: 'REST'

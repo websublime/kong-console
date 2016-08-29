@@ -3,7 +3,9 @@ import { App } from './app.container';
 import { Routes } from '@angular/router';
 import { DataResolver } from './app.resolver';
 import { Login } from './login/login.container';
-import { AdminContainer, HomeContainer } from './+admin';
+import {
+  AdminContainer, HomeContainer, ApisContainer, NewApiContainer
+} from './+admin';
 
 export const ROUTES: Routes = [
   {
@@ -14,7 +16,15 @@ export const ROUTES: Routes = [
         component: AdminContainer,
         canActivate: [AuthGuard],
         children: [
-          { path: '', component: HomeContainer }
+          { path: '', component: HomeContainer },
+          {
+            path: 'apis',
+            pathMatch: '',
+            children: [
+              { path: '', component: ApisContainer },
+              { path: 'new', component: NewApiContainer }
+            ]
+          }
         ]
       }
     ]
