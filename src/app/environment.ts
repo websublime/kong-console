@@ -34,8 +34,8 @@ if ('production' === ENV) {
 } else {
 
   _decorateModuleRef = (modRef: any) => {
-    var appRef = modRef.injector.get(ApplicationRef);
-    var cmpRef = appRef.components[0];
+    let appRef = modRef.injector.get(ApplicationRef);
+    let cmpRef = appRef.components[0];
 
     let _ng = (<any>window).ng;
     enableDebugTools(cmpRef);
