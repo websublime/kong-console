@@ -1,8 +1,4 @@
-import {
-  beforeEachProviders,
-  inject,
-  it
-} from '@angular/core/testing';
+import { inject, addProviders } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { Descriptor } from './descriptor';
 
@@ -36,9 +32,9 @@ class MockComponent extends Descriptor implements OnInit {
 describe('> Descriptor', () => {
   let component: MockComponent;
 
-  beforeEachProviders(() => [
+  beforeEach(() => addProviders([
     MockComponent
-  ]);
+  ]));
 
   beforeEach(inject([MockComponent], (mockComponent: MockComponent) => {
     component = mockComponent;
