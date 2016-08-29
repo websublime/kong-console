@@ -2,15 +2,15 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { MonitorException, Persistence } from '../shared';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ExceptionHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+import { NgModule, ExceptionHandler, ApplicationRef } from '@angular/core';
 
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { ROUTES, ROUTING_PROVIDERS } from './app.routes';
-import { ENV_PROVIDERS } from '../../platform/environment';
-import { PLATFORM_PROVIDERS } from '../../platform/browser';
+import { ENV_PROVIDERS } from '../environment';
+import { ROUTES } from './app.routes';
 
 // App is our top level component
 import { App } from './app.container';
@@ -45,13 +45,33 @@ const APP_PROVIDERS = [
     RouterModule.forRoot(ROUTES, { useHash: false })
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    PLATFORM_PROVIDERS,
     ENV_PROVIDERS,
-    ROUTING_PROVIDERS,
     APP_PROVIDERS,
     { provide: ExceptionHandler, useClass: MonitorException },
     { provide: Persistence, useClass: Persistence }
   ]
 })
 export class AppModule {
+  constructor(public appRef: ApplicationRef, public appState: State) {}
+  hmrOnInit(store) {
+    if (!store || !store.state) return;
+    console.log('HMR store', store);
+    this.appState._state = store.state;
+    this.appRef.tick();
+    delete store.state;
+  }
+  hmrOnDestroy(store) {
+    let cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
+    // recreate elements
+    let state = this.appState._state;
+    store.state = state;
+    store.disposeOldHosts = createNewHosts(cmpLocation);
+    // remove styles
+    removeNgStyles();
+  }
+  hmrAfterDestroy(store) {
+    // display new elements
+    store.disposeOldHosts();
+    delete store.disposeOldHosts;
+  }
 }

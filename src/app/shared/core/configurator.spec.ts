@@ -1,5 +1,5 @@
-import { inject, addProviders } from '@angular/core/testing';
 import { Configurator } from './configurator';
+import { inject, addProviders } from '@angular/core/testing';
 
 describe('> Configurator.', () => {
   beforeEach(() => addProviders([
