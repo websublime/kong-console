@@ -3,7 +3,8 @@ import { SmallBox, SmallBoxModel } from '../../../components';
 import {
   StatusModel, StatusModelResourceServer, StatusModelResourceDatabase,
   Container, StatusService, ApisService, ApisModel, ApisModelResource,
-  ConsumerService, ConsumersModel, ConsumerModelResource
+  ConsumerService, ConsumersModel, ConsumerModelResource, State, SYMBOLS,
+  makeSymbolPath, KongModel
 } from '../../../shared';
 
 @Component({
@@ -17,8 +18,10 @@ export class HomeContainer extends Container implements OnInit {
   boxModel: Array<SmallBoxModel>;
   apisModel: Array<ApisModelResource>;
   consumersModel: Array<ConsumerModelResource>;
+  kongModel: KongModel;
 
   constructor(
+    private _appState: State,
     private _apisService: ApisService,
     private _statusService: StatusService,
     private _consumerService: ConsumerService
@@ -56,6 +59,30 @@ export class HomeContainer extends Container implements OnInit {
             title: db.apis.toString(),
             icon: 'ion ion-ios-analytics',
             classBg: 'small-box bg-red'
+          },
+          {
+            info: 'Plugins',
+            title: db.plugins.toString(),
+            icon: 'fa fa-plug',
+            classBg: 'small-box bg-red'
+          },
+          {
+            info: 'Nodes',
+            title: db.nodes.toString(),
+            icon: 'fa fa-cubes',
+            classBg: 'small-box bg-yellow'
+          },
+          {
+            info: 'ACLS',
+            title: db.acls.toString(),
+            icon: 'fa fa-shield',
+            classBg: 'small-box bg-green'
+          },
+          {
+            info: 'Consumers',
+            title: db.consumers.toString(),
+            icon: 'fa fa-spoon',
+            classBg: 'small-box bg-aqua'
           }
         ];
       });
@@ -69,5 +96,7 @@ export class HomeContainer extends Container implements OnInit {
       .subscribe((consumerModel: ConsumersModel) => {
         this.consumersModel = consumerModel.collection.data;
       });
+
+    this.kongModel = this._appState.get(makeSymbolPath([SYMBOLS.DATA, SYMBOLS.MODELS.KONG]));
   }
 }

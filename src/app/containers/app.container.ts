@@ -14,6 +14,13 @@ import {
   moduleId: __filename,
   selector: 'app',
   templateUrl: './app.template.html',
+  styles: [
+    `
+    a.logout {
+      cursor: pointer;
+    }
+    `
+  ],
   directives: [Header, Footer, SideBar]
 })
 export class App extends Container implements OnInit {
