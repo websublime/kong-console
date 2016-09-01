@@ -1,7 +1,7 @@
-import { Router } from '@angular/router';
 import { isEmpty, kebabCase } from 'lodash';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Alert, AlertModel } from '../../../components';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import {
   Container, ApisService, ApisModel,
@@ -10,12 +10,12 @@ import {
 
 @Component({
   moduleId: __filename,
-  selector: 'new-api',
+  selector: 'edit-api',
   templateUrl: './new.template.html',
   providers: [ApisService],
   directives: [Alert]
 })
-export class NewApiContainer extends Container implements OnInit {
+export class EditApiContainer extends Container implements OnInit, OnDestroy {
 
   apiForm: FormGroup;
   apiModel: ApisModel;
@@ -24,29 +24,41 @@ export class NewApiContainer extends Container implements OnInit {
   constructor(
     private _apiService: ApisService,
     private _router: Router,
+    private _activeRoute: ActivatedRoute,
     public fb: FormBuilder,
   ) {
     super();
   }
 
   ngOnInit() {
-    this.apiModel = new ApisModel(<ApisModelResource>{
-      name: '',
-      request_host: '',
-      request_path: '',
-      upstream_url: '',
-      preserve_host: false,
-      strip_request_path: false
-    });
+    this.apiModel = <ApisModel>{};
+
+    let id = this._activeRoute.snapshot.params['id'];
+
+    this.subscriptions = this._apiService.get(id)
+      .subscribe((model) => {
+        this.apiModel = model;
+
+        this.apiForm.get('name').setValue(model.name);
+        this.apiForm.get('requestHost').setValue(model.request_host);
+        this.apiForm.get('requestPath').setValue(model.request_path);
+        this.apiForm.get('stripRequestPath').setValue(model.strip_request_path || false);
+        this.apiForm.get('preserveHost').setValue(model.preserve_host || false);
+        this.apiForm.get('upstreamUrl').setValue(model.upstream_url);
+      });
 
     this.apiForm = this.fb.group({
-      name: new FormControl(this.apiModel.name),
-      requestHost: new FormControl(this.apiModel.request_host),
-      requestPath: new FormControl(this.apiModel.request_path),
-      stripRequestPath: new FormControl(this.apiModel.strip_request_path),
-      preserveHost: new FormControl(this.apiModel.preserve_host),
-      upstreamUrl: new FormControl(this.apiModel.upstream_url, Validators.required)
+      name: new FormControl(),
+      requestHost: new FormControl(),
+      requestPath: new FormControl(),
+      stripRequestPath: new FormControl(false),
+      preserveHost: new FormControl(false),
+      upstreamUrl: new FormControl('', Validators.required)
     });
+  }
+
+  ngOnDestroy() {
+    this.clean();
   }
 
   save() {
@@ -56,20 +68,11 @@ export class NewApiContainer extends Container implements OnInit {
 
     this._cleanModel();
 
-    this._apiService.add(this.apiModel)
+    this._apiService.update(this.apiModel)
       .subscribe(
         (rs) => {
           if (rs.ok) {
-            this.alertModel = <AlertModel>{
-              visible: true,
-              autoHide: true,
-              title: '<h4><i class="icon fa fa-check">API Created!</i></h4>',
-              info: 'API with id: ' + rs.data.id + ' created with success!',
-              close: true,
-              classes: 'alert-success'
-            };
-
-            this.apiForm.reset();
+            this._router.navigate([SYMBOLS.ROUTES.APIS.INDEX]);
           }
         },
         (error) => {

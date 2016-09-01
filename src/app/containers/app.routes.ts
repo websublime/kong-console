@@ -4,7 +4,8 @@ import { Routes } from '@angular/router';
 import { DataResolver } from './app.resolver';
 import { Login } from './login/login.container';
 import {
-  AdminContainer, HomeContainer, ApisContainer, NewApiContainer
+  AdminContainer, HomeContainer, ApisContainer,
+  NewApiContainer, EditApiContainer
 } from './+admin';
 
 export const ROUTES: Routes = [
@@ -22,7 +23,8 @@ export const ROUTES: Routes = [
             pathMatch: '',
             children: [
               { path: '', component: ApisContainer },
-              { path: 'new', component: NewApiContainer }
+              { path: 'new', component: NewApiContainer },
+              { path: 'edit/:id', component: EditApiContainer }
             ]
           }
         ]

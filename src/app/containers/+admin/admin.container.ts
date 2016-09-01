@@ -31,6 +31,11 @@ export class AdminContainer extends Container implements OnInit {
         title: 'New API',
         info: 'Create a new REST api',
         label: 'New Rest API'
+      },
+      '/admin/apis/edit': {
+        title: 'Edit API',
+        info: 'Edit this REST api',
+        label: 'Edit Rest API'
       }
     };
 

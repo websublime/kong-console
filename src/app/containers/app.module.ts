@@ -18,7 +18,8 @@ import { Login } from './login/login.container';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { State, AUTH_PROVIDERS, DATA_PROVIDERS } from '../shared';
 import {
-  AdminContainer, HomeContainer, ApisContainer, NewApiContainer
+  AdminContainer, HomeContainer, ApisContainer,
+  NewApiContainer, EditApiContainer
 } from './+admin';
 
 // Application wide providers
@@ -36,7 +37,7 @@ const APP_PROVIDERS = [
   bootstrap: [ App ],
   declarations: [
     App, Login, HomeContainer, AdminContainer,
-    ApisContainer, NewApiContainer
+    ApisContainer, NewApiContainer, EditApiContainer
   ],
   imports: [ // import Angular's modules
     BrowserModule,

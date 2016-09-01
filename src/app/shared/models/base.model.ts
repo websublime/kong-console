@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
-import { get, has, set } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { get, has, set, unset } from 'lodash';
 
 export interface BaseModelCollection<ResourceModelCollection> {
   data: Array<any|ResourceModelCollection>;
@@ -28,6 +28,10 @@ export abstract class BaseModel {
 
   getAttribute(key: string): any {
     return get(this, key, undefined);
+  }
+
+  removeAttribute(key: string): boolean {
+    return unset(this, key);
   }
 
   observe(): Observable<any> {

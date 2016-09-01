@@ -7,6 +7,7 @@ export * from './core/persistence';
 export * from './core/configurator';
 
 export * from './directives/size.directive';
+export * from './directives/dynamic.outlet.directive';
 
 export * from './services/auth.guard';
 export * from './services/apis.service';

@@ -25,6 +25,15 @@ interface SymbolsInterface {
   [key: string]: any;
 };
 
+export interface PaginateModel {
+  pages: number;
+  page: number;
+  size: number;
+  limit: number;
+  next: number;
+  prev: number;
+}
+
 export const SYMBOLS: SymbolsInterface = <SymbolsInterface>{
   UI: 'ui',
   SIDEBAR: 'sidebar',
@@ -55,4 +64,31 @@ export function makeSymbolPath(symbols: String[]): string {
 
 export function getLocalStorage(key?: string): any {
   return key ? STORE.get(key) : STORE.getAll();
+}
+
+export function nonConfigurable(target: Object, key: string) {
+  Object.defineProperty(target, key, {
+    enumerable: true,
+    configurable: false
+  });
+}
+
+export function nonEnumerable(target: Object, key: string) {
+  Object.defineProperty(target, key, {
+    enumerable: false,
+    configurable: true
+  });
+}
+
+export function paginate(size: number, current: number = 1, limit: number = 10): PaginateModel {
+  let pages = Math.ceil(size / limit);
+
+  return <PaginateModel>{
+    pages: pages,
+    page: current,
+    size: size,
+    limit: limit,
+    next: ((current + 1) <= pages) ? (current + 1) : 0,
+    prev: ((current - 1) <= 0) ? 0 : (current - 1)
+  };
 }
