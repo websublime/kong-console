@@ -22,6 +22,9 @@ interface SymbolsInterface {
     KONG: string;
     MENU: string;
   };
+  TABLE: {
+    ENTRIES: Array<number>;
+  };
   [key: string]: any;
 };
 
@@ -55,6 +58,9 @@ export const SYMBOLS: SymbolsInterface = <SymbolsInterface>{
   MODELS: {
     KONG: 'kong.model',
     MENU: 'menu.model'
+  },
+  TABLE: {
+    ENTRIES: [10, 25, 50, 100]
   }
 };
 

@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
-import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Modal } from '../../../components';
 import {
   Container, ApisService, ApisModelResource,
   SYMBOLS, paginate, ApiGetParameters, PaginateModel
@@ -20,18 +21,22 @@ import {
     .input-group {
       width: 20%;
     }
-    li > a {
+    a {
       cursor: pointer;
     }
     `
-  ]
+  ],
+  directives: [Modal]
 })
-export class ApisContainer extends Container implements OnInit {
+export class ApisContainer extends Container implements OnInit, OnDestroy {
   next: string;
+  total: string;
   toolsGroup: FormGroup;
   pagination: PaginateModel = paginate(1);
   apisModel: Array<ApisModelResource>;
-  entriesLength: Array<number> = [10, 25, 50, 100];
+  entriesLength: Array<number> = SYMBOLS.TABLE.ENTRIES;
+
+  @ViewChild(Modal) modal: Modal;
 
   constructor(private _apiService: ApisService, private _router: Router) {
     super();
@@ -45,12 +50,16 @@ export class ApisContainer extends Container implements OnInit {
       search: new FormControl()
     });
 
-    this.toolsGroup.get('entries').valueChanges
+    this.subscriptions = this.toolsGroup.get('entries').valueChanges
       .subscribe((entry: number) => {
         let args = { size: entry.toString() };
 
         this._getApis(args);
       });
+  }
+
+  ngOnDestroy() {
+    this.clean();
   }
 
   onSearch(event: MouseEvent) {
@@ -83,6 +92,31 @@ export class ApisContainer extends Container implements OnInit {
     this._getApis(args);
   }
 
+  onDelete(event: MouseEvent, id: string, name: string) {
+    event.preventDefault();
+
+    this.modal.title = 'Delete Confirmation';
+    this.modal.hasAction = true;
+    this.modal.actionLabel = 'Delete';
+    this.modal.actionClass = 'btn-danger';
+    this.modal.body = `<p>Are you sure you wanto to delete api: <b>${name}</b>?</p>`;
+
+    this.modal.actionFn = () => {
+      this._apiService.delete(id).subscribe(
+        (rs) => {
+          if (rs.ok) {
+            this.modal.title = 'Success';
+            this.modal.hasAction = false;
+            this.modal.body = `<p>API: <b>${name}</b> successful deleted.</p>`;
+            this._getApis();
+          }
+        }
+      );
+    };
+
+    this.modal.show();
+  }
+
   goToNewApi(event: MouseEvent) {
     event.preventDefault();
 
@@ -93,6 +127,7 @@ export class ApisContainer extends Container implements OnInit {
     return this._apiService.apis(params)
       .subscribe((apisModel) => {
         this.apisModel = apisModel.collection.data;
+        this.total = apisModel.collection.total.toString();
 
         if (apisModel.collection.next) {
           this.next = apisModel.collection.next.split('?')[1];

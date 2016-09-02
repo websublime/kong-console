@@ -7,7 +7,8 @@ import {
   SYMBOLS,
   makeSymbolPath,
   AuthService,
-  MenuModel
+  MenuModel,
+  getLocalStorage
 } from '../shared';
 
 @Component({
@@ -29,6 +30,7 @@ export class App extends Container implements OnInit {
   UIFOOTER = SYMBOLS.FOOTER;
 
   sideBarModel: Array<SideBarModel> = [];
+  user: string = 'Administrator';
 
   constructor(
     private _appState: State,
@@ -49,6 +51,11 @@ export class App extends Container implements OnInit {
           this.setProp(this.UIFOOTER, rs[SYMBOLS.UI][SYMBOLS.FOOTER]);
           this.setProp(this.UIHEADER, rs[SYMBOLS.UI][SYMBOLS.HEADER]);
           this.setProp(this.UISIDEBAR, rs[SYMBOLS.UI][SYMBOLS.SIDEBAR]);
+
+          if (this._authService.isLoggedIn) {
+            let _user = JSON.parse(getLocalStorage(SYMBOLS.USER));
+            this.user = _user.user;
+          }
         }
       );
     });

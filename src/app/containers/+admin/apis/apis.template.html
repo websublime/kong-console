@@ -1,4 +1,5 @@
 <div class="row">
+  <modal hasClose="true" hasFooter="true" hasAction="true" idSelector="confirm"></modal>
   <div class="col-md-12">
     <div class="box">
       <div class="box-header with-border">
@@ -35,6 +36,7 @@
             <th>Strip</th>
             <th>Upstream</th>
             <th>Created At</th>
+            <th>Tools</th>
           </tr>
           <tr *ngFor="let model of apisModel">
             <td>
@@ -47,11 +49,17 @@
             <td>{{model.strip_request_path}}</td>
             <td>{{model.upstream_url}}</td>
             <td>{{model.created_at | date:'d-M-y'}}</td>
+            <td>
+              <a class="btn btn-sm btn-danger" (click)="onDelete($event, model.id, model.name)">
+                <i class="fa fa-eraser"></i>
+              </a>
+            </td>
           </tr>
         </table>
         <p *ngIf="(apisModel && apisModel.length === 0)">No results found. Please add a API or redefine your search.</p>
       </div>
       <div class="box-footer clearfix" *ngIf="(apisModel && apisModel.length > 0)">
+        <p class="pull-left pagination-sm">Showing {{apisModel.length}} of {{total}}.</p>
         <ul class="pagination pagination-sm no-margin pull-right">
           <li *ngIf="pagination.prev > 0">
             <a (click)="onPrevious($event)">«</a>

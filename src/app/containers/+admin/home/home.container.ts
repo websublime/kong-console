@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SmallBox, SmallBoxModel } from '../../../components';
 import {
   StatusModel, StatusModelResourceServer, StatusModelResourceDatabase,
@@ -14,7 +14,7 @@ import {
   providers: [StatusService, ApisService, ConsumerService],
   directives: [SmallBox]
 })
-export class HomeContainer extends Container implements OnInit {
+export class HomeContainer extends Container implements OnInit, OnDestroy {
   boxModel: Array<SmallBoxModel>;
   apisModel: Array<ApisModelResource>;
   consumersModel: Array<ConsumerModelResource>;
@@ -30,7 +30,7 @@ export class HomeContainer extends Container implements OnInit {
   }
 
   ngOnInit() {
-    this._statusService.status()
+    this.subscriptions = this._statusService.status()
       .subscribe((statusModel: StatusModel) => {
         let server = <StatusModelResourceServer>statusModel.getAttribute('server');
         let db = <StatusModelResourceDatabase>statusModel.getAttribute('database');
@@ -87,16 +87,20 @@ export class HomeContainer extends Container implements OnInit {
         ];
       });
 
-    this._apisService.apis()
+    this.subscriptions = this._apisService.apis()
       .subscribe((apisModel: ApisModel) => {
         this.apisModel = apisModel.collection.data;
       });
 
-    this._consumerService.consumers()
+    this.subscriptions = this._consumerService.consumers()
       .subscribe((consumerModel: ConsumersModel) => {
         this.consumersModel = consumerModel.collection.data;
       });
 
     this.kongModel = this._appState.get(makeSymbolPath([SYMBOLS.DATA, SYMBOLS.MODELS.KONG]));
+  }
+
+  ngOnDestroy() {
+    this.clean();
   }
 }

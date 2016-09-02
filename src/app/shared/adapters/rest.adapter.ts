@@ -43,9 +43,17 @@ export class RestAdapter implements AdapterRestSignature {
    * @returns {ResourceResponse}
    */
   protected _toResponse(response: Response): ResourceResponse<any> {
+    let json;
+
+    try {
+      json = response.json();
+    } catch (error) {
+      json = {};
+    }
+
     return {
       headers: response.headers,
-      data: response.json(),
+      data: json,
       status: response.status,
       type: response.type,
       ok: response.ok

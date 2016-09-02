@@ -73,6 +73,13 @@ export class ApisService extends Service<RestAdapter> {
     return this.adapter.patch(`${baseUrl}/apis/${model.id}`, params, reqOptions);
   }
 
+  delete(id: string): Observable<ResourceResponse<any>> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    return this.adapter.delete(`${baseUrl}/apis/${id}`, reqOptions);
+  }
+
   private _reqOptions(): RequestOptions {
     let localData: {key: string, user: string} = JSON.parse(getLocalStorage(SYMBOLS.USER));
 
