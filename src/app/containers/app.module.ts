@@ -17,8 +17,6 @@ import { Login } from './login/login.container';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { State, AUTH_PROVIDERS, DATA_PROVIDERS } from '../shared';
 
-// export * from './containers';
-
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -57,9 +55,10 @@ export class AppModule {
     delete store.state;
   }
   hmrOnDestroy(store) {
-    let cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
+    const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
     // recreate elements
-    let state = this.appState._state;
+    const state = this.appState._state;
+
     store.state = state;
     store.disposeOldHosts = createNewHosts(cmpLocation);
     // remove styles

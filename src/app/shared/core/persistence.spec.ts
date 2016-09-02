@@ -1,12 +1,14 @@
-import { inject, addProviders } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Persistence } from './persistence';
 
 describe('> Persistence', () => {
   let persistence: Persistence;
 
-  beforeEach(() => addProviders([
-    Persistence
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [
+      Persistence
+    ]
+  }));
 
   beforeEach(inject([Persistence], (_persistence: Persistence) => {
     persistence = _persistence;

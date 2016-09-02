@@ -1,13 +1,11 @@
 import { Subject } from 'rxjs/Subject';
-import { HmrState } from 'angular2-hmr';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { set, get, has, cloneDeep } from 'lodash';
 
 @Injectable()
 export class State {
-  // @HmrState() is used by HMR to track the state of any object during HMR (hot module replacement)
-  @HmrState() _state = {};
+  _state = {};
 
   private _subject: Subject<any>;
 

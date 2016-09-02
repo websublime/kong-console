@@ -1,4 +1,4 @@
-import { inject, addProviders } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { Container } from './container';
 
@@ -22,9 +22,11 @@ class MockContainer extends Container implements OnInit {
 describe('> Container.', () => {
   let component: MockContainer;
 
-  beforeEach(() => addProviders([
-    MockContainer
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [
+      MockContainer
+    ]
+  }));
 
   beforeEach(inject([MockContainer], (mockContainer: MockContainer) => {
     component = mockContainer;

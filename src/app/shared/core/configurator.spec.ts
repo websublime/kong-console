@@ -1,10 +1,12 @@
 import { Configurator } from './configurator';
-import { inject, addProviders } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 describe('> Configurator.', () => {
-  beforeEach(() => addProviders([
-    Configurator
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [
+      Configurator
+    ]
+  }));
 
   it('# Initial options state empty.', inject([Configurator], (config: Configurator) => {
     expect(config.options).toEqual({});

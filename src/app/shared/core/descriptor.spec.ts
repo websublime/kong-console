@@ -1,4 +1,4 @@
-import { inject, addProviders } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { Descriptor } from './descriptor';
 
@@ -32,9 +32,11 @@ class MockComponent extends Descriptor implements OnInit {
 describe('> Descriptor', () => {
   let component: MockComponent;
 
-  beforeEach(() => addProviders([
-    MockComponent
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [
+      MockComponent
+    ]
+  }));
 
   beforeEach(inject([MockComponent], (mockComponent: MockComponent) => {
     component = mockComponent;
