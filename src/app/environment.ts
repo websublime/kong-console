@@ -1,7 +1,7 @@
 // Angular 2
 // rc2 workaround
-import { Configurator } from '../app/shared';
-import { enableProdMode, ExceptionHandler, ApplicationRef } from '@angular/core';
+import { Configurator, MonitorException } from '../app/shared';
+import { enableProdMode, ApplicationRef, ErrorHandler } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
 // Environment Providers
@@ -34,8 +34,8 @@ if ('production' === ENV) {
 } else {
 
   _decorateModuleRef = (modRef: any) => {
-    let appRef = modRef.injector.get(ApplicationRef);
-    let cmpRef = appRef.components[0];
+    const appRef = modRef.injector.get(ApplicationRef);
+    const cmpRef = appRef.components[0];
 
     let _ng = (<any>window).ng;
     enableDebugTools(cmpRef);
@@ -61,5 +61,6 @@ if ('production' === ENV) {
 export const decorateModuleRef = _decorateModuleRef;
 
 export const ENV_PROVIDERS = [
-  ...PROVIDERS
+  ...PROVIDERS,
+  { provide: ErrorHandler, useClass: MonitorException }
 ];
