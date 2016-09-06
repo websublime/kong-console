@@ -1,5 +1,6 @@
 // Angular 2
 // rc2 workaround
+import { OpaqueToken } from '@angular/core';
 import { enableProdMode, ApplicationRef, ErrorHandler } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
@@ -7,6 +8,8 @@ import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 let PROVIDERS = [
   // common providers
 ];
+
+export const APP_CONFIG = new OpaqueToken('app.config');
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
@@ -17,8 +20,14 @@ if ('production' === ENV) {
   disableDebugTools();
   enableProdMode();
 
+  let config = {
+    REST: '',
+    API: ''
+  };
+
   PROVIDERS = [
     ...PROVIDERS,
+    { provide: APP_CONFIG, useValue: config }
     // custom providers in production
   ];
 
@@ -35,9 +44,15 @@ if ('production' === ENV) {
     return modRef;
   };
 
+  let config = {
+    REST: 'REST',
+    API: 'http://localhost'
+  };
+
   // Development
   PROVIDERS = [
     ...PROVIDERS,
+    { provide: APP_CONFIG, useValue: config }
     // custom providers in development
   ];
 

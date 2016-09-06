@@ -1,5 +1,7 @@
 import { isObject } from 'lodash';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+
+import { APP_CONFIG } from '../environment';
 
 /**
  * Interface description for options
@@ -20,6 +22,10 @@ export interface Options {
 @Injectable()
 export class Configurator {
   private _repository: Options = <Options>{};
+
+  constructor( @Inject(APP_CONFIG) options: Options) {
+    this.options = options || {};
+  }
 
   setOption(name: string, value: any): void {
     this._repository[name] = value;

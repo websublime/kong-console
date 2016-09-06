@@ -9,6 +9,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 /*
  * Platform and Environment providers/directives/pipes
  */
+import { CoreModule } from './shared';
 import { State } from './core';
 import { AppContainer } from './app.container';
 import { ContainerModule } from './containers';
@@ -30,6 +31,7 @@ const APP_PROVIDERS = [
   declarations: [ AppContainer ],
   imports: [ // import Angular's modules
     BrowserModule,
+    CoreModule.forRoot(),
     /*FormsModule,
     ReactiveFormsModule,
     HttpModule,*/

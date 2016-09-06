@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { State } from './core';
+import { State, Configurator } from './core';
 
 @Component({
   moduleId: __filename,
@@ -8,10 +8,10 @@ import { State } from './core';
   template: '<router-outlet></router-outlet>'
 })
 export class AppContainer implements OnInit {
-  constructor(private state: State) { }
+  constructor(private state: State, private config: Configurator) { }
 
   ngOnInit() {
     console.log('--APP CONTAINER INITED--');
-    console.log(this.state);
+    console.log(this.state, this.config);
   }
 }
