@@ -1,33 +1,33 @@
 // Angular 2
 // rc2 workaround
-import { Configurator, MonitorException } from '../app/shared';
+import { OpaqueToken } from '@angular/core';
 import { enableProdMode, ApplicationRef, ErrorHandler } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
 // Environment Providers
-let PROVIDERS = [
-  // common providers
+let PROVIDERS: any[] = [
+  // common env directives
 ];
 
-const CONFIG = new Configurator();
+export const APP_CONFIG = new OpaqueToken('app.config');
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
-let _decorateModuleRef = function identity(value) { return value; };
+let _decorateModuleRef = function identity<T>(value: T): T { return value; };
 
 if ('production' === ENV) {
   // Production
   disableDebugTools();
   enableProdMode();
 
-  CONFIG.setOption('ADAPTER', 'REST');
-  CONFIG.setOption('ENVIRONMENT', 'PROD');
-  CONFIG.setOption('API.URL', '');
-  // CONFIG.setOption('API.ADMIN.URL', '');
+  let config = {
+    REST: '',
+    API: ''
+  };
 
   PROVIDERS = [
     ...PROVIDERS,
-    { provide: Configurator, useValue: CONFIG }
+    { provide: APP_CONFIG, useValue: config }
     // custom providers in production
   ];
 
@@ -44,15 +44,16 @@ if ('production' === ENV) {
     return modRef;
   };
 
-  CONFIG.setOption('ADAPTER', 'REST');
-  CONFIG.setOption('ENVIRONMENT', 'DEV');
-  CONFIG.setOption('API.URL', 'http://192.168.99.100:8000/kong');
-  // CONFIG.setOption('API.ADMIN.URL', 'http://192.168.99.100:8000/kong');
+  let config = {
+    ADAPTER: 'REST',
+    ENVIRONMENT: 'DEV',
+    'API.URL': 'http://192.168.99.100:8000/kong'
+  };
 
   // Development
   PROVIDERS = [
     ...PROVIDERS,
-    { provide: Configurator, useValue: CONFIG }
+    { provide: APP_CONFIG, useValue: config }
     // custom providers in development
   ];
 
@@ -61,6 +62,5 @@ if ('production' === ENV) {
 export const decorateModuleRef = _decorateModuleRef;
 
 export const ENV_PROVIDERS = [
-  ...PROVIDERS,
-  { provide: ErrorHandler, useClass: MonitorException }
+  ...PROVIDERS
 ];

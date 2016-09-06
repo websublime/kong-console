@@ -10896,6 +10896,26 @@ html,
 body {
   height: 100%;
 }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border: 0.25rem solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  animation: spin 1s linear;
+}
+.double {
+  border-style: double;
+  border-width: 2rem;
+}
 #preloader {
   position: fixed;
   top: 0;
@@ -10913,11 +10933,11 @@ body {
   width: 150px;
   height: 150px;
   margin: -75px 0 0 -75px;
-  border-radius: 50%;
+  /*border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #f95372;
   transform: translateZ(0);
-  animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;*/
 }
 .badge-highlight {
   color: #eb3838;
