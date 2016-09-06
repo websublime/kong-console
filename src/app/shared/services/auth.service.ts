@@ -50,7 +50,16 @@ export class AuthService extends Service<RestAdapter> {
   }
 
   verify(): Observable<KongModel> {
-    let localData: {key: string, user: string} = this.persistence.get(SYMBOLS.USER);
+    let localData: { key: string, user: string };
+
+    try {
+      let local = JSON.parse(this.persistence.get(SYMBOLS.USER));
+      local.user = local.user.split('@')[0];
+
+      localData = local;
+    } catch (error) {
+      localData = { key: null, user: null };
+    }
 
     return this._performLogin(localData);
   }
@@ -65,18 +74,26 @@ export class AuthService extends Service<RestAdapter> {
 
     return this.adapter
       .get(BASEAPIURL, reqOptions)
-      .do((response) => {
-        if (response.ok) {
-          this.isLoggedIn = true;
+      .do(
+        (response) => {
+          if (response.ok) {
+            this.isLoggedIn = true;
 
-          if (!this.hasLocal()) {
-            this.persistence.set(SYMBOLS.USER, {
-              key: persistence.key,
-              user: persistence.user
-            });
+            if (!this.hasLocal()) {
+              this.persistence.set(SYMBOLS.USER, {
+                key: persistence.key,
+                user: persistence.user
+              });
+            }
+          } else {
+            this.logout();
           }
+        },
+        (error) => {
+          this.logout();
+          throw error;
         }
-      })
+      )
       .flatMap((response) => {
         return Observable.of(new KongModel(response.data));
       });
