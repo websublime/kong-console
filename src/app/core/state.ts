@@ -6,17 +6,10 @@ import { set, get, has, cloneDeep } from 'lodash';
 @Injectable()
 export class State {
   _state = {};
-
   private _subject: Subject<any>;
 
   constructor() {
-    this._state = {
-      'ui': {
-        'sidebar': false,
-        'header': false,
-        'footer': false
-      }
-    };
+    this._state = {};
 
     this._subject = new Subject();
   }
@@ -38,7 +31,6 @@ export class State {
     let _state = set(this._state, prop, value);
 
     this._subject.next(_state);
-    this._subject.complete();
 
     return _state;
   }

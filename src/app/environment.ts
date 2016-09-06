@@ -1,6 +1,5 @@
 // Angular 2
 // rc2 workaround
-import { Configurator, MonitorException } from '../app/shared';
 import { enableProdMode, ApplicationRef, ErrorHandler } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
@@ -8,8 +7,6 @@ import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 let PROVIDERS = [
   // common providers
 ];
-
-const CONFIG = new Configurator();
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
@@ -20,14 +17,8 @@ if ('production' === ENV) {
   disableDebugTools();
   enableProdMode();
 
-  CONFIG.setOption('ADAPTER', 'REST');
-  CONFIG.setOption('ENVIRONMENT', 'PROD');
-  CONFIG.setOption('API.URL', '');
-  CONFIG.setOption('API.ADMIN.URL', '');
-
   PROVIDERS = [
     ...PROVIDERS,
-    { provide: Configurator, useValue: CONFIG }
     // custom providers in production
   ];
 
@@ -44,15 +35,9 @@ if ('production' === ENV) {
     return modRef;
   };
 
-  CONFIG.setOption('ADAPTER', 'REST');
-  CONFIG.setOption('ENVIRONMENT', 'DEV');
-  CONFIG.setOption('API.URL', 'http://192.168.99.100:8000');
-  CONFIG.setOption('API.ADMIN.URL', 'http://192.168.99.100:8001');
-
   // Development
   PROVIDERS = [
     ...PROVIDERS,
-    { provide: Configurator, useValue: CONFIG }
     // custom providers in development
   ];
 
@@ -61,6 +46,5 @@ if ('production' === ENV) {
 export const decorateModuleRef = _decorateModuleRef;
 
 export const ENV_PROVIDERS = [
-  ...PROVIDERS,
-  { provide: ErrorHandler, useClass: MonitorException }
+  ...PROVIDERS
 ];

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
+
 import { Descriptor } from './descriptor';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export abstract class Container extends Descriptor {
+
+  private _subscriptions: Array<Subscription> = [];
 
   constructor() {
     super();
@@ -23,7 +27,17 @@ export abstract class Container extends Descriptor {
         let self: Object = context ? context : this;
         fn.apply(self, params);
       },
-      5
+      0
     );
+  }
+
+  set subscriptions(value: Subscription) {
+    this._subscriptions.push(value);
+  }
+
+  clean(): void {
+    this._subscriptions.map((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

@@ -1,2 +1,1 @@
-// App
-export * from './containers/app.module';
+export * from './app.module';

@@ -4,19 +4,18 @@ import { State } from '../../core';
 
 @Component({
   moduleId: __filename,
-  selector: 'login-page',
+  selector: 'home-page',
   template: `
-  <h1>Login Page</h1>
-  <a routerLink="/">Home</a>
+  <h1>Welcome to HomePage</h1>
+  <a routerLink="/login">Login</a>
   <a routerLink="/admin">Admin</a>
   `
 })
-export class LoginContainer implements OnInit {
+export class HomeContainer implements OnInit {
   constructor(private state: State) { }
 
   ngOnInit() {
-    console.log('--LOGIN INITED--');
-    this.state.set('ui', false);
+    this.state.set('ui', true);
     console.log(this.state);
   }
 }
