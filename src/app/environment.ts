@@ -5,15 +5,15 @@ import { enableProdMode, ApplicationRef, ErrorHandler } from '@angular/core';
 import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 
 // Environment Providers
-let PROVIDERS = [
-  // common providers
+let PROVIDERS: any[] = [
+  // common env directives
 ];
 
 export const APP_CONFIG = new OpaqueToken('app.config');
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
-let _decorateModuleRef = function identity(value) { return value; };
+let _decorateModuleRef = function identity<T>(value: T): T { return value; };
 
 if ('production' === ENV) {
   // Production

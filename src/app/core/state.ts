@@ -3,9 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { set, get, has, cloneDeep } from 'lodash';
 
+export interface InteralStateType {
+  [key: string]: any;
+}
+
 @Injectable()
 export class State {
-  _state = {};
+  _state: InteralStateType = {};
   private _subject: Subject<any>;
 
   constructor() {
@@ -35,15 +39,15 @@ export class State {
     return _state;
   }
 
-  _clone(object) {
-    return cloneDeep(object);
-  }
-
   has(prop?: string): boolean {
     return has(this._state, prop);
   }
 
   observe(): Observable<any> {
     return this._subject.asObservable();
+  }
+
+  private _clone(object: InteralStateType) {
+    return cloneDeep(object);
   }
 }

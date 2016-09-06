@@ -10,18 +10,22 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
  * Platform and Environment providers/directives/pipes
  */
 import { CoreModule } from './shared';
-import { State } from './core';
+import { ENV_PROVIDERS } from './environment';
 import { AppContainer } from './app.container';
 import { ContainerModule } from './containers';
-import { ENV_PROVIDERS } from './environment';
+import { State, InteralStateType } from './core';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
-
 
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
   State
 ];
+
+type StoreType = {
+  state: InteralStateType,
+  disposeOldHosts: () => void
+};
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -44,9 +48,10 @@ const APP_PROVIDERS = [
   ]
 })
 export class AppModule {
+
   constructor(public appRef: ApplicationRef, public appState: State) { }
 
-  hmrOnInit(store) {
+  hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;
     console.log('HMR store', store);
     this.appState._state = store.state;
@@ -54,7 +59,7 @@ export class AppModule {
     delete store.state;
   }
 
-  hmrOnDestroy(store) {
+  hmrOnDestroy(store: StoreType) {
     const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
     // recreate elements
     const state = this.appState._state;
@@ -65,7 +70,7 @@ export class AppModule {
     removeNgStyles();
   }
 
-  hmrAfterDestroy(store) {
+  hmrAfterDestroy(store: StoreType) {
     // display new elements
     store.disposeOldHosts();
     delete store.disposeOldHosts;
