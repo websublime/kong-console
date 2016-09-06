@@ -5,7 +5,7 @@ import { HomeContainer } from './home';
 import { LoginContainer } from './login';
 
 const ROUTES: Routes = [
-  { path: '', component: HomeContainer },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginContainer },
   { path: 'admin', loadChildren: () => System.import('./+admin/admin.module') }
 ];

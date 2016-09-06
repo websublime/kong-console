@@ -20,10 +20,7 @@ if ('production' === ENV) {
   disableDebugTools();
   enableProdMode();
 
-  let config = {
-    REST: '',
-    API: ''
-  };
+  let config = {};
 
   PROVIDERS = [
     ...PROVIDERS,
