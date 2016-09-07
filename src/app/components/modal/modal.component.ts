@@ -6,7 +6,7 @@ import {
 
 @Component({
   moduleId: __filename,
-  selector: 'modal',
+  selector: 'modal-tag',
   templateUrl: './modal.template.html'
 })
 export class Modal implements AfterViewInit {

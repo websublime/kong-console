@@ -5,13 +5,13 @@
 </div>
 <div class="row">
   <!-- APIS -->
-  <div class="col-md-6" *ngIf="apisModel">
+  <div class="col-md-6">
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">APIS</h3>
       </div>
       <div class="box-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered" *ngIf="(apisModel && apisModel.length > 0)">
           <tbody>
             <tr>
               <th>Name</th>
@@ -25,17 +25,21 @@
             </tr>
           </tbody>
         </table>
+        <div *ngIf="(apisModel && apisModel.length === 0)" class="callout callout-info">
+          <h4>Apis Empty!</h4>
+          <p>Please start adding new APIS.</p>
+        </div>
       </div>
     </div>
   </div>
   <!-- CONSUMERS -->
-  <div class="col-md-6" *ngIf="consumersModel">
+  <div class="col-md-6">
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">CONSUMERS</h3>
       </div>
       <div class="box-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered" *ngIf="(consumersModel && consumersModel.length > 0)">
           <tbody>
             <tr>
               <th>Username</th>
@@ -49,17 +53,21 @@
             </tr>
           </tbody>
         </table>
+        <div *ngIf="(consumersModel && consumersModel.length === 0)" class="callout callout-info">
+          <h4>Consumers Empty!</h4>
+          <p>Please start adding new Consumers.</p>
+        </div>
       </div>
     </div>
   </div>
   <!-- GENERAL -->
-  <div class="col-md-12" *ngIf="kongModel">
+  <div class="col-md-12" >
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">CONFIGURATION</h3>
       </div>
       <div class="box-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered" *ngIf="kongModel">
           <tbody>
             <tr>
               <th>Config Key</th>
