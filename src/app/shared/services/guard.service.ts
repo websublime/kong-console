@@ -3,12 +3,14 @@ import { CanActivate, Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 
-import { SYMBOLS } from '../constants';
+import { State } from '../../core';
 import { AuthService } from './auth.service';
+import { SYMBOLS, makeSymbolPath } from '../constants';
 
 @Injectable()
 export class GuardService implements CanActivate {
   constructor(
+    private state: State,
     private router: Router,
     private authService: AuthService
   ) { }
@@ -20,7 +22,15 @@ export class GuardService implements CanActivate {
     return this.adminAccess()
       .do((logged) => {
         if (!logged) {
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), false);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), false);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), false);
+
           this.router.navigate([SYMBOLS.ROUTES.LOGIN]);
+        } else {
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), true);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), true);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), true);
         }
       });
   }

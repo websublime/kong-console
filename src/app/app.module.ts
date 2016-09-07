@@ -49,7 +49,9 @@ type StoreType = {
 })
 export class AppModule {
 
-  constructor(public appRef: ApplicationRef, public appState: State) { }
+  constructor(public appRef: ApplicationRef, public appState: State) {
+    console.log('--APP MODULE INITED--');
+  }
 
   hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;

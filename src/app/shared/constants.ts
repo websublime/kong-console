@@ -1,3 +1,5 @@
+const STORE = require('store');
+
 export const SYMBOLS = {
   ADAPTERS: {
     REST: 'REST'
@@ -15,4 +17,8 @@ export const SYMBOLS = {
 
 export function makeSymbolPath(symbols: String[]): string {
   return symbols.join('.');
+}
+
+export function getLocalStorage(key?: string): any {
+  return key ? STORE.get(key) : STORE.getAll();
 }

@@ -1,10 +1,14 @@
-import { Component, OnInit, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 
 import { State } from '../../core';
-import { AuthService, SYMBOLS } from '../../shared';
+import {
+  AuthService, CredentialsBasic, SYMBOLS,
+  KongModel, makeSymbolPath
+} from '../../shared';
 
 @Component({
   moduleId: __filename,
@@ -12,21 +16,61 @@ import { AuthService, SYMBOLS } from '../../shared';
   templateUrl: './login.template.html'
 })
 export class LoginContainer implements OnInit {
+  loginForm: FormGroup;
+  invalid: boolean = false;
+
   constructor(
+    public fb: FormBuilder,
     private state: State,
-    private auth: AuthService
+    private router: Router,
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
     console.log('--LOGIN INITED--');
-    this.state.set('ui', false);
-    console.log(this.state, this.auth);
+    console.log(this.state);
+
+    this.loginForm = this.fb.group({
+      'mail': ['', Validators.compose([Validators.required])],
+      'password': ['', Validators.required]
+    });
+  }
+
+  onSubmit(form: FormControl) {
+    if (form.invalid) {
+      return;
+    }
+
+    let credentials: CredentialsBasic = <CredentialsBasic>{
+      username: form.get('mail'),
+      password: form.get('password')
+    };
+
+    this.authService
+      .login(credentials)
+      .subscribe(
+        (model: KongModel) => {
+          this.invalid = false;
+          this.router.navigate([SYMBOLS.ROUTES.ADMIN]);
+        },
+        (error: Error) => {
+          this.invalid = true;
+        },
+        () => {
+          if (this.authService.isLoggedIn) {
+            this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), true);
+            this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), true);
+            this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), true);
+          }
+        }
+      );
   }
 }
 
 @Injectable()
 export class LoginGuard implements CanActivate {
   constructor(
+    private state: State,
     private router: Router,
     private authService: AuthService
   ) {}
@@ -36,6 +80,14 @@ export class LoginGuard implements CanActivate {
       .do((logged) => {
         if (!logged) {
           this.router.navigate([SYMBOLS.ROUTES.ADMIN]);
+
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), true);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), true);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), true);
+        } else {
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.HEADER]), false);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.SIDEBAR]), false);
+          this.state.set(makeSymbolPath([SYMBOLS.UI, SYMBOLS.FOOTER]), false);
         }
       });
   }

@@ -10897,6 +10897,9 @@ body {
   height: 100%;
   background: #242424;
 }
+a {
+  cursor: pointer;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);

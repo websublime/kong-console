@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-// import { AdminModule } from './+admin';
 import { HomeContainer } from './home';
 import { LoginContainer, LoginGuard } from './login';
 import { ROUTING } from './container.routes';

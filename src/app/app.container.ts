@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Driver, AuthService } from './shared';
-import { State, Configurator } from './core';
+import { State } from './core';
+import { AuthService } from './shared';
+import { SYMBOLS, makeSymbolPath } from './shared';
 
 @Component({
   moduleId: __filename,
@@ -11,13 +12,10 @@ import { State, Configurator } from './core';
 export class AppContainer implements OnInit {
   constructor(
     private state: State,
-    private adapter: Driver,
-    private auth: AuthService,
-    private config: Configurator
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     console.log('--APP CONTAINER INITED--');
-    console.log(this.state, this.config, this.adapter, this.auth);
   }
 }
