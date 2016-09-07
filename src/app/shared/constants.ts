@@ -11,6 +11,10 @@ export const SYMBOLS = {
     APIS: {
       INDEX: '/admin/apis',
       NEW: '/admin/apis/new'
+    },
+    CONSUMER: {
+      INDEX: '/admin/consumers',
+      NEW: '/admin/consumers/new'
     }
   },
   UI: 'ui',
