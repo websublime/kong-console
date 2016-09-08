@@ -3,6 +3,7 @@ export * from './base.service';
 export * from './guard.service';
 export * from './apis.service';
 export * from './status.service';
+export * from './plugins.service';
 export * from './consumers.service';
 
 import { Injector } from '@angular/core';

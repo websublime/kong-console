@@ -103,7 +103,12 @@ export class AdminContainer extends Container implements OnInit {
         title: 'Edit Consumer',
         info: 'Edit this Consumer',
         label: 'Edit Consumer'
-      }
+      },
+      '/admin/plugins': {
+        title: 'Plugins',
+        info: 'List plugins installed on Kong',
+        label: 'Plugins List'
+      },
     };
 
     this.crumbService.addCrumbTree(crumbTreeModel);

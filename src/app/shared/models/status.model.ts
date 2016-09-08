@@ -36,7 +36,7 @@ export interface StatusModelResource {
 @Injectable()
 export class StatusModel extends BaseModel {
   server?: StatusModelResourceServer;
-  database: StatusModelResourceDatabase;
+  database?: StatusModelResourceDatabase;
 
   constructor(data?: StatusModelResource) {
     super();

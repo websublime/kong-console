@@ -54,7 +54,7 @@ export class Modal implements AfterViewInit {
   }
 
   hide() {
-    ($(this._selector) as any).modal('show');
+    ($(this._selector) as any).modal('hide');
   }
 
   onAction(event: MouseEvent) {

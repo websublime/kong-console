@@ -23,7 +23,35 @@ export const SYMBOLS = {
   FOOTER: 'footer',
   TABLE: {
     ENTRIES: [10, 25, 50, 100]
-  }
+  },
+  PLUGINS: [
+    {id: 'ssl', img: 'dynamic-ssl.png'},
+    {id: 'jwt', img: 'jwt.png'},
+    {id: 'acl', img: 'acl.png'},
+    {id: 'correlation-id', img: 'correlation-id.png'},
+    {id: 'cors', img: 'cors.png'},
+    {id: 'oauth2', img: 'oauth2-authentication.png'},
+    {id: 'tcp-log', img: 'tcp-log.png'},
+    {id: 'udp-log', img: 'udp-log.png'},
+    {id: 'file-log', img: 'file-log.png'},
+    {id: 'http-log', img: 'http-log.png'},
+    {id: 'key-auth', img: 'key-authentication.png'},
+    {id: 'hmac-auth', img: 'hmac-authentication.png'},
+    {id: 'basic-auth', img: 'basic-authentication.png'},
+    {id: 'ip-restriction', img: 'ip-restriction.png'},
+    {id: 'galileo', img: 'galileo.png'},
+    {id: 'request-transformer', img: 'request-transformer.png'},
+    {id: 'response-transformer', img: 'response-transformer.png'},
+    {id: 'request-size-limiting', img: 'request-size-limiting.png'},
+    {id: 'rate-limiting', img: 'rate-limiting.png'},
+    {id: 'response-ratelimiting', img: 'response-rate-limiting.png'},
+    {id: 'syslog', img: 'syslog.png'},
+    {id: 'loggly', img: 'loggly.png'},
+    {id: 'datadog', img: 'datadog.png'},
+    {id: 'runscope', img: 'runscope.png'},
+    {id: 'ldap-auth', img: 'ldap-authentication.png'},
+    {id: 'statsd', img: 'statsd.png'}
+  ]
 };
 
 export interface PaginateModel {
