@@ -10,7 +10,7 @@
               <button (click)="goToNewConsumer($event)" class="btn btn-success btn-sm btn-flat">New Consumer</button>
             </div>
             <div class="input-group input-group-sm pull-right">
-              <input type="text" class="form-control" placeholder="Search by name" formControlName="search">
+              <input type="text" class="form-control" placeholder="Search by username" formControlName="search">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-info btn-flat" (click)="onSearch($event)">
                   <i class="fa fa-search"></i>
@@ -29,12 +29,8 @@
         <table class="table table-bordered" *ngIf="(consumersModel && consumersModel.length > 0)">
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Preserve</th>
-            <th>Request</th>
-            <th>Path</th>
-            <th>Strip</th>
-            <th>Upstream</th>
+            <th>Custom ID</th>
+            <th>Username</th>
             <th>Created At</th>
             <th>Tools</th>
           </tr>
@@ -42,15 +38,11 @@
             <td>
               <a [routerLink]="['/admin/consumers/edit', model.id]">{{model.id}}</a>
             </td>
-            <td>{{model.name}}</td>
-            <td>{{model.preserve_host}}</td>
-            <td>{{model.request_host}}</td>
-            <td>{{model.request_path}}</td>
-            <td>{{model.strip_request_path}}</td>
-            <td>{{model.upstream_url}}</td>
+            <td>{{model.custom_id}}</td>
+            <td>{{model.username}}</td>
             <td>{{model.created_at | date:'d-M-y'}}</td>
             <td>
-              <a class="btn btn-sm btn-danger" (click)="onDelete($event, model.id, model.name)">
+              <a class="btn btn-sm btn-danger" (click)="onDelete($event, model.id, model.username)">
                 <i class="fa fa-eraser"></i>
               </a>
             </td>

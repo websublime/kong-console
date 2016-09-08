@@ -6,13 +6,13 @@ export interface ConsumerModelResource {
   created_at?: string;
   custom_id?: string;
   id?: string;
-  name?: string;
+  username?: string;
 }
 
 @Injectable()
 export class ConsumersModel extends BaseModel {
   id?: string;
-  name?: string;
+  username?: string;
   /* tslint:disable */
   created_at?: string;
   custom_id?: string;

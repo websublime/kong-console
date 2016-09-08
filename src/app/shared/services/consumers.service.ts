@@ -1,14 +1,14 @@
 import { Injectable, Injector } from '@angular/core';
 import { Headers, RequestOptions, URLSearchParams } from '@angular/http';
 
-import { has, get } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { has, get, omit, clone } from 'lodash';
 
 import { Service } from './base.service';
 import { Configurator } from '../../core/configurator';
-import { RestAdapter } from '../adapters/rest.adapter';
 import { SYMBOLS, getLocalStorage } from '../constants';
-import { ConsumersModel } from '../models/consumers.model';
+import { RestAdapter, ResourceResponse } from '../adapters/rest.adapter';
+import { ConsumersModel, ConsumerModelResource } from '../models/consumers.model';
 
 export interface ConsumerGetParameters {
   id?: string;
@@ -44,11 +44,53 @@ export class ConsumerService extends Service<RestAdapter> {
       });
   }
 
+  get(id: string): Observable<ConsumersModel> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    return this.adapter.get(`${baseUrl}/consumers/${id}`, reqOptions)
+      .flatMap((rs) => {
+        return Observable.of(new ConsumersModel(rs.data));
+      });
+  }
+
+  add(model: ConsumersModel): Observable<ResourceResponse<ConsumerModelResource>> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+    // TODO: omit _subject and collection property
+    let params = this._cleanModel(model);
+
+    return this.adapter.post(`${baseUrl}/consumers`, params, reqOptions);
+  }
+
+  update(model: ConsumersModel): Observable<ResourceResponse<ConsumerModelResource>> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+    // TODO: omit _subject and collection property
+    let params = this._cleanModel(model);
+
+    return this.adapter.patch(`${baseUrl}/consumers/${model.id}`, params, reqOptions);
+  }
+
+  delete(id: string): Observable<ResourceResponse<any>> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    return this.adapter.delete(`${baseUrl}/consumers/${id}`, reqOptions);
+  }
+
   private _reqOptions(): RequestOptions {
     let localData: {key: string, user: string} = JSON.parse(getLocalStorage(SYMBOLS.USER));
 
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' + localData.key);
     return new RequestOptions({ headers: headers, withCredentials: false });
+  }
+
+  private _cleanModel(model: ConsumersModel) {
+    return omit(clone(model), [
+      '_subject', 'collection', '_setCollection', 'getAttribute', 'hasAttribute',
+      'observe', 'removeAttribute', 'setAttribute'
+    ]);
   }
 }

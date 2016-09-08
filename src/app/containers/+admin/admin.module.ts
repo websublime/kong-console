@@ -6,7 +6,7 @@ import { ROUTING } from './admin.routes';
 import { DashboardContainer } from './dashboard';
 import { AdminContainer } from './admin.container';
 import { ComponentsModule } from '../../components';
-import { ConsumersContainer } from './consumers';
+import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from './consumers';
 import { ApisContainer, NewApiContainer, EditApiContainer } from './apis';
 
 @NgModule({
@@ -14,7 +14,7 @@ import { ApisContainer, NewApiContainer, EditApiContainer } from './apis';
   declarations: [
     DashboardContainer, AdminContainer, Size,
     ApisContainer, NewApiContainer, EditApiContainer,
-    ConsumersContainer
+    ConsumersContainer, NewConsumerContainer, EditConsumerContainer
   ]
 })
 export default class AdminModule {

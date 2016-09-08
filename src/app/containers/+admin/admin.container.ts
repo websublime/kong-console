@@ -90,9 +90,19 @@ export class AdminContainer extends Container implements OnInit {
         label: 'Edit Rest API'
       },
       '/admin/consumers': {
-        title: 'CONSUMERS',
+        title: 'Consumers',
         info: 'Register consumers for APIS',
         label: 'Consumers List'
+      },
+      '/admin/consumers/new': {
+        title: 'New Consumer',
+        info: 'Create a new Consumer',
+        label: 'New Consumer'
+      },
+      '/admin/consumers/edit': {
+        title: 'Edit Consumer',
+        info: 'Edit this Consumer',
+        label: 'Edit Consumer'
       }
     };
 

@@ -7,7 +7,7 @@ import { Container } from '../../../core';
 import { Modal } from '../../../components';
 import {
   ConsumerService, ConsumerModelResource,
-  SYMBOLS, paginate, ApiGetParameters, PaginateModel
+  SYMBOLS, paginate, ConsumerGetParameters, PaginateModel
 } from '../../../shared';
 
 @Component({
@@ -39,32 +39,110 @@ export class ConsumersContainer extends Container implements OnInit, OnDestroy {
 
   @ViewChild(Modal) modal: Modal;
 
-  constructor(private consumer: ConsumerService, private router: Router) {
+  constructor(private consumerService: ConsumerService, private router: Router) {
     super();
   }
 
   ngOnInit() {
+    this.subscriptions = this.getConsumers();
+
     this.toolsGroup = new FormGroup({
       entries: new FormControl(this.entriesLength[0]),
       search: new FormControl()
     });
+
+    this.subscriptions = this.toolsGroup.get('entries').valueChanges
+      .subscribe((entry: number) => {
+        let args = { size: entry.toString() };
+
+        this.getConsumers(args);
+      });
   }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {
+    this.clean();
+  }
 
-  onSearch(event: MouseEvent) { }
+  onSearch(event: MouseEvent) {
+    event.preventDefault();
 
-  onPrevious(event: MouseEvent) { }
+    let search = this.toolsGroup.get('search').value;
+    let size = this.toolsGroup.get('entries').value || 10;
 
-  onNext(event: MouseEvent) { }
+    if (search) {
+      this.getConsumers({ username: search, size: size });
+    }
+  }
 
-  onDelete(event: MouseEvent, id: string, name: string) { }
+  onPrevious(event: MouseEvent) {
+    this.pagination = paginate(1);
+    this.getConsumers();
+  }
+
+  onNext(event: MouseEvent) {
+    let params = new URLSearchParams(this.next);
+    let size = this.toolsGroup.get('entries').value || 10;
+    let search = this.toolsGroup.get('search').value;
+
+    let args = { size: size, offset: params.get('offset') };
+
+    if (search) {
+      args['username'] = search;
+    }
+
+    this.getConsumers(args);
+  }
+
+  onDelete(event: MouseEvent, id: string, name: string) {
+    event.preventDefault();
+
+    this.modal.title = 'Delete Confirmation';
+    this.modal.hasAction = true;
+    this.modal.actionLabel = 'Delete';
+    this.modal.actionClass = 'btn-danger';
+    this.modal.body = `<p>Are you sure you wanto to delete consumer: <b>${name}</b>?</p>`;
+
+    this.modal.actionFn = () => {
+      this.consumerService.delete(id).subscribe(
+        (rs) => {
+          if (rs.ok) {
+            this.modal.title = 'Success';
+            this.modal.hasAction = false;
+            this.modal.body = `<p>CONSUMER: <b>${name}</b> successful deleted.</p>`;
+            this.getConsumers();
+          }
+        }
+      );
+    };
+
+    this.modal.show();
+  }
 
   goToNewConsumer(event: MouseEvent) {
     event.preventDefault();
 
-    this.router.navigate([SYMBOLS.ROUTES.APIS.NEW]);
+    this.router.navigate([SYMBOLS.ROUTES.CONSUMER.NEW]);
   }
 
-  private getConsumers() { }
+  private getConsumers(params: ConsumerGetParameters = {}) {
+    return this.consumerService.consumers(params)
+      .subscribe((consumersModel) => {
+        this.consumersModel = consumersModel.collection.data;
+        this.total = consumersModel.collection.total.toString();
+
+        if (consumersModel.collection.next) {
+          this.next = consumersModel.collection.next.split('?')[1];
+        } else {
+          this.next = undefined;
+        }
+
+        let size = consumersModel.collection.total;
+        let current = (params.hasOwnProperty('offset'))
+          ? this.pagination.page + 1 : this.pagination.page;
+        let limit = (params.hasOwnProperty('size'))
+          ? parseInt(params.size, 10) : this.pagination.limit;
+
+        this.pagination = paginate(size, current, limit);
+      });
+  }
 }

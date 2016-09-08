@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { GuardService } from '../../shared';
 import { DashboardContainer } from './dashboard';
 import { AdminContainer } from './admin.container';
-import { ConsumersContainer } from './consumers';
+import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from './consumers';
 import { ApisContainer, NewApiContainer, EditApiContainer } from './apis';
 
 const ROUTES: Routes = [
@@ -27,7 +27,9 @@ const ROUTES: Routes = [
         path: 'consumers',
         pathMatch: '',
         children: [
-          { path: '', component: ConsumersContainer }
+          { path: '', component: ConsumersContainer },
+          { path: 'new', component: NewConsumerContainer },
+          { path: 'edit/:id', component: EditConsumerContainer }
         ]
       }
     ]
