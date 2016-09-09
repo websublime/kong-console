@@ -1,3 +1,8 @@
+import { has, isObject } from 'lodash';
+import { Injectable } from '@angular/core';
+import { BaseModel, BaseModelCollection } from './base.model';
+
+/* tslint:disable */
 export const PLUGINSDATA = [
   { id: 'ssl', img: 'dynamic-ssl.png', title: 'Dynamic SSL', info: 'Add an SS certificate for an underlying service.' },
   { id: 'jwt', img: 'jwt.png', title: 'JWT', info: 'Verify and authenticate JSON Web Tokens.' },
@@ -26,3 +31,36 @@ export const PLUGINSDATA = [
   { id: 'ldap-auth', img: 'ldap-authentication.png', title: 'LDAP', info: 'Integrate Kong with a LDAP server.' },
   { id: 'statsd', img: 'statsd.png', title: 'StatsD', info: 'Send request and response logs to StatsD.' }
 ];
+/* tslint:enable */
+
+export interface SchemaModelResource {
+  no_consumer?: boolean;
+  fields?: Object;
+}
+
+@Injectable()
+export class SchemaModel extends BaseModel {
+  /* tslint:disable */
+  no_consumer?: boolean;
+  fields?: Object;
+  /* tslint:enable */
+  collection?: BaseModelCollection<SchemaModelResource>;
+
+  constructor(data?: SchemaModelResource | BaseModelCollection<SchemaModelResource>) {
+    super();
+
+    if (has(data, 'data')) {
+      this._setCollection(<BaseModelCollection<SchemaModelResource>>data);
+    } else if (isObject(data)) {
+      Object.assign(this, data);
+    }
+  }
+
+  private _setCollection(collection: BaseModelCollection<SchemaModelResource>) {
+    collection.data.forEach((value, index) => {
+      collection.data[index] = new SchemaModel(<SchemaModelResource>value);
+    });
+
+    this.collection = collection;
+  }
+}

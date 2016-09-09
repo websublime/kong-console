@@ -15,6 +15,10 @@ export const SYMBOLS = {
     CONSUMER: {
       INDEX: '/admin/consumers',
       NEW: '/admin/consumers/new'
+    },
+    PLUGINS: {
+      INDEX: '/admin/plugins',
+      SCHEMA: '/admin/plugins/schema'
     }
   },
   UI: 'ui',

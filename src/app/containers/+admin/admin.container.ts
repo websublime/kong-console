@@ -109,6 +109,11 @@ export class AdminContainer extends Container implements OnInit {
         info: 'List plugins installed on Kong',
         label: 'Plugins List'
       },
+      '/admin/plugins/schema': {
+        title: 'Plugin Schema',
+        info: 'Plugin object schema',
+        label: 'Schema'
+      }
     };
 
     this.crumbService.addCrumbTree(crumbTreeModel);

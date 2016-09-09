@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { has, get, clone, omit } from 'lodash';
 
 import { Service } from './base.service';
+import { SchemaModel, SchemaModelResource } from '../models';
 import { Configurator } from '../../core/configurator';
 import { RestAdapter } from '../adapters/rest.adapter';
 import { SYMBOLS, getLocalStorage } from '../constants';
@@ -51,11 +52,14 @@ export class PluginsService extends Service<RestAdapter> {
     return this.adapter.get(`${baseUrl}/plugins/enabled`, reqOptions);
   }
 
-  schema(plugin: string): Observable<any> {
+  schema(plugin: string): Observable<SchemaModel> {
     let baseUrl: string = this._configurator.getOption('API.URL');
     let reqOptions = this._reqOptions();
 
-    return this.adapter.get(`${baseUrl}/plugins/schema/${plugin}`, reqOptions);
+    return this.adapter.get(`${baseUrl}/plugins/schema/${plugin}`, reqOptions)
+      .flatMap((rs) => {
+        return Observable.of(new SchemaModel(rs.data));
+      });
   }
 
   private _reqOptions(): RequestOptions {

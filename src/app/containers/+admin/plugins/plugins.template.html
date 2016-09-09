@@ -20,7 +20,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-8">
-                  <button (click)="schema($event, plug.id)" class="btn btn-block btn-info btn-flat" style="margin-top: 10px;" [tooltip]="'Schema for ' + plug.data.title">Details</button>
+                  <a [routerLink]="['/admin/plugins/schema', plug.id]" class="btn btn-block btn-info btn-flat" style="margin-top: 10px;" [tooltip]="'Schema for ' + plug.data.title">Details</a>
                   <!-- /.description-block -->
                 </div>
 
@@ -28,20 +28,8 @@
               <!-- /.row -->
             </div>
           </div>
+
       </div>
     </div>
-
-    <!--<div class="box">
-      <div class="box-header with-border">
-        <h3 class="box-title">Plugins Available</h3>
-      </div>
-      <div class="box-body">
-        <a class="btn btn-app" *ngFor="let plug of available" [tooltip]="plug.label">
-
-          <img [src]="'/assets/img/' + plug.icon" [alt]="plug.label" width="30" height="30" />
-        </a>
-      </div>
-    </div>-->
-
   </div>
 </div>

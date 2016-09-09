@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { lowerCase, capitalize, find, includes } from 'lodash';
+import { find, includes } from 'lodash';
 
 import { Container } from '../../../core';
-import { Modal } from '../../../components';
 import {
   SYMBOLS, PluginsService, StatusService, PLUGINSDATA
 } from '../../../shared';
@@ -32,9 +31,11 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
         let active = kongModel.plugins.enabled_in_cluster;
 
         this.available = available.map((value) => {
+          let data = find(PLUGINSDATA, { id: value });
+
           return {
             id: value,
-            data: find(PLUGINSDATA, {id: value}),
+            data: data ? data : { id: value, title: 'Custom Plugin', info: 'Custom plugin.'},
             active: includes(active, value)
           };
         });
@@ -44,14 +45,4 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.clean();
   }
-
-  schema(event: MouseEvent, plugin: string) {
-    event.preventDefault();
-
-    this.plugService.schema(plugin)
-      .subscribe((rs) => {
-        console.log(rs);
-      });
-  }
-
 }
