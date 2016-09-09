@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { isEmpty, kebabCase } from 'lodash';
@@ -15,7 +16,7 @@ import {
   moduleId: __filename,
   selector: 'new-api',
   templateUrl: './new.template.html',
-  providers: [ ApisService ],
+  providers: [ ApisService, Title ],
 })
 export class NewApiContainer extends Container implements OnInit {
 
@@ -27,11 +28,14 @@ export class NewApiContainer extends Container implements OnInit {
     private apiService: ApisService,
     private router: Router,
     public fb: FormBuilder,
+    private title: Title
   ) {
     super();
   }
 
   ngOnInit() {
+    this.title.setTitle('New API');
+
     this.apiModel = new ApisModel(<ApisModelResource>{
       name: '',
       request_host: '',

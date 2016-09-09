@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { find, includes } from 'lodash';
@@ -11,13 +12,14 @@ import {
   moduleId: __filename,
   selector: 'plugins-page',
   templateUrl: './plugins.template.html',
-  providers: [ PluginsService, StatusService ]
+  providers: [ PluginsService, StatusService, Title ]
 })
 export class PluginsContainer extends Container implements OnInit, OnDestroy {
 
   available: Array<any> = [];
 
   constructor(
+    private title: Title,
     private plugService: PluginsService,
     private statusService: StatusService
   ) {
@@ -25,6 +27,8 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.title.setTitle('Plugins List');
+
     this.subscriptions = this.statusService.kong()
       .subscribe((kongModel) => {
         let available = kongModel.plugins.available_on_server;

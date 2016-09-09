@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
+import { Title } from '@angular/platform-browser';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 
@@ -27,7 +28,7 @@ import {
     }
     `
   ],
-  providers: [ ConsumerService ]
+  providers: [ ConsumerService, Title ]
 })
 export class ConsumersContainer extends Container implements OnInit, OnDestroy {
   next: string;
@@ -39,11 +40,17 @@ export class ConsumersContainer extends Container implements OnInit, OnDestroy {
 
   @ViewChild(Modal) modal: Modal;
 
-  constructor(private consumerService: ConsumerService, private router: Router) {
+  constructor(
+    private consumerService: ConsumerService,
+    private router: Router,
+    private title: Title
+  ) {
     super();
   }
 
   ngOnInit() {
+    this.title.setTitle('Consumers');
+
     this.subscriptions = this.getConsumers();
 
     this.toolsGroup = new FormGroup({

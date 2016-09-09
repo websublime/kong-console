@@ -1,7 +1,8 @@
 import { isEmpty, kebabCase } from 'lodash';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 
+import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { Container } from '../../../core';
@@ -15,7 +16,7 @@ import {
   moduleId: __filename,
   selector: 'edit-api',
   templateUrl: './new.template.html',
-  providers: [ ApisService ]
+  providers: [ ApisService, Title ]
 })
 export class EditApiContainer extends Container implements OnInit, OnDestroy {
 
@@ -28,6 +29,7 @@ export class EditApiContainer extends Container implements OnInit, OnDestroy {
     private router: Router,
     private activeRoute: ActivatedRoute,
     public fb: FormBuilder,
+    private title: Title
   ) {
     super();
   }
@@ -40,6 +42,8 @@ export class EditApiContainer extends Container implements OnInit, OnDestroy {
     this.subscriptions = this.apiService.get(id)
       .subscribe((model) => {
         this.apiModel = model;
+
+        this.title.setTitle(`Edit API - ${model.name}`);
 
         this.apiForm.get('name').setValue(model.name);
         this.apiForm.get('requestHost').setValue(model.request_host);

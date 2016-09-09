@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { isEmpty, kebabCase } from 'lodash';
@@ -15,7 +16,7 @@ import {
   moduleId: __filename,
   selector: 'new-consumer',
   templateUrl: './new.template.html',
-  providers: [ ConsumerService ],
+  providers: [ ConsumerService, Title ],
 })
 export class NewConsumerContainer extends Container implements OnInit {
   uuid: string;
@@ -27,11 +28,14 @@ export class NewConsumerContainer extends Container implements OnInit {
     private consumerService: ConsumerService,
     private router: Router,
     public fb: FormBuilder,
+    private title: Title
   ) {
     super();
   }
 
   ngOnInit() {
+    this.title.setTitle('New Consumer');
+
     this.consumerModel = new ConsumersModel(<ConsumerModelResource>{
       username: '',
       custom_id: ''

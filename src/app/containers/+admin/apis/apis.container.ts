@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
+import { Title } from '@angular/platform-browser';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 
@@ -14,7 +15,7 @@ import {
   moduleId: __filename,
   selector: 'apis-page',
   templateUrl: './apis.template.html',
-  providers: [ ApisService ],
+  providers: [ ApisService, Title ],
   styles: [
     `
     .form-group, .input-group {
@@ -39,11 +40,16 @@ export class ApisContainer extends Container implements OnInit, OnDestroy {
 
   @ViewChild(Modal) modal: Modal;
 
-  constructor(private apiService: ApisService, private router: Router) {
+  constructor(
+    private apiService: ApisService,
+    private router: Router,
+    private title: Title
+  ) {
     super();
   }
 
   ngOnInit() {
+    this.title.setTitle('APIS List');
     this.subscriptions = this.getApis();
 
     this.toolsGroup = new FormGroup({
