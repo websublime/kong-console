@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { State, Container } from '../../../core';
@@ -13,7 +14,7 @@ import {
   moduleId: __filename,
   selector: 'dashboard-page',
   templateUrl: './dashboard.template.html',
-  providers: [ StatusService, ApisService, ConsumerService ]
+  providers: [ StatusService, ApisService, ConsumerService, Title ]
 })
 export class DashboardContainer extends Container implements OnInit, OnDestroy {
   boxModel: Array<SmallBoxModel>;
@@ -23,6 +24,7 @@ export class DashboardContainer extends Container implements OnInit, OnDestroy {
 
   constructor(
     private appState: State,
+    private title: Title,
     private apisService: ApisService,
     private statusService: StatusService,
     private consumerService: ConsumerService
@@ -32,6 +34,7 @@ export class DashboardContainer extends Container implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('--DASHBOARD INITED--');
+    this.title.setTitle('Dashboard');
 
     this.statusSubscription();
     this.apisSubscription();

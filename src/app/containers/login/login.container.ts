@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { CanActivate, Router } from '@angular/router';
 import { Component, OnInit, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -13,7 +14,8 @@ import {
 @Component({
   moduleId: __filename,
   selector: 'login-page',
-  templateUrl: './login.template.html'
+  templateUrl: './login.template.html',
+  providers: [ Title ]
 })
 export class LoginContainer implements OnInit {
   loginForm: FormGroup;
@@ -23,12 +25,14 @@ export class LoginContainer implements OnInit {
     public fb: FormBuilder,
     private state: State,
     private router: Router,
+    private title: Title,
     private authService: AuthService,
   ) { }
 
   ngOnInit() {
     console.log('--LOGIN INITED--');
     console.log(this.state);
+    this.title.setTitle('Login');
 
     this.loginForm = this.fb.group({
       'mail': ['', Validators.compose([Validators.required])],

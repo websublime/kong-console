@@ -25,13 +25,13 @@ export class MenuModel extends BaseModel {
           label: 'Apis',
           url: '/admin/apis',
           icon: 'fa fa-gg',
-          tree: [
+          /*tree: [
             {
               label: 'Plugs',
               url: '/admin/apis/plugins',
               icon: 'fa fa-puzzle-piece'
             }
-          ]
+          ]*/
         },
         {
           label: 'Consumers',

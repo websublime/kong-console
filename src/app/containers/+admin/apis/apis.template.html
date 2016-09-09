@@ -30,10 +30,8 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Preserve</th>
             <th>Request</th>
             <th>Path</th>
-            <th>Strip</th>
             <th>Upstream</th>
             <th>Created At</th>
             <th>Tools</th>
@@ -43,16 +41,20 @@
               <a [routerLink]="['/admin/apis/edit', model.id]">{{model.id}}</a>
             </td>
             <td>{{model.name}}</td>
-            <td>{{model.preserve_host}}</td>
             <td>{{model.request_host}}</td>
             <td>{{model.request_path}}</td>
-            <td>{{model.strip_request_path}}</td>
             <td>{{model.upstream_url}}</td>
             <td>{{model.created_at | date:'d-M-y'}}</td>
             <td>
-              <a class="btn btn-sm btn-danger" (click)="onDelete($event, model.id, model.name)">
-                <i class="fa fa-eraser"></i>
-              </a>
+              <div class="btn-group">
+                <a [tooltip]="'Delete API '+ model.name" class="btn btn-sm btn-danger" (click)="onDelete($event, model.id, model.name)">
+                  <i class="fa fa-eraser"></i>
+                </a>
+                <a [tooltip]="'Plugins on API ' + model.name" class="btn btn-sm btn-danger">
+                  <i class="fa fa-plug"></i>
+                </a>
+              </div>
+
             </td>
           </tr>
         </table>

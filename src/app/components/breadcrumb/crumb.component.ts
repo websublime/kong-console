@@ -46,11 +46,11 @@ export class Crumb {
     return this.service.hasUrlProperty(this.checkUrl(url), property);
   }
 
-  private checkUrl(url: string): string {
-    if (!this.service.hasUrl(url) && url !== undefined) {
+  private checkUrl(url: string, count: number = 1): string {
+    if (!this.service.hasUrl(url) && url !== undefined && count < 5) {
       url = url.substr(0, url.lastIndexOf('/'));
-
-      this.checkUrl(url);
+      count = count + 1;
+      this.checkUrl(url, count);
     }
 
     return url;
