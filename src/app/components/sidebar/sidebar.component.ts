@@ -6,7 +6,7 @@ export interface SideBarModel {
   icon?: string;
   url?: string;
   fn?: Function;
-  tree?: any;
+  tree?: Array<SideBarModel>;
 }
 
 @Component({

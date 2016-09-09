@@ -7,7 +7,7 @@ export interface MenuModelItem {
   icon?: string;
   url?: string;
   fn?: Function;
-  tree?: any;
+  tree?: Array<MenuModelItem>;
 }
 
 @Injectable()
@@ -24,7 +24,14 @@ export class MenuModel extends BaseModel {
         {
           label: 'Apis',
           url: '/admin/apis',
-          icon: 'fa fa-gg'
+          icon: 'fa fa-gg',
+          tree: [
+            {
+              label: 'Plugs',
+              url: '/admin/apis/plugins',
+              icon: 'fa fa-puzzle-piece'
+            }
+          ]
         },
         {
           label: 'Consumers',

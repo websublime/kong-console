@@ -1,26 +1,32 @@
 <div class="row">
   <div class="col-md-12">
     <div class="row">
-      <div class="col-md-2" *ngFor="let plug of available">
-        <div class="info-box bg-aqua">
-            <span class="info-box-icon"><img [src]="'/assets/img/' + plug.icon" [alt]="plug.label" width="30" height="30" /></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">{{plug.label}}</span>
-
-
-              <div class="progress">
-                <div *ngIf="plug.active" class="progress-bar" style="width: 100%"></div>
-                <div *ngIf="!plug.active" class="progress-bar" style="width: 0%"></div>
-              </div>
-                  <span *ngIf="plug.active" class="progress-description">
-                    <span class="badge bg-green">Enable</span>
-                  </span>
-                  <span *ngIf="!plug.active" class="progress-description">
-                    <span class="badge bg-red">Disable</span>
-                  </span>
+      <div class="col-md-3" *ngFor="let plug of available">
+        <div class="box box-widget widget-user">
+            <!-- Add the bg color to the header using any of the bg-* classes: bg-aqua-active -->
+            <div [class]="plug.active ? 'widget-user-header bg-green' : 'widget-user-header bg-red'">
+              <h5 class="widget-user-username">{{plug.data.title}}</h5>
+              <p class="widget-user-desc">{{plug.data.info}}</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-4 border-right">
+                  <div class="description-block">
+                    <h5 *ngIf="plug.active" class="description-header"><span class="badge bg-green">Enable</span></h5>
+                    <h5 *ngIf="!plug.active" class="description-header"><span class="badge bg-red">Disable</span></h5>
+                    <span class="description-text">State</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-8">
+                  <button class="btn btn-block btn-info btn-flat" style="margin-top: 10px;" [tooltip]="'Schema for ' + plug.data.title">Details</button>
+                  <!-- /.description-block -->
+                </div>
+
+              </div>
+              <!-- /.row -->
+            </div>
           </div>
       </div>
     </div>

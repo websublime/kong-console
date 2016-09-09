@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { lowerCase, capitalize, get, includes } from 'lodash';
+import { lowerCase, capitalize, find, includes } from 'lodash';
 
 import { Container } from '../../../core';
 import { Modal } from '../../../components';
 import {
-  SYMBOLS, PluginsService, StatusService
+  SYMBOLS, PluginsService, StatusService, PLUGINSDATA
 } from '../../../shared';
 
 @Component({
@@ -16,7 +16,7 @@ import {
 })
 export class PluginsContainer extends Container implements OnInit, OnDestroy {
 
-  available: Array<{ id: string; label: string; icon: string; active: boolean; }> = [];
+  available: Array<any> = [];
 
   constructor(
     private plugService: PluginsService,
@@ -36,14 +36,13 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
         let available = kongModel.plugins.available_on_server;
         let active = kongModel.plugins.enabled_in_cluster;
 
-        /*this.available = available.map((value) => {
+        this.available = available.map((value) => {
           return {
             id: value,
-            label: capitalize(lowerCase(value)),
-            icon: get(SYMBOLS.PLUGINS.ICONS, value, ''),
+            data: find(PLUGINSDATA, {id: value}),
             active: includes(active, value)
           };
-        });*/
+        });
 
         console.log(kongModel);
       });
