@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { lowerCase, capitalize, find, includes } from 'lodash';
 
-import { Container } from '../../../core';
+import { Container, JSONFormatter } from '../../../core';
 
 import {
   SYMBOLS, PluginsService, StatusService, PLUGINSDATA
@@ -16,6 +16,7 @@ import {
   providers: [ PluginsService ]
 })
 export class PluginDetailContainer extends Container implements OnInit, OnDestroy {
+  render: HTMLDivElement;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -29,7 +30,12 @@ export class PluginDetailContainer extends Container implements OnInit, OnDestro
 
     this.subscriptions = this.plugService.schema(id)
       .subscribe((schema) => {
-        console.log(schema);
+        let formatter = new JSONFormatter(
+          { fields: schema.fields, no_consumer: schema.no_consumer },
+          Infinity
+        );
+
+        this.render = formatter.render();
       });
   }
 

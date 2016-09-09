@@ -1,6 +1,6 @@
-import { Router, NavigationEnd } from '@angular/router';
 import { CrumbService } from './crumb.service';
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   moduleId: __filename,
@@ -10,21 +10,26 @@ import { Component, OnInit } from '@angular/core';
 export class Crumb {
   urls: string[];
   activeUrl: string;
+  urlCrumb: string;
 
-  constructor(private _router: Router, private _service: CrumbService) {
-    this._router.events.subscribe(
+  constructor(
+    private router: Router,
+    private service: CrumbService
+  ) {
+    this.router.events.subscribe(
       (navigation: NavigationEnd) => {
         this.urls = [];
         this.activeUrl = navigation.urlAfterRedirects
           ? navigation.urlAfterRedirects : navigation.url;
 
-        this.buildCrumb(this.activeUrl);
+        this.urlCrumb = this.checkUrl(this.activeUrl);
+        this.buildCrumb(this.urlCrumb);
       }
     );
   }
 
   buildCrumb(url: string): void {
-    let _url = this._checkUUID(url);
+    let _url = url;
 
     this.urls.unshift(_url);
 
@@ -34,23 +39,20 @@ export class Crumb {
   }
 
   getCrumbProperty(url: string, property: string): string {
-    return this._service.getUrlProperty(this._checkUUID(url), property);
+    return this.service.getUrlProperty(this.checkUrl(url), property);
   }
 
   hasCrumbProperty(url: string, property: string): boolean {
-    return this._service.hasUrlProperty(this._checkUUID(url), property);
+    return this.service.hasUrlProperty(this.checkUrl(url), property);
   }
 
-  private _checkUUID(url: string): string {
-    if (!url) {
-      return url;
+  private checkUrl(url: string): string {
+    if (!this.service.hasUrl(url) && url !== undefined) {
+      url = url.substr(0, url.lastIndexOf('/'));
+
+      this.checkUrl(url);
     }
 
-    let lastArg = url.substr(url.lastIndexOf('/') + 1, url.length);
-    /* tslint:disable */
-    let isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(lastArg);
-    /* tslint:enable */
-
-    return isUUID ? url.substr(0, url.lastIndexOf('/')) : url;
+    return url;
   }
 }

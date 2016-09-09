@@ -27,4 +27,8 @@ export class CrumbService {
     return has(this._crumbTree, `${url}[${property}]`);
   }
 
+  hasUrl(url: string): boolean {
+    return has(this._crumbTree, url);
+  }
+
 }
