@@ -51,6 +51,13 @@ export class PluginsService extends Service<RestAdapter> {
     return this.adapter.get(`${baseUrl}/plugins/enabled`, reqOptions);
   }
 
+  schema(plugin: string): Observable<any> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    return this.adapter.get(`${baseUrl}/plugins/schema/${plugin}`, reqOptions);
+  }
+
   private _reqOptions(): RequestOptions {
     let localData: {key: string, user: string} = JSON.parse(getLocalStorage(SYMBOLS.USER));
 

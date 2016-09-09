@@ -26,11 +26,6 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions = this.plugService.plugins()
-      .subscribe((rs) => {
-        console.log(rs);
-      });
-
     this.subscriptions = this.statusService.kong()
       .subscribe((kongModel) => {
         let available = kongModel.plugins.available_on_server;
@@ -43,13 +38,20 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
             active: includes(active, value)
           };
         });
-
-        console.log(kongModel);
       });
   }
 
   ngOnDestroy() {
     this.clean();
+  }
+
+  schema(event: MouseEvent, plugin: string) {
+    event.preventDefault();
+
+    this.plugService.schema(plugin)
+      .subscribe((rs) => {
+        console.log(rs);
+      });
   }
 
 }

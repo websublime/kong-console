@@ -20,7 +20,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-8">
-                  <button class="btn btn-block btn-info btn-flat" style="margin-top: 10px;" [tooltip]="'Schema for ' + plug.data.title">Details</button>
+                  <button (click)="schema($event, plug.id)" class="btn btn-block btn-info btn-flat" style="margin-top: 10px;" [tooltip]="'Schema for ' + plug.data.title">Details</button>
                   <!-- /.description-block -->
                 </div>
 
