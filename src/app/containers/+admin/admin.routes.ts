@@ -5,7 +5,7 @@ import { GuardService } from '../../shared';
 import { DashboardContainer } from './dashboard';
 import { AdminContainer } from './admin.container';
 import { PluginsContainer, PluginDetailContainer } from './plugins';
-import { ApisContainer, NewApiContainer, EditApiContainer } from './apis';
+import { ApisContainer, NewApiContainer, EditApiContainer, ApiPlugsContainer } from './apis';
 import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from './consumers';
 
 const ROUTES: Routes = [
@@ -21,7 +21,8 @@ const ROUTES: Routes = [
         children: [
           { path: '', component: ApisContainer },
           { path: 'new', component: NewApiContainer },
-          { path: 'edit/:id', component: EditApiContainer }
+          { path: 'edit/:id', component: EditApiContainer },
+          { path: 'plugin/:id', component: ApiPlugsContainer }
         ]
       },
       {

@@ -7,6 +7,7 @@ import { has, get, clone, omit } from 'lodash';
 import { Service } from './base.service';
 import { Configurator } from '../../core/configurator';
 import { SYMBOLS, getLocalStorage } from '../constants';
+import { PluginApiModel, PluginApiModelResource } from '../models/plugins.model';
 import { ApisModel, ApisModelResource } from '../models/apis.model';
 import { RestAdapter, ResourceResponse } from '../adapters/rest.adapter';
 
@@ -16,6 +17,15 @@ export interface ApiGetParameters {
   request_host?: string;
   request_path?: string;
   upstream_url?: string;
+  size?: string;
+  offset?: string;
+}
+
+export interface PlugGetParameters {
+  id?: string;
+  name?: string;
+  api_id?: string;
+  consumer_id?: string;
   size?: string;
   offset?: string;
 }
@@ -44,6 +54,16 @@ export class ApisService extends Service<RestAdapter> {
     return this.adapter.get(`${baseUrl}/apis`, reqOptions)
       .flatMap((list) => {
         return Observable.of(new ApisModel(list.data));
+      });
+  }
+
+  plugins(api: string, args?: PlugGetParameters): Observable<PluginApiModel> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    return this.adapter.get(`${baseUrl}/apis/${api}/plugins`, reqOptions)
+      .flatMap((list) => {
+        return Observable.of(new PluginApiModel(list.data));
       });
   }
 

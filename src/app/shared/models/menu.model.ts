@@ -42,6 +42,11 @@ export class MenuModel extends BaseModel {
           label: 'Plugins',
           url: '/admin/plugins',
           icon: 'fa fa-plug'
+        },
+        {
+          label: 'Cluster',
+          url: '/admin/cluster',
+          icon: 'fa fa-cubes'
         }
       ];
     }

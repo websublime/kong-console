@@ -7,7 +7,7 @@ import { DashboardContainer } from './dashboard';
 import { AdminContainer } from './admin.container';
 import { ComponentsModule } from '../../components';
 import { PluginsContainer, PluginDetailContainer } from './plugins';
-import { ApisContainer, NewApiContainer, EditApiContainer } from './apis';
+import { ApisContainer, NewApiContainer, EditApiContainer, ApiPlugsContainer } from './apis';
 import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from './consumers';
 
 
@@ -15,7 +15,7 @@ import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from 
   imports: [ ShareModule, ROUTING, ComponentsModule ],
   declarations: [
     DashboardContainer, AdminContainer, Size, ToolTipDirective,
-    ApisContainer, NewApiContainer, EditApiContainer,
+    ApisContainer, NewApiContainer, EditApiContainer, ApiPlugsContainer,
     PluginsContainer, PluginDetailContainer,
     ConsumersContainer, NewConsumerContainer, EditConsumerContainer
   ]

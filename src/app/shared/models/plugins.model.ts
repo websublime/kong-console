@@ -38,6 +38,15 @@ export interface SchemaModelResource {
   fields?: Object;
 }
 
+export interface PluginApiModelResource {
+  api_id?: string;
+  config?: Object; // TODO: Each plugin resource
+  created_at?: number;
+  enabled?: boolean;
+  id?: string;
+  name?: string;
+}
+
 @Injectable()
 export class SchemaModel extends BaseModel {
   /* tslint:disable */
@@ -59,6 +68,38 @@ export class SchemaModel extends BaseModel {
   private _setCollection(collection: BaseModelCollection<SchemaModelResource>) {
     collection.data.forEach((value, index) => {
       collection.data[index] = new SchemaModel(<SchemaModelResource>value);
+    });
+
+    this.collection = collection;
+  }
+}
+
+@Injectable()
+export class PluginApiModel extends BaseModel {
+  /* tslint:disable */
+  api_id?: string;
+  config?: Object; // TODO: Each plugin resource
+  created_at?: number;
+  enabled?: boolean;
+  id?: string;
+  name?: string;
+  /* tslint:enable */
+
+  collection?: BaseModelCollection<PluginApiModelResource>;
+
+  constructor(data?: PluginApiModelResource | BaseModelCollection<PluginApiModelResource>) {
+    super();
+
+    if (has(data, 'data')) {
+      this._setCollection(<BaseModelCollection<PluginApiModelResource>>data);
+    } else if (isObject(data)) {
+      Object.assign(this, data);
+    }
+  }
+
+  private _setCollection(collection: BaseModelCollection<PluginApiModelResource>) {
+    collection.data.forEach((value, index) => {
+      collection.data[index] = new PluginApiModel(<PluginApiModelResource>value);
     });
 
     this.collection = collection;
