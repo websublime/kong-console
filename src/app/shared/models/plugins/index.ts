@@ -5,3 +5,4 @@ export * from './hmac.model';
 export * from './jwt.model';
 export * from './ldap.model';
 export * from './acl.model';
+export * from './cors.model';
