@@ -5,12 +5,7 @@ Web administration of kong Admin API. It is developed in angular 2 using [AdminL
 
 # Screenshots
 
-![](./docs/login.png)
 ![](./docs/dashboard.png)
-![](./docs/apis.png)
-![](./docs/new-api.png)
-![](./docs/consumers.png)
-![](./docs/plugins.png)
 
 # Kong Admin Setup
 
