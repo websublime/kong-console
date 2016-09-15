@@ -6,4 +6,5 @@ export * from './jwt.model';
 export * from './ldap.model';
 export * from './acl.model';
 export * from './cors.model';
-export * from ',/ssl.model';
+export * from './ssl.model';
+export * from './ip.model';
