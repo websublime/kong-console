@@ -9,3 +9,4 @@ export * from './cors.model';
 export * from './ssl.model';
 export * from './ip.model';
 export * from './bot.model';
+export * from './rate.model';
