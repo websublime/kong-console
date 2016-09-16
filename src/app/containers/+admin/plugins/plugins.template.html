@@ -22,7 +22,7 @@
                 <div class="col-sm-8">
                   <div class="btn-group" style="margin-top: 10px;">
                     <a [routerLink]="['/admin/plugins/schema', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Schema for ' + plug.data.title">Details</a>
-                    <a [routerLink]="['/admin/plugins', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Add plugin ' + plug.data.title">Add</a>
+                    <a [routerLink]="['/admin/plugins/new', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Add plugin ' + plug.data.title">Add</a>
                   </div>
                   <!-- /.description-block -->
                 </div>

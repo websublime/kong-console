@@ -6,7 +6,7 @@ import { ROUTING } from './admin.routes';
 import { DashboardContainer } from './dashboard';
 import { AdminContainer } from './admin.container';
 import { ComponentsModule } from '../../components';
-import { PluginsContainer, PluginDetailContainer } from './plugins';
+import { PluginsContainer, PluginDetailContainer, NewPluginContainer } from './plugins';
 import { ApisContainer, NewApiContainer, EditApiContainer, ApiPlugsContainer } from './apis';
 import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from './consumers';
 
@@ -16,7 +16,7 @@ import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from 
   declarations: [
     DashboardContainer, AdminContainer, Size, ToolTipDirective,
     ApisContainer, NewApiContainer, EditApiContainer, ApiPlugsContainer,
-    PluginsContainer, PluginDetailContainer,
+    PluginsContainer, PluginDetailContainer, NewPluginContainer,
     ConsumersContainer, NewConsumerContainer, EditConsumerContainer
   ]
 })
