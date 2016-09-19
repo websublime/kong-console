@@ -16,6 +16,8 @@
             <span [ngSwitch]="control.type">
               <label *ngSwitchCase="'text'" >{{control.label}}</label>
               <input *ngSwitchCase="'text'" type="text" [formControlName]="control.key" [id]="control.key" class="form-control" [placeholder]="control.holder">
+              <label *ngSwitchCase="'number'" >{{control.label}}</label>
+              <input *ngSwitchCase="'number'" type="number" [formControlName]="control.key" [id]="control.key" class="form-control" min="0">
               <div *ngSwitchCase="'checkbox'" class="checkbox">
                 <label>
                   <input type="checkbox" [formControlName]="control.key" [id]="control.key" [checked]="control.value"> {{control.label}}
