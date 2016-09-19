@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { KeyFormConfig, KeyFormResource } from './key.form';
+import { HmacFormConfig, HmacFormResource } from './hmac.form';
 import { OAuthFormConfig, OAuthFormResource } from './oauth.form';
 import { BasicFormConfig, BasicFormResource } from './basic.form';
 
@@ -8,7 +9,7 @@ import { BasicFormConfig, BasicFormResource } from './basic.form';
 export class FormService {
   getFormGroup(group: string): (
     BasicFormConfig | BasicFormResource | KeyFormConfig | KeyFormResource |
-    OAuthFormConfig | OAuthFormResource
+    OAuthFormConfig | OAuthFormResource | HmacFormConfig | HmacFormResource
   ) {
     switch (group) {
       case 'basic-auth-config':
@@ -23,6 +24,10 @@ export class FormService {
         return new OAuthFormConfig();
       case 'oauth2-consumer':
         return new OAuthFormResource();
+      case 'hmac-auth-config':
+        return new HmacFormConfig();
+      case 'hmac-auth-consumer':
+        return new HmacFormResource();
       default:
         throw new Error('Unknow Form service: ' + group);
     }
