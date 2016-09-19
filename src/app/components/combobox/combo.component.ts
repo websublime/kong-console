@@ -48,10 +48,10 @@ export class ComboBox implements OnInit, OnDestroy {
     this.events.emit({ search: '*ALL*' });
   }
 
-  onSelect(entry) {
-    this.visible = false;
-
+  onSelect(entry: any) {
     this.events.emit({ select: { id: entry.id, name: entry.name } });
     this.formCombo.get('search').setValue(entry.name);
+
+    setTimeout(() => { this.visible = false; }, 10);
   }
 }
