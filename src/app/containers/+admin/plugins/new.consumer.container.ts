@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -7,49 +7,50 @@ import { FormService } from './forms';
 import { Container } from '../../../core';
 import { AlertModel, ComboBox } from '../../../components';
 import {
-  SYMBOLS, ApisService
+  SYMBOLS, ConsumerService
 } from '../../../shared';
 
 @Component({
   moduleId: __filename,
-  selector: 'new-plugin-page',
-  templateUrl: './new.template.html',
-  providers: [ Title, FormService, ApisService ]
+  selector: 'new-consumer-page',
+  templateUrl: './new.consumer.template.html',
+  providers: [ Title, FormService, ConsumerService ]
 })
-export class NewPluginContainer extends Container implements OnInit, OnDestroy {
+export class NewConsumerApiContainer extends Container implements OnInit, OnDestroy {
   alertModel: AlertModel;
   formControls: Array<any>;
-  pluginForm: FormGroup;
+  consumerForm: FormGroup;
   formTitle: string;
   help: string;
 
   @ViewChild(ComboBox) combo: ComboBox;
 
+  private formDynamic;
+
   constructor(
     private title: Title,
     private fS: FormService,
     private router: Router,
-    private apiService: ApisService,
+    private consumerService: ConsumerService,
     private activeRoute: ActivatedRoute
   ) {
     super();
   }
 
   ngOnInit() {
-    this.title.setTitle('Activate Plugin');
+    this.title.setTitle('Associate Plugin');
 
     let id = this.activeRoute.snapshot.params['id'];
-    let fg = this.fS.getFormGroup(id);
+    this.formDynamic = this.fS.getFormGroup(`${id}-consumer`);
 
-    this.formTitle = fg.title;
-    this.help = fg.help();
-    this.formControls = fg.formControls;
-    this.pluginForm = fg.createFormGroup();
+    this.formTitle = this.formDynamic.title;
+    this.help = this.formDynamic.help();
+    this.formControls = this.formDynamic.formControls;
+    this.consumerForm = this.formDynamic.createFormGroup();
 
     this.changeDetection(() => {
-      this.pluginForm.addControl('name', this.combo.formCombo.get('search'));
-      // TODO: Delete, only to check if form is given right values
-      this.pluginForm.valueChanges.subscribe((value) => { console.log(value); });
+      this.consumerForm.addControl('name', new FormControl(id));
+      this.consumerForm.addControl('search', this.combo.formCombo.get('search'));
     });
 
     this.combo.events
@@ -67,7 +68,7 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
   reset(event: MouseEvent) {
     event.preventDefault();
 
-    this.pluginForm.reset();
+    this.consumerForm.reset();
   }
 
   cancel(event: MouseEvent) {
@@ -77,21 +78,24 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
   }
 
   save() {
-    if (!this.pluginForm.valid) {
+    if (!this.consumerForm.valid) {
       return false;
     }
 
-    console.log(this.pluginForm.value);
+    let consumer = this.consumerForm.value.search;
+    this.formDynamic.populate(this.consumerForm.value);
   }
 
   search(value: string) {
-    let params = (value === '*ALL*') ? {} : { name: value };
+    let params = (value === '*ALL*') ? {} : { username: value };
 
-    this.apiService.apis(params)
-      .subscribe((api) => {
-        if (api && api.collection.total > 0) {
-          let data = api.collection.data;
-          this.combo.model = data;
+    this.consumerService.consumers(params)
+      .subscribe((consumer) => {
+        if (consumer && consumer.collection.total > 0) {
+          let data = consumer.collection.data;
+          this.combo.model = data.map((rs) => {
+            return { id: rs.id, name: rs.username };
+          });
         } else {
           this.combo.model = [{ id: undefined, name: 'No results founded.' }];
         }

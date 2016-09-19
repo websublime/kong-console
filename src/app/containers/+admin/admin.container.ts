@@ -123,6 +123,11 @@ export class AdminContainer extends Container implements OnInit {
         title: 'Plugin Activation',
         info: 'Add plugin to API',
         label: 'New Plugin'
+      },
+      '/admin/plugins/consumer': {
+        title: 'Consumer Association',
+        info: 'Associate consumer to API',
+        label: 'New Consumer association'
       }
     };
 

@@ -102,6 +102,15 @@ export class ApisService extends Service<RestAdapter> {
     return this.adapter.delete(`${baseUrl}/apis/${id}`, reqOptions);
   }
 
+  insertPlugin(api: string, model: any): Observable<any> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    let params = this._cleanModel(model);
+
+    return this.adapter.post(`${baseUrl}/apis/${api}/plugins`, params, reqOptions);
+  }
+
   private _reqOptions(): RequestOptions {
     let localData: {key: string, user: string} = JSON.parse(getLocalStorage(SYMBOLS.USER));
 
