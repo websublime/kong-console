@@ -83,7 +83,42 @@ export class NewConsumerApiContainer extends Container implements OnInit, OnDest
     }
 
     let consumer = this.consumerForm.value.search;
+    let plugin = this.activeRoute.snapshot.params['id'];
+
     this.formDynamic.populate(this.consumerForm.value);
+
+    this.consumerService.insertPlugin(consumer, plugin, this.formDynamic.formModel)
+      .subscribe(
+        (rs) => {
+          if (rs.ok) {
+            this.alertModel = <AlertModel>{
+              visible: true,
+              autoHide: true,
+              title: '<h4><i class="icon fa fa-check">Plugin Associated!</i></h4>',
+              info: 'Plugin associated with success to Consumer: ' + consumer + '!',
+              close: true,
+              classes: 'alert-success'
+            };
+
+            setTimeout(() => {
+              this.consumerForm.reset();
+              this.router.navigate([SYMBOLS.ROUTES.PLUGINS.INDEX]);
+            }, 1000);
+          }
+        },
+        (error) => {
+          this.alertModel = <AlertModel>{
+            visible: true,
+            autoHide: true,
+            title: '<h4><i class="icon fa fa-ban">Plugin Error!</i></h4>',
+            info: `<p>Please check your form.</p>
+            <p>Details from server:</p>
+            <code>${error.text()}</code>`,
+            close: true,
+            classes: 'alert-danger'
+          };
+        }
+      );
   }
 
   search(value: string) {

@@ -79,6 +79,15 @@ export class ConsumerService extends Service<RestAdapter> {
     return this.adapter.delete(`${baseUrl}/consumers/${id}`, reqOptions);
   }
 
+  insertPlugin(consumer: string, plugin: string, model: any): Observable<any> {
+    let baseUrl: string = this._configurator.getOption('API.URL');
+    let reqOptions = this._reqOptions();
+
+    let params = this._cleanModel(model);
+
+    return this.adapter.post(`${baseUrl}/consumers/${consumer}/${plugin}`, params, reqOptions);
+  }
+
   private _reqOptions(): RequestOptions {
     let localData: {key: string, user: string} = JSON.parse(getLocalStorage(SYMBOLS.USER));
 

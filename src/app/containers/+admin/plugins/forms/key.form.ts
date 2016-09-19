@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { BasicModelConfig, BasicModel } from '../../../../shared';
+import { KeyModelConfig, KeyModel } from '../../../../shared';
 import { ControlBase, ControlSignature } from './control.base';
 
 @Injectable()
-export class BasicFormConfig {
+export class KeyFormConfig {
   title: string;
-  formModel: BasicModelConfig;
+  formModel: KeyModelConfig;
   formControls: Array<ControlBase<any>> = [];
 
   constructor() {
@@ -15,9 +15,9 @@ export class BasicFormConfig {
   }
 
   init() {
-    this.title = 'Basic Authorization';
+    this.title = 'Key Authentication';
     this.createFormControls();
-    this.formModel = new BasicModelConfig();
+    this.formModel = new KeyModelConfig();
   }
 
   createFormGroup(): FormGroup {
@@ -31,8 +31,13 @@ export class BasicFormConfig {
   }
 
   populate(form: any) {
-    this.formModel.setAttribute('config.hide_credentials', form.hideCredentials || false);
+    let keys = form.keyNames ? form.keyNames.split(',') : [];
+
+    keys = keys.map((value: string) => { return value.trim(); });
+
     this.formModel.setAttribute('name', form.name);
+    this.formModel.setAttribute('config.hide_credentials', form.hideCredentials || false);
+    this.formModel.setAttribute('config.key_names', keys);
   }
 
   help() {
@@ -42,6 +47,10 @@ export class BasicFormConfig {
       <tr>
         <th>Attribute</th>
         <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">key_names</span><br><em>optional</em></td>
+        <td><p>Describes an array of comma separated parameter names where the plugin will look for a key. The client must send the authentication key in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name.</p></td>
       </tr>
       <tr>
         <td><span class="badge-highlight">hide_credentials</span><br><em>optional</em></td>
@@ -54,6 +63,15 @@ export class BasicFormConfig {
 
   private createFormControls(): void {
     this.formControls = [
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl(),
+        label: 'Key Names',
+        key: 'keyNames',
+        errorMsg: null,
+        required: false
+      }),
       new ControlBase<boolean>(<ControlSignature<boolean>>{
         type: 'checkbox',
         value: false,
@@ -68,9 +86,9 @@ export class BasicFormConfig {
 }
 
 @Injectable()
-export class BasicFormResource {
+export class KeyFormResource {
   title: string;
-  formModel: BasicModel;
+  formModel: KeyModel;
   formControls: Array<ControlBase<any>> = [];
 
   constructor() {
@@ -78,9 +96,9 @@ export class BasicFormResource {
   }
 
   init() {
-    this.title = 'Basic Authorization';
+    this.title = 'Key Authentication';
     this.createFormControls();
-    this.formModel = new BasicModel();
+    this.formModel = new KeyModel();
   }
 
   createFormGroup(): FormGroup {
@@ -94,8 +112,7 @@ export class BasicFormResource {
   }
 
   populate(form: any) {
-    this.formModel.setAttribute('username', form.username);
-    this.formModel.setAttribute('password', form.password || '');
+    this.formModel.setAttribute('key', form.key || '');
   }
 
   help() {
@@ -107,12 +124,8 @@ export class BasicFormResource {
         <th>Description</th>
       </tr>
       <tr>
-        <td><span class="badge-highlight">username</span></td>
-        <td><p>The username to use in the Basic Authentication.</p></td>
-      </tr>
-      <tr>
-        <td><span class="badge-highlight">password</span><br><em>semi-optional</em></td>
-        <td><p>The password to use in the Basic Authentication.</p></td>
+        <td><span class="badge-highlight">key</span></td>
+        <td><p>You can optionally set your own unique key to authenticate the client. If missing, the plugin will generate one.</p></td>
       </tr>
     </table>
     `;
@@ -124,20 +137,11 @@ export class BasicFormResource {
       new ControlBase<string>(<ControlSignature<string>>{
         type: 'text',
         value: '',
-        control: new FormControl('', Validators.required),
-        label: 'Username',
-        key: 'username',
+        control: new FormControl(''),
+        label: 'Key',
+        key: 'key',
         errorMsg: null,
         required: true
-      }),
-      new ControlBase<string>(<ControlSignature<string>>{
-        type: 'password',
-        value: '',
-        control: new FormControl(''),
-        label: 'Password',
-        key: 'password',
-        errorMsg: null,
-        required: false
       })
     ];
   }
