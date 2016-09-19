@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ComboBox implements OnInit, OnDestroy {
   @Input() model: any;
+  @Input() groupClass: string = 'input-group';
+  @Input() required: boolean = false;
   @Input() holder: string = 'Type for search.';
   @Input() minimum: number = 3;
   @Output() events = new EventEmitter<any>();
@@ -20,8 +22,10 @@ export class ComboBox implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   ngOnInit() {
+    let validate = this.required ? Validators.required : null;
+
     this.formCombo = new FormGroup({
-      search: new FormControl('')
+      search: new FormControl('', validate)
     });
 
     this.subscription = this.formCombo.get('search').valueChanges

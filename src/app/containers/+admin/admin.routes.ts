@@ -40,7 +40,7 @@ const ROUTES: Routes = [
         children: [
           { path: '', component: PluginsContainer },
           { path: 'schema/:id', component: PluginDetailContainer },
-          { path: 'new/:id', component: NewPluginContainer }
+          { path: 'api/:id', component: NewPluginContainer }
         ]
       }
     ]

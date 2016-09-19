@@ -119,7 +119,7 @@ export class AdminContainer extends Container implements OnInit {
         info: 'Plugin object schema',
         label: 'Schema'
       },
-      '/admin/plugins/new': {
+      '/admin/plugins/api': {
         title: 'Plugin Activation',
         info: 'Add plugin to API',
         label: 'New Plugin'
