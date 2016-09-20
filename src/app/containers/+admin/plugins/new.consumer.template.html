@@ -13,7 +13,7 @@
       <form role="form" (ngSubmit)="save()" [formGroup]="consumerForm">
         <div class="box-body">
           <div class="form-group" *ngFor="let control of formControls">
-            <span [ngSwitch]="control.type">
+            <span [ngSwitch]="control.type" *ngIf="control.render">
               <label *ngSwitchCase="'text'" >{{control.label}}</label>
               <input *ngSwitchCase="'text'" type="text" [formControlName]="control.key" [id]="control.key" class="form-control" [placeholder]="control.holder">
               <label *ngSwitchCase="'password'" >{{control.label}}</label>

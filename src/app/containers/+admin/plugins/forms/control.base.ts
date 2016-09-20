@@ -10,6 +10,7 @@ export interface ControlSignature<T> {
   errorMsg?: string;
   required?: boolean;
   holder?: string;
+  render?: boolean;
 }
 
 @Injectable()
@@ -22,6 +23,7 @@ export class ControlBase<ControlValue> {
   errorMsg?: string;
   required?: boolean;
   holder?: string;
+  render?: boolean;
 
   constructor(options?: ControlSignature<ControlValue>) {
     this.type = options.type || 'text';
@@ -30,7 +32,8 @@ export class ControlBase<ControlValue> {
     this.control = options.control || null;
     this.key = options.key || '';
     this.errorMsg = options.errorMsg || null;
-    this.required = options.required || false;
+    this.required = options.hasOwnProperty('required') ? options.required : false;
     this.holder = options.holder || '';
+    this.render = options.hasOwnProperty('render') ? options.render : true;
   }
 }

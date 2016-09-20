@@ -25,8 +25,6 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
 
   @ViewChild(ComboBox) combo: ComboBox;
 
-  private formDynamic;
-
   constructor(
     private title: Title,
     private fS: FormService,
@@ -41,16 +39,17 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
     this.title.setTitle('Activate Plugin');
 
     let id = this.activeRoute.snapshot.params['id'];
-    this.formDynamic = this.fS.getFormGroup(`${id}-config`);
 
-    this.formTitle = this.formDynamic.title;
-    this.help = this.formDynamic.help();
-    this.formControls = this.formDynamic.formControls;
-    this.pluginForm = this.formDynamic.createFormGroup();
+    this.fS.create(`${id}-config`);
+
+    this.formTitle = this.fS.manager.description.title;
+    this.help = this.fS.manager.description.help;
+    this.formControls = this.fS.manager.description.controls;
+    this.pluginForm = this.fS.manager.form;
 
     this.changeDetection(() => {
-      this.pluginForm.addControl('name', new FormControl(id));
-      this.pluginForm.addControl('search', this.combo.formCombo.get('search'));
+      this.fS.manager.form.get('name').setValue(id);
+      this.fS.manager.form.addControl('search', this.combo.formCombo.get('search'));
     });
 
     this.combo.events
@@ -83,9 +82,9 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
     }
 
     let api = this.pluginForm.value.search;
-    this.formDynamic.populate(this.pluginForm.value);
+    this.fS.updateModel(this.pluginForm);
 
-    this.apiService.insertPlugin(api, this.formDynamic.formModel)
+    this.apiService.insertPlugin(api, this.fS.manager.model)
       .subscribe(
         (rs) => {
           if (rs.ok) {

@@ -25,8 +25,6 @@ export class NewConsumerApiContainer extends Container implements OnInit, OnDest
 
   @ViewChild(ComboBox) combo: ComboBox;
 
-  private formDynamic;
-
   constructor(
     private title: Title,
     private fS: FormService,
@@ -41,15 +39,15 @@ export class NewConsumerApiContainer extends Container implements OnInit, OnDest
     this.title.setTitle('Associate Plugin');
 
     let id = this.activeRoute.snapshot.params['id'];
-    this.formDynamic = this.fS.getFormGroup(`${id}-consumer`);
 
-    this.formTitle = this.formDynamic.title;
-    this.help = this.formDynamic.help();
-    this.formControls = this.formDynamic.formControls;
-    this.consumerForm = this.formDynamic.createFormGroup();
+    this.fS.create(`${id}-consumer`);
+
+    this.formTitle = this.fS.manager.description.title;
+    this.help = this.fS.manager.description.help;
+    this.formControls = this.fS.manager.description.controls;
+    this.consumerForm = this.fS.manager.form;
 
     this.changeDetection(() => {
-      this.consumerForm.addControl('name', new FormControl(id));
       this.consumerForm.addControl('search', this.combo.formCombo.get('search'));
     });
 
@@ -85,9 +83,9 @@ export class NewConsumerApiContainer extends Container implements OnInit, OnDest
     let consumer = this.consumerForm.value.search;
     let plugin = this.activeRoute.snapshot.params['id'];
 
-    this.formDynamic.populate(this.consumerForm.value);
+    this.fS.updateModel(this.consumerForm);
 
-    this.consumerService.insertPlugin(consumer, plugin, this.formDynamic.formModel)
+    this.consumerService.insertPlugin(consumer, plugin, this.fS.manager.model)
       .subscribe(
         (rs) => {
           if (rs.ok) {
