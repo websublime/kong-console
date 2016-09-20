@@ -23,6 +23,8 @@
                   <input type="checkbox" [formControlName]="control.key" [id]="control.key" [checked]="control.value"> {{control.label}}
                 </label>
               </div>
+              <label *ngSwitchCase="'textarea'" >{{control.label}}</label>
+              <textarea *ngSwitchCase="'textarea'" rows="4" [formControlName]="control.key" [id]="control.key" class="form-control"></textarea>
             </span>
           </div>
         </div>
