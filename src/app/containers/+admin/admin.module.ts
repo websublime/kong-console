@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Size, ShareModule, ToolTipDirective } from '../../shared';
+import { Size, ShareModule, ToolTipDirective, FileSelect } from '../../shared';
 import { ROUTING } from './admin.routes';
 import { DashboardContainer } from './dashboard';
 import { AdminContainer } from './admin.container';
@@ -17,7 +17,7 @@ import { ConsumersContainer, NewConsumerContainer, EditConsumerContainer } from 
 @NgModule({
   imports: [ ShareModule, ROUTING, ComponentsModule ],
   declarations: [
-    DashboardContainer, AdminContainer, Size, ToolTipDirective,
+    DashboardContainer, AdminContainer, Size, ToolTipDirective, FileSelect,
     ApisContainer, NewApiContainer, EditApiContainer, ApiPlugsContainer,
     PluginsContainer, PluginDetailContainer, NewPluginContainer, NewConsumerApiContainer,
     ConsumersContainer, NewConsumerContainer, EditConsumerContainer

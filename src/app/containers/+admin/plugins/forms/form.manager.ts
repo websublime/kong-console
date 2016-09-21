@@ -14,6 +14,7 @@ export interface FormSettings {
   formModel: any;
   controls: Array<ControlBase<any>>;
   help?: string;
+  opts?: Object;
   attributes: Object;
   beforeUpdateModel?: Function;
 };
@@ -1131,10 +1132,75 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
         required: true,
         render: false
       }),
+      new ControlBase<any>(<ControlSignature<any>>{
+        type: 'file',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Certificate',
+        key: 'cert',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<any>(<ControlSignature<any>>{
+        type: 'file',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Certificate Key',
+        key: 'key',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Only HTTPS',
+        key: 'onlyHttps',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Accept Http if already Terminated',
+        key: 'acceptHttpIfAlreadyTerminated',
+        errorMsg: null,
+        required: false
+      })
     ],
-    help: '',
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">cert</span></td>
+        <td><p>Upload the data of the certificate to use. Note that is the the actual data of the key (not the path), so it should be sent in <span class="badge-highlight">multipart/form-data</span> upload request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">key</span></td>
+        <td><p>Upload the data of the certificate key to use. Note that is the the actual data of the key (not the path), so it should be sent in <span class="badge-highlight">multipart/form-data</span> upload request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">only_https</span><br><em>optional</em></td>
+        <td><p>Specify if the service should only be available through an <span class="badge-highlight">https</span> protocol.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">accept_http_if_already_terminated</span><br><em>optional</em></td>
+        <td><p>If <span class="badge-highlight">config.only_https</span> is <span class="badge-highlight">true</span>, accepts HTTPs requests that have already been terminated by a proxy or load balancer and the <span class="badge-highlight">x-forwarded-proto: https</span> header has been added to the request. Only enable this option if the Kong server cannot be publicly accessed and the only entry-point is such proxy or load balancer.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
     attributes: {
-      'name': 'name'
+      'name': 'name',
+      'cert': 'config.cert',
+      'key': 'config.key',
+      'onlyHttps': 'config.only_https',
+      'acceptHttpIfAlreadyTerminated': 'accept_http_if_already_terminated'
     }
   }
 };

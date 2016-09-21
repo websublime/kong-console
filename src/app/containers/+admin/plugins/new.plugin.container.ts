@@ -1,10 +1,11 @@
 import { FormGroup, FormControl } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
 
 import { FormService } from './forms';
 import { Container } from '../../../core';
+import { Configurator } from '../../../core';
 import { AlertModel, ComboBox } from '../../../components';
 import {
   SYMBOLS, ApisService
@@ -22,13 +23,18 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
   pluginForm: FormGroup;
   formTitle: string;
   help: string;
+  uploadOptions: Object;
+  progress: string = '0%';
 
   @ViewChild(ComboBox) combo: ComboBox;
+
+  private zone: NgZone;
 
   constructor(
     private title: Title,
     private fS: FormService,
     private router: Router,
+    private configurator: Configurator,
     private apiService: ApisService,
     private activeRoute: ActivatedRoute
   ) {
@@ -36,6 +42,9 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.zone = new NgZone({ enableLongStackTrace: false });
+    this.uploadOptions = this.configurator.getOptionTree(SYMBOLS.UPLOADER, false);
+
     this.title.setTitle('Activate Plugin');
 
     let id = this.activeRoute.snapshot.params['id'];
@@ -74,6 +83,12 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
     event.preventDefault();
 
     this.router.navigate([SYMBOLS.ROUTES.PLUGINS.INDEX]);
+  }
+
+  upload(data: any) {
+    this.zone.run(() => {
+      this.progress = Math.floor(data.progress.percent / 100).toString() + '%';
+    });
   }
 
   save() {

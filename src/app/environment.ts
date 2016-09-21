@@ -44,7 +44,14 @@ if ('production' === ENV) {
   let config = {
     ADAPTER: 'REST',
     ENVIRONMENT: 'DEV',
-    'API.URL': 'http://192.168.99.100:8000/kong'
+    'API.URL': 'http://192.168.99.100:8000/kong',
+    UPLOAD: {
+      url: 'http://localhost:8001/upload',
+      debug: true,
+      filterExtensions: false,
+      calculateSpeed: true,
+      autoUpload: true
+    }
   };
 
   // Development

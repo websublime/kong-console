@@ -1,5 +1,6 @@
-import { isObject } from 'lodash';
 import { Injectable, Inject } from '@angular/core';
+
+import { isObject, mapKeys, set, startsWith } from 'lodash';
 
 import { APP_CONFIG } from '../environment';
 
@@ -40,6 +41,20 @@ export class Configurator {
    */
   getOption(name: string, defaults: any = null): any {
     return this.hasOption(name) ? this._repository[name] : defaults;
+  }
+
+  getOptionTree(rootKey: string, fromRoot: boolean = true): any {
+    let tree = {};
+
+    mapKeys(this.options, (value: any, key: string) => {
+      if (startsWith(key, rootKey)) {
+        set(tree, key, value);
+      }
+
+      return key;
+    });
+
+    return fromRoot ? tree : tree[rootKey];
   }
 
   get options(): Options {

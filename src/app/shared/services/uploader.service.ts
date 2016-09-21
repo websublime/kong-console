@@ -90,37 +90,37 @@ export class UploadService {
   private queue: any[] = [];
 
   setOptions(options: any): void {
-    this.url = (options.url !== null)
+    this.url = (options.url !== undefined)
       ? options.url : this.url;
-    this.cors = (options.cors !== null)
+    this.cors = (options.cors !== undefined)
       ? options.cors : this.cors;
-    this.withCredentials = (options.withCredentials !== null)
+    this.withCredentials = (options.withCredentials !== undefined)
       ? options.withCredentials : this.withCredentials;
-    this.multiple = (options.multiple !== null)
+    this.multiple = (options.multiple !== undefined)
       ? options.multiple : this.multiple;
-    this.maxUploads = (options.maxUploads !== null)
+    this.maxUploads = (options.maxUploads !== undefined)
       ? options.maxUploads : this.maxUploads;
-    this.data = (options.data !== null)
+    this.data = (options.data !== undefined)
       ? options.data : this.data;
-    this.autoUpload = (options.autoUpload !== null)
+    this.autoUpload = (options.autoUpload !== undefined)
       ? options.autoUpload : this.autoUpload;
-    this.multipart = (options.multipart !== null)
+    this.multipart = (options.multipart !== undefined)
       ? options.multipart : this.multipart;
-    this.method = (options.method !== null)
+    this.method = (options.method !== undefined)
       ? options.method : this.method;
-    this.customHeaders = (options.customHeaders !== null)
+    this.customHeaders = (options.customHeaders !== undefined)
       ? options.customHeaders : this.customHeaders;
-    this.encodeHeaders = (options.encodeHeaders !== null)
+    this.encodeHeaders = (options.encodeHeaders !== undefined)
       ? options.encodeHeaders : this.encodeHeaders;
-    this.authTokenPrefix = (options.authTokenPrefix !== null)
+    this.authTokenPrefix = (options.authTokenPrefix !== undefined)
       ? options.authTokenPrefix : this.authTokenPrefix;
-    this.authToken = (options.authToken !== null)
+    this.authToken = (options.authToken !== undefined)
       ? options.authToken : this.authToken;
-    this.fieldName = (options.fieldName !== null)
+    this.fieldName = (options.fieldName !== undefined)
       ? options.fieldName : this.fieldName;
-    this.previewUrl = (options.previewUrl !== null)
+    this.previewUrl = (options.previewUrl !== undefined)
       ? options.previewUrl : this.previewUrl;
-    this.calculateSpeed = (options.calculateSpeed !== null)
+    this.calculateSpeed = (options.calculateSpeed !== undefined)
       ? options.calculateSpeed : this.calculateSpeed;
 
     if (!this.multiple) {

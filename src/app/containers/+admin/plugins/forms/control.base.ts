@@ -11,6 +11,7 @@ export interface ControlSignature<T> {
   required?: boolean;
   holder?: string;
   render?: boolean;
+  opts?: Object;
 }
 
 @Injectable()
@@ -24,6 +25,7 @@ export class ControlBase<ControlValue> {
   required?: boolean;
   holder?: string;
   render?: boolean;
+  opts?: Object;
 
   constructor(options?: ControlSignature<ControlValue>) {
     this.type = options.type || 'text';
@@ -35,5 +37,6 @@ export class ControlBase<ControlValue> {
     this.required = options.hasOwnProperty('required') ? options.required : false;
     this.holder = options.holder || '';
     this.render = options.hasOwnProperty('render') ? options.render : true;
+    this.opts = options.opts ? options.opts : {};
   }
 }

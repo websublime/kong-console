@@ -27,7 +27,8 @@ export const SYMBOLS = {
   FOOTER: 'footer',
   TABLE: {
     ENTRIES: [10, 25, 50, 100]
-  }
+  },
+  UPLOADER: 'UPLOAD'
 };
 
 export interface PaginateModel {
