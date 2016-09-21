@@ -82,3 +82,15 @@ export function uuid() {
     lut[rdFour >> 16 & 0xff] + lut[rdFour >> 24 & 0xff];
   /* tslint:enable */
 }
+
+export function humanizeBytes(bytes: number): string {
+  if (bytes === 0) {
+    return '0 Byte';
+  }
+
+  let k = 1024;
+  const sizes: string[] = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  let i: number = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i] + '/s';
+}

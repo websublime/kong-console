@@ -5,7 +5,8 @@ import { ControlBase, ControlSignature } from './control.base';
 import {
   BasicModelConfig, BasicModel, KeyModelConfig, KeyModel,
   OAuthModelConfig, OAuthModel, HMacModelConfig, HMacModel,
-  JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel
+  JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel,
+  CorsModelConfig, SSLModelConfig
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -957,6 +958,183 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
 
       form.get('whitelist').setValue(whitelist);
       form.get('blacklist').setValue(blacklist);
+    }
+  },
+  'acl-consumer': {
+    title: 'ACL',
+    formModel: ACLModel,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Group',
+        key: 'group',
+        errorMsg: null,
+        required: true
+      })
+    ],
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">group</span></td>
+        <td><p>The arbitrary group name to associate to the consumer.</p></td>
+      </tr>
+    </table>
+    `,
+    attributes: {
+      'group': 'group'
+    }
+  },
+  'cors-config': {
+    title: 'CORS',
+    formModel: CorsModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '*',
+        control: new FormControl('*'),
+        label: 'Origin',
+        key: 'origin',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        control: new FormControl(['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']),
+        label: 'Methods',
+        key: 'methods',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Headers',
+        key: 'headers',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Exposed Headers',
+        key: 'exposedHeaders',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Credentials',
+        key: 'credentials',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 60,
+        control: new FormControl(60),
+        label: 'Max Age',
+        key: 'maxAge',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Preflight Continue',
+        key: 'preflightContinue',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">origin</span><br><em>optional</em></td>
+        <td><p>Value for the <span class="badge-highlight">Access-Control-Allow-Origin</span> header, expects a <span class="badge-highlight">String</span>.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">methods</span><br><em>optional</em></td>
+        <td><p>Value for the <span class="badge-highlight">Access-Control-Allow-Methods</span> header, expects a comma delimited string (e.g. <span class="badge-highlight">GET,POST</span>).</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">headers</span><br><em>optional</em></td>
+        <td><p>Value for the <span class="badge-highlight">Access-Control-Allow-Headers</span> header, expects a comma delimited string (e.g. <span class="badge-highlight">Origin, Authorization</span>).</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">exposed_headers</span><br><em>optional</em></td>
+        <td><p>Value for the <span class="badge-highlight">Access-Control-Expose-Headers</span> header, expects a comma delimited string (e.g. <span class="badge-highlight">Origin, Authorization</span>). If not specified, no custom headers are exposed.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">credentials</span><br><em>optional</em></td>
+        <td><p>Flag to determine whether the <span class="badge-highlight">Access-Control-Allow-Credentials</span> header should be sent with <span class="badge-highlight">true</span> as the value.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">max_age</span><br><em>optional</em></td>
+        <td><p>Indicated how long the results of the preflight request can be cached, in <span class="badge-highlight">seconds</span>.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">preflight_continue</span><br><em>optional</em></td>
+        <td><p>A boolean value that instructs the plugin to proxy the <span class="badge-highlight">OPTIONS</span> preflight request to the upstream API.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'origin': 'config.origin',
+      'methods': 'config.methods',
+      'headers': 'config.headers',
+      'exposedHeaders': 'config.exposed_headers',
+      'credentials': 'config.credentials',
+      'maxAge': 'config.max_age',
+      'preflightContinue': 'config.preflight_continue'
+    }
+  },
+  'ssl-config': {
+    title: 'Dynamic SSL',
+    formModel: SSLModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+    ],
+    help: '',
+    attributes: {
+      'name': 'name'
     }
   }
 };
