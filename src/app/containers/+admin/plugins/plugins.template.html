@@ -22,8 +22,8 @@
                 <div class="col-sm-8">
                   <div class="btn-group" style="margin-top: 10px;">
                     <a [routerLink]="['/admin/plugins/schema', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Schema for ' + plug.data.title"><i class="fa fa-file-code-o"></i></a>
-                    <a [routerLink]="['/admin/plugins/api', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Add plugin ' + plug.data.title + ' to a API.'"><i class="fa fa-gg"></i></a>
-                    <a [routerLink]="['/admin/plugins/consumer', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Add plugin ' + plug.data.title + ' to a Consumer.'"><i class="fa fa-plug"></i></a>
+                    <a *ngIf="plug.data.api" [routerLink]="['/admin/plugins/api', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Add plugin ' + plug.data.title + ' to a API.'"><i class="fa fa-gg"></i></a>
+                    <a *ngIf="plug.data.consumer" [routerLink]="['/admin/plugins/consumer', plug.id]" class="btn btn-info btn-flat" [tooltip]="'Add plugin ' + plug.data.title + ' to a Consumer.'"><i class="fa fa-plug"></i></a>
                   </div>
                   <!-- /.description-block -->
                 </div>

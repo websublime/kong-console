@@ -5,7 +5,7 @@ import { ControlBase, ControlSignature } from './control.base';
 import {
   BasicModelConfig, BasicModel, KeyModelConfig, KeyModel,
   OAuthModelConfig, OAuthModel, HMacModelConfig, HMacModel,
-  JWTModel, JWTModelConfig
+  JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -719,6 +719,244 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       'algorithm': 'algorithm',
       'rsaPublicKey': 'rsa_public_key',
       'secret': 'secret'
+    }
+  },
+  'ldap-auth-config': {
+    title: 'LDAP',
+    formModel: LdapModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Hide Credentials',
+        key: 'hideCredentials',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Ldap Host',
+        key: 'ldapHost',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 389,
+        control: new FormControl(389, Validators.required),
+        label: 'Ldap Port',
+        key: 'ldapPort',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false, Validators.required),
+        label: 'Start TLS',
+        key: 'startTls',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Base DN',
+        key: 'baseDn',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false, Validators.required),
+        label: 'Verify Ldap Host',
+        key: 'verifyLdapHost',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Attribute',
+        key: 'attribute',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 60,
+        control: new FormControl(60, Validators.required),
+        label: 'Cache TTL',
+        key: 'cacheTtl',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 10000,
+        control: new FormControl(10000),
+        label: 'Timeout',
+        key: 'timeout',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 60000,
+        control: new FormControl(60000),
+        label: 'Keep Alive',
+        key: 'keepAlive',
+        errorMsg: null,
+        required: false
+      }),
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">hide_credentials</span><br><em>optional</em></td>
+        <td><p>An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">ldap_host</span></td>
+        <td><p>Host on which the LDAP server is running.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">ldap_port</span></td>
+        <td>TCP port where the LDAP server is listening.</td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">start_tls</span></td>
+        <td><p>Set it to <span class="badge-highlight">true</span> to issue StartTLS (Transport Layer Security) extended operation over <span class="badge-highlight">ldap</span> connection.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">base_dn</span></td>
+        <td><p>Base DN as the starting point for the search.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">verify_ldap_host</span></td>
+        <td><p>Set it to <span class="badge-highlight">true</span> to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the <span class="badge-highlight">lua_ssl_trusted_certificate</span> directive.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">attribute</span></td>
+        <td><p>Attribute to be used to search the user.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">cache_ttl</span></td>
+        <td><p>Cache expiry time in seconds.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">timeout</span><br><em>optional</em></td>
+        <td><p>An optional timeout in milliseconds when waiting for connection with LDAP server.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">keepalive</span><br><em>optional</em></td>
+        <td><p>An optional value in milliseconds that defines for how long an idle connection to LDAP server will live before being closed.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'hideCredentials': 'config.hide_credentials',
+      'ldapHost': 'config.ldap_host',
+      'ldapPort': 'config.ldap_port',
+      'startTls': 'config.start_tls',
+      'baseDn': 'config.base_dn',
+      'verifyLdapHost': 'config.verify_ldap_host',
+      'attribute': 'config.attribute',
+      'cacheTtl': 'config.cache_ttl',
+      'timeout': 'config.timeout',
+      'keepAlive': 'config.keepalive'
+    }
+  },
+  'acl-config': {
+    title: 'ACL',
+    formModel: ACLModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Whitelist',
+        key: 'whitelist',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Blacklist',
+        key: 'blacklist',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">whitelist</span><br><em>optional</em></td>
+        <td><p>Comma separated list of arbitrary group names that are allowed to consume the API. At least one between <span class="badge-highlight">config.whitelist</span> or <span class="badge-highlight">config.blacklist</span> must be specified.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">blacklist</span><br><em>optional</em></td>
+        <td><p>Comma separated list of arbitrary group names that are not allowed to consume the API. At least one between <span class="badge-highlight">config.whitelist</span> or <span class="badge-highlight">config.blacklist</span> must be specified.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'whitelist': 'config.whitelist',
+      'blacklist': 'config.blacklist'
+    },
+    beforeUpdateModel: (form: FormGroup) => {
+      let whitelist = form.value.whitelist
+        ? form.value.whitelist.split(',').map((value: string) => { return value.trim(); })
+        : [];
+
+      let blacklist = form.value.blacklist
+        ? form.value.blacklist.split(',').map((value: string) => { return value.trim(); })
+        : [];
+
+      form.get('whitelist').setValue(whitelist);
+      form.get('blacklist').setValue(blacklist);
     }
   }
 };

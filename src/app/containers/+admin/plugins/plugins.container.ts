@@ -39,7 +39,15 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
 
           return {
             id: value,
-            data: data ? data : { id: value, title: 'Custom Plugin', info: 'Custom plugin.'},
+            data: data
+              ? data
+              : {
+                id: value,
+                title: 'Custom Plugin',
+                info: 'Custom plugin.',
+                api: false,
+                consumer: false
+              },
             active: includes(active, value)
           };
         });
