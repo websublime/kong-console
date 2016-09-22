@@ -9,8 +9,14 @@ import {
 
 import { UploadService } from '../services';
 
+export interface FilePreview {
+  data: string;
+  el: ElementRef;
+  service: UploadService;
+}
+
 @Directive({
-  selector: '[file-select]'
+  selector: '[file-select],[file-select][formControl]'
 })
 export class FileSelect {
   @Input() events: EventEmitter<any>;
@@ -47,7 +53,7 @@ export class FileSelect {
     });
 
     this.uploader.previewEmitter.subscribe((data: any) => {
-      this.onPreviewData.emit(data);
+      this.onPreviewData.emit({data: data, el: this.el, service: this.uploader});
     });
 
     setTimeout(() => {

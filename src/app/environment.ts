@@ -50,7 +50,8 @@ if ('production' === ENV) {
       debug: true,
       filterExtensions: false,
       calculateSpeed: true,
-      autoUpload: true
+      autoUpload: false,
+      previewUrl: true
     }
   };
 

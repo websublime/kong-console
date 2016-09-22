@@ -2,12 +2,25 @@ import { Injectable, EventEmitter } from '@angular/core';
 
 import { humanizeBytes } from '../constants';
 
+export interface FileProgress {
+  loaded: number;
+  total: number;
+  percent: number;
+  speed?: number;
+  speedHumanized?: string;
+};
+
+export interface FileCustomData {
+  [key: string]: any;
+}
+
 @Injectable()
 export class FileUpload {
+  file: any;
   id: string;
   status: number;
   statusText: string;
-  progress: Object;
+  progress: FileProgress;
   originalName: string;
   size: number;
   response: string;
@@ -23,7 +36,7 @@ export class FileUpload {
     this.id = id;
     this.originalName = originalName;
     this.size = size;
-    this.progress = {
+    this.progress = <FileProgress>{
       loaded: 0,
       total: 0,
       percent: 0,
@@ -39,7 +52,11 @@ export class FileUpload {
     this.speedAverageHumanized = null;
   }
 
-  setProgres(progress: Object): void {
+  setFile(file: any) {
+    this.file = file;
+  }
+
+  setProgres(progress: FileProgress): void {
     this.progress = progress;
   }
 
@@ -72,7 +89,7 @@ export class UploadService {
   withCredentials: boolean = false;
   multiple: boolean = false;
   maxUploads: number = 3;
-  data: { [index: string]: any } = {};
+  data: FileCustomData = {};
   autoUpload: boolean = true;
   multipart: boolean = true;
   method: string = 'POST';
@@ -150,6 +167,8 @@ export class UploadService {
       file.name,
       file.size
     );
+
+    uploadingFile.setFile(file);
 
     let queueIndex = this.queue.indexOf(file);
 

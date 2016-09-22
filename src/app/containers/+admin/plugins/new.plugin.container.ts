@@ -1,14 +1,14 @@
 import { FormGroup, FormControl } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, NgZone, ElementRef } from '@angular/core';
 
 import { FormService } from './forms';
 import { Container } from '../../../core';
 import { Configurator } from '../../../core';
 import { AlertModel, ComboBox } from '../../../components';
 import {
-  SYMBOLS, ApisService
+  SYMBOLS, ApisService, UploadService, FileUpload, FilePreview
 } from '../../../shared';
 
 @Component({
@@ -24,7 +24,6 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
   formTitle: string;
   help: string;
   uploadOptions: Object;
-  progress: string = '0%';
 
   @ViewChild(ComboBox) combo: ComboBox;
 
@@ -85,10 +84,32 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
     this.router.navigate([SYMBOLS.ROUTES.PLUGINS.INDEX]);
   }
 
-  upload(data: any) {
+  upload(data: FileUpload, controlKey: string) {
+    let el = <HTMLDivElement>document.querySelector(`#${controlKey}-progress`);
+
     this.zone.run(() => {
-      this.progress = Math.floor(data.progress.percent / 100).toString() + '%';
+      el.textContent = el.style.width = data.progress.percent.toString() + '%';
+      // this.progress = data.progress.percent.toString() + '%';
+      // Math.floor(data.progress.percent / 100).toString() + '%';
     });
+  }
+
+  preview(data: FilePreview, controlKey: string) {
+    let el = <FileList>data.el.nativeElement.files;
+    let control = this.pluginForm.get(controlKey);
+    let service = data.service;
+    console.log(data);
+    control.validator = () => {
+      return el.length > 0 ? null : {
+        validFile: false
+      };
+    };
+
+    control.updateValueAndValidity();
+
+    if (control.valid) {
+      service.uploadFilesInQueue();
+    }
   }
 
   save() {
