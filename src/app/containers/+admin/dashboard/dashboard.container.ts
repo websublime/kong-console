@@ -1,6 +1,8 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
+import { keys } from 'lodash';
+
 import { State, Container } from '../../../core';
 import { SmallBoxModel } from '../../../components';
 import {
@@ -21,6 +23,7 @@ export class DashboardContainer extends Container implements OnInit, OnDestroy {
   apisModel: Array<ApisModelResource>;
   consumersModel: Array<ConsumerModelResource>;
   kongModel: KongModel;
+  pluginsAvailable: Array<string>;
 
   constructor(
     private appState: State,
@@ -123,6 +126,7 @@ export class DashboardContainer extends Container implements OnInit, OnDestroy {
     this.subscriptions = this.statusService.kong()
       .subscribe((kongModel) => {
         this.kongModel = kongModel;
+        this.pluginsAvailable = keys(kongModel.plugins.available_on_server);
       });
   }
 }

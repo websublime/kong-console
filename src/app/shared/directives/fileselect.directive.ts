@@ -7,7 +7,7 @@ import {
   HostListener
 } from '@angular/core';
 
-import { UploadService } from '../services';
+import { UploadService, FileUpload } from '../services';
 
 export interface FilePreview {
   data: string;
@@ -20,8 +20,8 @@ export interface FilePreview {
 })
 export class FileSelect {
   @Input() events: EventEmitter<any>;
-  @Output() onUpload: EventEmitter<any> = new EventEmitter();
-  @Output() onPreviewData: EventEmitter<any> = new EventEmitter();
+  @Output() onUpload: EventEmitter<FileUpload> = new EventEmitter();
+  @Output() onPreviewData: EventEmitter<FilePreview> = new EventEmitter();
 
   files: any[] = [];
   uploader: UploadService;

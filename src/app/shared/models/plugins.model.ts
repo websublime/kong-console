@@ -17,7 +17,7 @@ export const PLUGINSDATA = [
   { id: 'key-auth', img: 'key-authentication.png', title: 'Key Authentication', info: 'Add a key authentication to your APIs.', api: true, consumer: true },
   { id: 'hmac-auth', img: 'hmac-authentication.png', title: 'HMAC', info: 'Add HMAC authentication to your APIs.', api: true, consumer: true },
   { id: 'basic-auth', img: 'basic-authentication.png', title: 'Basic Authentication', info: 'Add basic authentication to your APIs.', api: true, consumer: true },
-  { id: 'ip-restriction', img: 'ip-restriction.png', title: 'IP Restriction', info: 'Whitelist or blacklist IPs that can make requests.', api: true, consumer: true },
+  { id: 'ip-restriction', img: 'ip-restriction.png', title: 'IP Restriction', info: 'Whitelist or blacklist IPs that can make requests.', api: true, consumer: false },
   { id: 'galileo', img: 'galileo.png', title: 'Galileo', info: 'Business intelligence platform for APIs.', api: true, consumer: true },
   { id: 'request-transformer', img: 'request-transformer.png', title: 'Request Transformer', info: 'Modify the request before hitting the upstream server.', api: true, consumer: true },
   { id: 'response-transformer', img: 'response-transformer.png', title: 'Response Transformer', info: 'Modify the upstream response before returning it to client.', api: true, consumer: true },
@@ -29,7 +29,8 @@ export const PLUGINSDATA = [
   { id: 'datadog', img: 'datadog.png', title: 'Datadog', info: 'Visualize API metrics on Datadog.', api: true, consumer: true },
   { id: 'runscope', img: 'runscope.png', title: 'Runscope', info: 'API performance testing and monitoring.', api: true, consumer: true },
   { id: 'ldap-auth', img: 'ldap-authentication.png', title: 'LDAP', info: 'Integrate Kong with a LDAP server.', api: true, consumer: false },
-  { id: 'statsd', img: 'statsd.png', title: 'StatsD', info: 'Send request and response logs to StatsD.', api: true, consumer: true }
+  { id: 'statsd', img: 'statsd.png', title: 'StatsD', info: 'Send request and response logs to StatsD.', api: true, consumer: true },
+  { id: 'bot-detection', img: '', title: 'Boot Detection', info: 'Protects your API from most common bots.', api: true, consumer: false }
 ];
 /* tslint:enable */
 

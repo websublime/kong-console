@@ -6,7 +6,7 @@ import {
   BasicModelConfig, BasicModel, KeyModelConfig, KeyModel,
   OAuthModelConfig, OAuthModel, HMacModelConfig, HMacModel,
   JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel,
-  CorsModelConfig, SSLModelConfig
+  CorsModelConfig, SSLModelConfig, IPModelConfig, BotModelConfig
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -1201,6 +1201,134 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       'key': 'config.key',
       'onlyHttps': 'config.only_https',
       'acceptHttpIfAlreadyTerminated': 'accept_http_if_already_terminated'
+    }
+  },
+  'ip-restriction-config': {
+    title: 'IP Restriction',
+    formModel: IPModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl(''),
+        label: 'Consumer ID',
+        key: 'consumerId',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Whitelist',
+        key: 'whitelist',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Blacklist',
+        key: 'blacklist',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">consumer_id</span><br><em>optional</em></td>
+        <td><p>The CONSUMER ID that this plugin configuration will target. This value can only be used if authentication has been enabled so that the system can identify the user making the request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">whitelist</span><br><em>semi-optional</em></td>
+        <td><p>Comma separated list of arbitrary group names that are allowed to consume the API. At least one between <span class="badge-highlight">config.whitelist</span> or <span class="badge-highlight">config.blacklist</span> must be specified.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">blacklist</span><br><em>semi-optional</em></td>
+        <td><p>Comma separated list of arbitrary group names that are not allowed to consume the API. At least one between <span class="badge-highlight">config.whitelist</span> or <span class="badge-highlight">config.blacklist</span> must be specified.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'consumerId': 'consumer_id',
+      'whitelist': 'config.whitelist',
+      'blacklist': 'config.blacklist'
+    }
+  },
+  'bot-detection-config': {
+    title: 'Bot Detection',
+    formModel: BotModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Whitelist',
+        key: 'whitelist',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: [],
+        control: new FormControl([]),
+        label: 'Blacklist',
+        key: 'blacklist',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">whitelist</span><br><em>optional</em></td>
+        <td><p>A comma separated array of regular expressions that should be whitelisted. The regular expressions will be checked against the <span class="badge-highlight">User-Agent</span> header.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">blacklist</span><br><em>optional</em></td>
+        <td><p>A comma separated array of regular expressions that should be blacklisted. The regular expressions will be checked against the <span class="badge-highlight">User-Agent</span> header.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'whitelist': 'config.whitelist',
+      'blacklist': 'config.blacklist'
     }
   }
 };

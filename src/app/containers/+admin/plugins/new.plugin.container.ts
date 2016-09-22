@@ -98,7 +98,7 @@ export class NewPluginContainer extends Container implements OnInit, OnDestroy {
     let el = <FileList>data.el.nativeElement.files;
     let control = this.pluginForm.get(controlKey);
     let service = data.service;
-    console.log(data);
+
     control.validator = () => {
       return el.length > 0 ? null : {
         validFile: false

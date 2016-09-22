@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { find, includes } from 'lodash';
+import { find, includes, keys } from 'lodash';
 
 import { Container } from '../../../core';
 import {
@@ -31,7 +31,7 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
 
     this.subscriptions = this.statusService.kong()
       .subscribe((kongModel) => {
-        let available = kongModel.plugins.available_on_server;
+        let available = keys(kongModel.plugins.available_on_server).sort();
         let active = kongModel.plugins.enabled_in_cluster;
 
         this.available = available.map((value) => {
@@ -44,7 +44,7 @@ export class PluginsContainer extends Container implements OnInit, OnDestroy {
               : {
                 id: value,
                 title: 'Custom Plugin',
-                info: 'Custom plugin.',
+                info: 'Custom plugin. Add models definitions to create form for plugin.',
                 api: false,
                 consumer: false
               },

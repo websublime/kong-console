@@ -76,7 +76,9 @@ export interface KongModelConfiguration {
 
 export interface KongModelPlugins {
   enabled_in_cluster: Array<string>;
-  available_on_server: Array<string>;
+  available_on_server: {
+    [key: string]: boolean;
+  };
 }
 
 export interface KongModelResource {
