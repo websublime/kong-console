@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { snakeCase, set, isNumber, isNull } from 'lodash';
+import { snakeCase, isNumber, isNull } from 'lodash/fp';
 
 import { ControlBase, ControlSignature } from './control.base';
 import {
@@ -9,7 +9,8 @@ import {
   OAuthModelConfig, OAuthModel, HMacModelConfig, HMacModel,
   JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel,
   CorsModelConfig, SSLModelConfig, IPModelConfig, BotModelConfig,
-  RateModelConfig, ResponseRateLimitingModelConfig
+  RateModelConfig, ResponseRateLimitingModelConfig, RequestSizeLimitingModelConfig,
+  RequestTransformerModelConfig
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -1707,7 +1708,80 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
         holder: '2000'
       })
     ],
-    help: '',
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">consumer_id</span><br><em>optional</em></td>
+        <td><p>The CONSUMER ID that this plugin configuration will target. This value can only be used if authentication has been enabled so that the system can identify the user making the request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">limit_name</span><br><em>optional</em></td>
+        <td><p>This is a list of custom objects that you can set on the API, with arbitrary names set in the <span class="badge-highlight">{limit_name}</span> placeholder, like <span class="badge-highlight">config.limits.sms.minute=20</span> if your object is called "SMS".</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">second</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per second. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">minute</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per minute. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">hour</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per hour. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">day</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per day. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">month</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per month. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">year</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per year. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">header_name</span><br><em>optional</em></td>
+        <td><p>The name of the response header used to increment the counters.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">block_on_first_violation</span><br><em>optional</em></td>
+        <td><p>A boolean value that determines if the requests should be blocked as soon as one limit is being exceeded. This will block requests that are supposed to consume other limits too.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">limit_by</span><br><em>optional</em></td>
+        <td><p>The entity that will be used when aggregating the limits: <span class="badge-highlight">consumer</span>, <span class="badge-highlight">credential</span>, <span class="badge-highlight">ip</span>. If the <span class="badge-highlight">consumer</span> or the <span class="badge-highlight">credential</span> cannot be determined, the system will always fallback to <span class="badge-highlight">ip</span>.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">policy</span><br><em>optional</em></td>
+        <td><p>The rate-limiting policies to use for retrieving and incrementing the limits. Available values are <span class="badge-highlight">local</span> (counters will be stored locally in-memory on the node), <span class="badge-highlight">cluster</span> (counters are stored in the datastore and shared across the nodes) and <span class="badge-highlight">redis</span> (counters are stored on a Redis server and will be shared across the nodes).</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">fault_tolerant</span><br><em>optional</em></td>
+        <td><p>A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If <span class="badge-highlight">true</span> requests will be proxied anyways effectively disabling the rate-limiting function until the datastore is working again. If <span class="badge-highlight">false</span> then the clients will see <span class="badge-highlight">500</span> errors.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">redis_host</span><br><em>optional</em></td>
+        <td><p>When using the <span class="badge-highlight">redis</span> policy, this property specifies the address to the Redis server.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">redis_port</span><br><em>optional</em></td>
+        <td><p>When using the <span class="badge-highlight">redis</span> policy, this property specifies the port of the Redis server.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">redis_timeout</span><br><em>optional</em></td>
+        <td><p>When using the <span class="badge-highlight">redis</span> policy, this property specifies the timeout in milliseconds of any command submitted to the Redis server.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
     attributes: {
       'name': 'name',
       'consumerId': 'consumer_id',
@@ -1765,6 +1839,223 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       model.removeAttribute('config.limits.month');
       model.removeAttribute('config.limits.second');
       model.removeAttribute('config.limits.year');
+    }
+  },
+  'request-size-limiting-config': {
+    title: 'Request Size Limiting',
+    formModel: RequestSizeLimitingModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Consumer ID',
+        key: 'consumerId',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Allowed Payload Size',
+        key: 'allowedPayloadSize',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">consumer_id</span><br><em>optional</em></td>
+        <td><p>The CONSUMER ID that this plugin configuration will target. This value can only be used if authentication has been enabled so that the system can identify the user making the request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">allowed_payload_size</span><br><em>optional</em></td>
+        <td><p>Allowed request payload size in megabytes, default is <span class="badge-highlight">128</span> (128000000 Bytes)</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'consumerId': 'consumer_id',
+      'allowedPayloadSize': 'config.allowed_payload_size'
+    }
+  },
+  'request-transformer-config': {
+    title: 'Request Transformer',
+    formModel: RequestTransformerModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Consumer ID',
+        key: 'consumerId',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'HTTP Method',
+        key: 'httpMethod',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Remove Headers',
+        key: 'removeHeaders',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Remove Querystring',
+        key: 'removeQuerystring',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Remove Body',
+        key: 'removeBody',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Replace Headers',
+        key: 'replaceHeaders',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Replace Querystring',
+        key: 'replaceQuerystring',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Replace Body',
+        key: 'replaceBody',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Add Headers',
+        key: 'addHeaders',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Add Querystring',
+        key: 'addQuerystring',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Add Body',
+        key: 'addBody',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Append Headers',
+        key: 'appendHeaders',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Append Querystring',
+        key: 'appendQuerystring',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<Array<string>>(<ControlSignature<Array<string>>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Append Body',
+        key: 'appendBody',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    help: '',
+    attributes: {
+      'name': 'name',
+      'consumerId': 'consumer_id',
+      'httpMethod': 'config.http_method',
+      'removeHeaders': 'config.remove.headers',
+      'removeQuerystring': 'config.remove.querystring',
+      'removeBody': 'config.remove.body',
+      'replaceHeaders': 'config.replace.headers',
+      'replaceQuerystring': 'config.replace.querystring',
+      'replaceBody': 'config.replace.body',
+      'addHeaders': 'config.add.headers',
+      'addQuerystring': 'config.add.querystring',
+      'addBody': 'config.add.body',
+      'appendHeaders': 'config.append.headers',
+      'appendQuerystring': 'config.append.querystring',
+      'appendBody': 'config.append.body'
     }
   }
 };

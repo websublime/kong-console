@@ -11,3 +11,5 @@ export * from './ip.model';
 export * from './bot.model';
 export * from './rate.model';
 export * from './response.limiting.model';
+export * from './request.limiting.model';
+export * from './request.transformer.model';

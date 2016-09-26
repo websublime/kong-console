@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { get, isString, isPlainObject } from 'lodash';
+import { get, isString, isPlainObject, isNull } from 'lodash';
 
 import { FORM_SETTINGS, FormManager, FormSettings, Manager } from './form.manager';
 
@@ -31,7 +31,7 @@ export class FormService {
     let attrs = this.manager.description.attributes;
 
     Object.keys(attrs).forEach((key, index) => {
-      if (inputs.hasOwnProperty(key)) {
+      if (inputs.hasOwnProperty(key) && !isNull(inputs[key])) {
         this.manager.model.setAttribute(`${attrs[key]}`, inputs[key]);
       }
     });
