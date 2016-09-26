@@ -23,7 +23,7 @@ export const PLUGINSDATA = [
   { id: 'response-transformer', img: 'response-transformer.png', title: 'Response Transformer', info: 'Modify the upstream response before returning it to client.', api: true, consumer: true },
   { id: 'request-size-limiting', img: 'request-size-limiting.png', title: 'Request Size Limiting', 'info': 'Block requests with bodies greater than a specific size.', api: true, consumer: true },
   { id: 'rate-limiting', img: 'rate-limiting.png', title: 'Rate Limiting', info: 'Rate limit how many HTTP requests a developer can make.', api: true, consumer: false },
-  { id: 'response-ratelimiting', img: 'response-rate-limiting.png', title: 'Response Rate Limiting', info: 'Rate limiting based on a custom response header value.', api: true, consumer: true },
+  { id: 'response-ratelimiting', img: 'response-rate-limiting.png', title: 'Response Rate Limiting', info: 'Rate limiting based on a custom response header value.', api: true, consumer: false },
   { id: 'syslog', img: 'syslog.png', title: 'Syslog', info: 'Send request and response logs to Syslog.', api: true, consumer: true },
   { id: 'loggly', img: 'loggly.png', title: 'Loggly', info: 'Send request and response logs to Loggly.', api: true, consumer: true },
   { id: 'datadog', img: 'datadog.png', title: 'Datadog', info: 'Visualize API metrics on Datadog.', api: true, consumer: true },

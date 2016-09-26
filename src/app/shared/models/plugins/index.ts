@@ -10,3 +10,4 @@ export * from './ssl.model';
 export * from './ip.model';
 export * from './bot.model';
 export * from './rate.model';
+export * from './response.limiting.model';

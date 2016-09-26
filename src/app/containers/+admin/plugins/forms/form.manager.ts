@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { snakeCase, set, isNumber, isNull } from 'lodash';
+
 import { ControlBase, ControlSignature } from './control.base';
 import {
   BasicModelConfig, BasicModel, KeyModelConfig, KeyModel,
   OAuthModelConfig, OAuthModel, HMacModelConfig, HMacModel,
   JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel,
   CorsModelConfig, SSLModelConfig, IPModelConfig, BotModelConfig,
-  RateModelConfig
+  RateModelConfig, ResponseRateLimitingModelConfig
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -18,6 +20,7 @@ export interface FormSettings {
   opts?: Object;
   attributes: Object;
   beforeUpdateModel?: Function;
+  afterUpdateModel?: Function;
 };
 
 export interface DynamicFormSettings {
@@ -1541,6 +1544,227 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       'redisHost': 'config.redis_host',
       'redisPort': 'config.redis_port',
       'redisTimeout': 'config.redis_timeout'
+    }
+  },
+  'response-ratelimiting-config': {
+    title: 'Response Rate Limiting',
+    formModel: ResponseRateLimitingModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Consumer ID',
+        key: 'consumerId',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null, Validators.required),
+        label: 'Limit Name',
+        key: 'limitName',
+        errorMsg: null,
+        required: true
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Second',
+        key: 'second',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Minute',
+        key: 'minute',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Hour',
+        key: 'hour',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Day',
+        key: 'day',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Month',
+        key: 'month',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Year',
+        key: 'year',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: 'X-Kong-Limit',
+        control: new FormControl('X-Kong-Limit'),
+        label: 'Header Name',
+        key: 'headerName',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Block On First Violation',
+        key: 'blockOnFirstViolation',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: 'consumer',
+        control: new FormControl('consumer'),
+        label: 'Limit By',
+        key: 'limitBy',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: 'cluster',
+        control: new FormControl('cluster'),
+        label: 'Policy',
+        key: 'policy',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: true,
+        control: new FormControl(true),
+        label: 'Fault Tolerant',
+        key: 'faultTolerant',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Redis Host',
+        key: 'redisHost',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Redis Port',
+        key: 'redisPort',
+        errorMsg: null,
+        required: false,
+        holder: '6379'
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Redis Timeout',
+        key: 'redisTimeout',
+        errorMsg: null,
+        required: false,
+        holder: '2000'
+      })
+    ],
+    help: '',
+    attributes: {
+      'name': 'name',
+      'consumerId': 'consumer_id',
+      'limitName': 'config.limits.limit_name',
+      'second': 'config.limits.second',
+      'minute': 'config.limits.minute',
+      'hour': 'config.limits.hour',
+      'day': 'config.limits.day',
+      'month': 'config.limits.month',
+      'year': 'config.limits.year',
+      'headerName': 'config.header_name',
+      'blockOnFirstViolation': 'config.block_on_first_violation',
+      'limitBy': 'config.limit_by',
+      'policy': 'config.policy',
+      'faultTolerant': 'config.fault_tolerant',
+      'redisHost': 'config.redis_host',
+      'redisPort': 'config.redis_port',
+      'redisTimeout': 'config.redis_timeout'
+    },
+    afterUpdateModel: (manager: Manager) => {
+      let name = snakeCase(manager.form.get('limitName').value);
+      let model = manager.model;
+
+      if (isNumber(model.config.limits.day)) {
+        model.setAttribute(`config.limits.${name}.day`, model.config.limits.day);
+      }
+      if (isNumber(model.config.limits.hour)) {
+        model.setAttribute(`config.limits.${name}.hour`, model.config.limits.hour);
+      }
+      if (isNumber(model.config.limits.minute)) {
+        model.setAttribute(`config.limits.${name}.minute`, model.config.limits.minute);
+      }
+      if (isNumber(model.config.limits.month)) {
+        model.setAttribute(`config.limits.${name}.month`, model.config.limits.month);
+      }
+      if (isNumber(model.config.limits.second)) {
+        model.setAttribute(`config.limits.${name}.second`, model.config.limits.second);
+      }
+      if (isNumber(model.config.limits.year)) {
+        model.setAttribute(`config.limits.${name}.year`, model.config.limits.year);
+      }
+      if (isNull(model.config.redis_host)) {
+        model.removeAttribute('config.redis_host');
+        model.removeAttribute('config.redis_port');
+        model.removeAttribute('config.redis_timeout');
+      }
+      if (isNull(model.consumer_id)) {
+        model.removeAttribute('consumer_id');
+      }
+
+      model.removeAttribute('config.limits.limit_name');
+      model.removeAttribute('config.limits.day');
+      model.removeAttribute('config.limits.hour');
+      model.removeAttribute('config.limits.minute');
+      model.removeAttribute('config.limits.month');
+      model.removeAttribute('config.limits.second');
+      model.removeAttribute('config.limits.year');
     }
   }
 };

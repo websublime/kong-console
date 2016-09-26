@@ -9,7 +9,7 @@ import { FORM_SETTINGS, FormManager, FormSettings, Manager } from './form.manage
 export class FormService {
   manager: Manager;
 
-  create(form: string | FormSettings) {
+  create(form: string | FormSettings): void {
     let manager = new FormManager();
     let settings: FormSettings;
 
@@ -22,7 +22,7 @@ export class FormService {
     this.manager = manager.init(settings);
   }
 
-  updateModel(form: FormGroup, options?: any) {
+  updateModel(form: FormGroup, options?: any): void {
     if (this.manager.description.beforeUpdateModel) {
       this.manager.description.beforeUpdateModel(form);
     }
@@ -35,5 +35,9 @@ export class FormService {
         this.manager.model.setAttribute(`${attrs[key]}`, inputs[key]);
       }
     });
+
+    if (this.manager.description.afterUpdateModel) {
+      this.manager.description.afterUpdateModel(this.manager);
+    }
   }
 }
