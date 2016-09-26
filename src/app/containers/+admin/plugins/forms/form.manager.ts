@@ -6,7 +6,8 @@ import {
   BasicModelConfig, BasicModel, KeyModelConfig, KeyModel,
   OAuthModelConfig, OAuthModel, HMacModelConfig, HMacModel,
   JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel,
-  CorsModelConfig, SSLModelConfig, IPModelConfig, BotModelConfig
+  CorsModelConfig, SSLModelConfig, IPModelConfig, BotModelConfig,
+  RateModelConfig
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -1329,6 +1330,217 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       'name': 'name',
       'whitelist': 'config.whitelist',
       'blacklist': 'config.blacklist'
+    }
+  },
+  'rate-limiting-config': {
+    title: 'Rate Limiting',
+    formModel: RateModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl(''),
+        label: 'Consumer ID',
+        key: 'consumerId',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Second',
+        key: 'second',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Minute',
+        key: 'minute',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Hour',
+        key: 'hour',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Day',
+        key: 'day',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Month',
+        key: 'month',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: null,
+        control: new FormControl(null),
+        label: 'Year',
+        key: 'year',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('consumer'),
+        label: 'Limit By',
+        key: 'limitBy',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('cluster'),
+        label: 'Policy',
+        key: 'policy',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: true,
+        control: new FormControl(true),
+        label: 'Fault Tolerant',
+        key: 'faultTolerant',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Redis Host',
+        key: 'redisHost',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 6379,
+        control: new FormControl(6379),
+        label: 'Redis Port',
+        key: 'redisPort',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<number>(<ControlSignature<number>>{
+        type: 'number',
+        value: 2000,
+        control: new FormControl(2000),
+        label: 'Redis Timeout',
+        key: 'redisTimeout',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">consumer_id</span><br><em>optional</em></td>
+        <td><p>The CONSUMER ID that this plugin configuration will target. This value can only be used if authentication has been enabled so that the system can identify the user making the request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">second</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per second. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">minute</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per minute. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">hour</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per hour. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">day</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per day. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">month</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per month. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">year</span><br><em>semi-optional</em></td>
+        <td><p>The amount of HTTP requests the developer can make per year. At least one limit must exist.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">limit_by</span><br><em>optional</em></td>
+        <td><p>The entity that will be used when aggregating the limits: <span class="badge-highlight">consumer</span>, <span class="badge-highlight">credential</span>, <span class="badge-highlight">ip</span>. If the <span class="badge-highlight">consumer</span> or the credential cannot be determined, the system will always fallback to <span class="badge-highlight">ip</span>.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">policy</span><br><em>optional</em></td>
+        <td><p>The rate-limiting policies to use for retrieving and incrementing the limits. Available values are <span class="badge-highlight">local</span> (counters will be stored locally in-memory on the node), <span class="badge-highlight">cluster</span> (counters are stored in the datastore and shared across the nodes) and <span class="badge-highlight">redis</span> (counters are stored on a Redis server and will be shared across the nodes).</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">fault_tolerant</span><br><em>optional</em></td>
+        <td><p>A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If <span class="badge-highlight">true</span> requests will be proxied anyways effectively disabling the rate-limiting function until the datastore is working again. If <span class="badge-highlight">false</span> then the clients will see <span class="badge-highlight">500</span> errors.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">redis_host</span><br><em>semi-optional</em></td>
+        <td><p>When using the <span class="badge-highlight">redis</span> policy, this property specifies the address to the Redis server.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">redis_port</span><br><em>optional</em></td>
+        <td><p>When using the <span class="badge-highlight">redis</span> policy, this property specifies the port of the Redis server. By default is <span class="badge-highlight">6379</span>.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">redis_port</span><br><em>optional</em></td>
+        <td><p>When using the <span class="badge-highlight">redis</span> policy, this property specifies the timeout in milliseconds of any command submitted to the Redis server.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'consumerId': 'consumer_id',
+      'second': 'config.second',
+      'minute': 'config.minute',
+      'hour': 'config.hour',
+      'day': 'config.day',
+      'month': 'config.month',
+      'year': 'config.year',
+      'limitBy': 'config.limit_by',
+      'policy': 'config.policy',
+      'faultTolerant': 'config.fault_tolerant',
+      'redisHost': 'config.redis_host',
+      'redisPort': 'config.redis_port',
+      'redisTimeout': 'config.redis_timeout'
     }
   }
 };
