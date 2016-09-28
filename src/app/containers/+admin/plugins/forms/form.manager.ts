@@ -2039,7 +2039,72 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
         required: false
       })
     ],
-    help: '',
+     /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">consumer_id</span><br><em>optional</em></td>
+        <td><p>The CONSUMER ID that this plugin configuration will target. This value can only be used if authentication has been enabled so that the system can identify the user making the request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">http_method</span><br><em>optional</em></td>
+        <td><p>Changes the HTTP method for the upstream request.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">remove.headers</span><br><em>optional</em></td>
+        <td><p>List of header names. Unset the headers with the given name.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">remove.querystring</span><br><em>optional</em></td>
+        <td><p>List of querystring names. Remove the querystring if it is present.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">remove.body</span><br><em>optional</em></td>
+        <td><p>List of parameter names. Remove the parameter if and only if content-type is one the following [<span class="badge-highlight">application/json</span>, <span class="badge-highlight">multipart/form-data</span>, <span class="badge-highlight">application/x-www-form-urlencoded</span>] and parameter is present.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">replace.headers</span><br><em>optional</em></td>
+        <td><p>List of headername:value pairs. If and only if the header is already set, replace its old value with the new one. Ignored if the header is not already set.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">replace.querystring</span><br><em>optional</em></td>
+        <td><p>List of queryname:value pairs. If and only if the header is already set, replace its old value with the new one. Ignored if the header is not already set.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">replace.body</span><br><em>optional</em></td>
+        <td><p>List of paramname:value pairs. If and only if content-type is one the following [<span class="badge-highlight">application/json</span>, <span class="badge-highlight">multipart/form-data</span>, <span class="badge-highlight">application/x-www-form-urlencoded</span>] and the parameter is already present, replace its old value with the new one. Ignored if the parameter is not already present.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">add.headers</span><br><em>optional</em></td>
+        <td><p>List of headername:value pairs. If and only if the header is not already set, set a new header with the given value. Ignored if the header is already set.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">add.querystring</span><br><em>optional</em></td>
+        <td><p>List of queryname:value pairs. If and only if the querystring is not already set, set a new querystring with the given value. Ignored if the header is already set.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">add.body</span><br><em>optional</em></td>
+        <td><p>List of pramname:value pairs. If and only if content-type is one the following [<span class="badge-highlight">application/json</span>, <span class="badge-highlight">multipart/form-data</span>, <span class="badge-highlight">application/x-www-form-urlencoded</span>] and the parameter is not present, add a new parameter with the given value to form-encoded body. Ignored if the parameter is already present.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">append.headers</span><br><em>optional</em></td>
+        <td><p>List of headername:value pairs. If the header is not set, set it with the given value. If it is already set, a new header with the same name and the new value will be set.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">append.querystring</span><br><em>optional</em></td>
+        <td><p>List of queryname:value pairs. If the querystring is not set, set it with the given value. If it is already set, a new querystring with the same name and the new value will be set.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">append.body</span><br><em>optional</em></td>
+        <td><p>List of paramname:value pairs. If the content-type is one the following [<span class="badge-highlight">application/json</span>, <span class="badge-highlight">application/x-www-form-urlencoded</span>], add a new parameter with the given value if the parameter is not present, otherwise if it is already present, the two values (old and new) will be aggregated in an array.</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
     attributes: {
       'name': 'name',
       'consumerId': 'consumer_id',
@@ -2056,6 +2121,68 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       'appendHeaders': 'config.append.headers',
       'appendQuerystring': 'config.append.querystring',
       'appendBody': 'config.append.body'
+    },
+    beforeUpdateModel: (form: FormGroup) => {
+      let removeHeaders = form.value.removeHeaders
+        ? form.value.removeHeaders.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let removeQueryString = form.value.removeQuerystring
+        ? form.value.removeQuerystring.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let removeBody = form.value.removeBody
+        ? form.value.removeBody.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let replaceHeaders = form.value.replaceHeaders
+        ? form.value.replaceHeaders.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let replaceQuerystring = form.value.replaceQuerystring
+        ? form.value.replaceQuerystring.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let replaceBody = form.value.replaceBody
+        ? form.value.replaceBody.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let addHeaders = form.value.addHeaders
+        ? form.value.addHeaders.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let addQuerystring = form.value.addQuerystring
+        ? form.value.addQuerystring.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let addBody = form.value.addBody
+        ? form.value.addBody.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let appendHeaders = form.value.appendHeaders
+        ? form.value.appendHeaders.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let appendQuerystring = form.value.appendQuerystring
+        ? form.value.appendQuerystring.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      let appendBody = form.value.appendBody
+        ? form.value.appendBody.split(',').map((value: string) => { return value.trim(); })
+        : null;
+
+      form.get('removeHeaders').setValue(removeHeaders);
+      form.get('removeQuerystring').setValue(removeQueryString);
+      form.get('removeBody').setValue(removeBody);
+      form.get('replaceHeaders').setValue(replaceHeaders);
+      form.get('replaceQuerystring').setValue(replaceQuerystring);
+      form.get('replaceBody').setValue(replaceBody);
+      form.get('addHeaders').setValue(addHeaders);
+      form.get('addQuerystring').setValue(addQuerystring);
+      form.get('addBody').setValue(addBody);
+      form.get('appendHeaders').setValue(appendHeaders);
+      form.get('appendQuerystring').setValue(appendQuerystring);
+      form.get('appendBody').setValue(appendBody);
     }
   }
 };
