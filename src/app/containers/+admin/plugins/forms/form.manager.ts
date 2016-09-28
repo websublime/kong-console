@@ -10,7 +10,7 @@ import {
   JWTModel, JWTModelConfig, LdapModelConfig, ACLModelConfig, ACLModel,
   CorsModelConfig, SSLModelConfig, IPModelConfig, BotModelConfig,
   RateModelConfig, ResponseRateLimitingModelConfig, RequestSizeLimitingModelConfig,
-  RequestTransformerModelConfig
+  RequestTransformerModelConfig, CorrelationModelConfig
 } from '../../../../shared';
 
 export interface FormSettings {
@@ -2183,6 +2183,77 @@ export const FORM_SETTINGS: DynamicFormSettings = <DynamicFormSettings>{
       form.get('appendHeaders').setValue(appendHeaders);
       form.get('appendQuerystring').setValue(appendQuerystring);
       form.get('appendBody').setValue(appendBody);
+    }
+  },
+  'correlation-id-config': {
+    title: 'Correlation ID',
+    formModel: CorrelationModelConfig,
+    controls: [
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: '',
+        control: new FormControl('', Validators.required),
+        label: 'Name',
+        key: 'name',
+        errorMsg: null,
+        required: true,
+        render: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Header Name',
+        key: 'headerName',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<string>(<ControlSignature<string>>{
+        type: 'text',
+        value: null,
+        control: new FormControl(null),
+        label: 'Generator',
+        key: 'generator',
+        errorMsg: null,
+        required: false
+      }),
+      new ControlBase<boolean>(<ControlSignature<boolean>>{
+        type: 'checkbox',
+        value: false,
+        control: new FormControl(false),
+        label: 'Echo Downstream',
+        key: 'echoDownstream',
+        errorMsg: null,
+        required: false
+      })
+    ],
+    /* tslint:disable */
+    help: `
+    <table class="table table-hover">
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">header_name</span><br><em>optional</em></td>
+        <td><p>The HTTP header name to use for the correlation ID.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">generator</span><br><em>optional</em></td>
+        <td><p>The generator to use for the correlation ID. Accepted values are <span class="badge-highlight">uuid</span>, <span class="badge-highlight">uuid#counter</span> and <span class="badge-highlight">tracker</span>.</p></td>
+      </tr>
+      <tr>
+        <td><span class="badge-highlight">echo_downstream</span><br><em>optional</em></td>
+        <td><p>Whether to echo the header back to downstream (the client).</p></td>
+      </tr>
+    </table>
+    `,
+    /* tslint:enable */
+    attributes: {
+      'name': 'name',
+      'headerName': 'header_name',
+      'generator': 'generator',
+      'echoDownstream': 'echo_downstream'
     }
   }
 };

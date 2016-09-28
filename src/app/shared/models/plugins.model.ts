@@ -7,7 +7,7 @@ export const PLUGINSDATA = [
   { id: 'ssl', img: 'dynamic-ssl.png', title: 'Dynamic SSL', info: 'Add an SS certificate for an underlying service.', api: true, consumer: false },
   { id: 'jwt', img: 'jwt.png', title: 'JWT', info: 'Verify and authenticate JSON Web Tokens.', api: true, consumer: true },
   { id: 'acl', img: 'acl.png', title: 'ACL', info: 'Control which consumers can access APIs.', api: true, consumer: true },
-  { id: 'correlation-id', img: 'correlation-id.png', title: 'Correlation ID', info: 'Correlate requests and responses using a unique ID.', api: true, consumer: true },
+  { id: 'correlation-id', img: 'correlation-id.png', title: 'Correlation ID', info: 'Correlate requests and responses using a unique ID.', api: true, consumer: false },
   { id: 'cors', img: 'cors.png', title: 'CORS', info: 'Allow developers to make requests from the browser.', api: true, consumer: false },
   { id: 'oauth2', img: 'oauth2-authentication.png', title: 'OAuth 2.0', info: 'Add an OAuth 2.0 authentication to yor APIs.', api: true, consumer: true },
   { id: 'tcp-log', img: 'tcp-log.png', title: 'TCP', info: 'Send request and response logs to a TCP server.', api: true, consumer: true },
