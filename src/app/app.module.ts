@@ -16,6 +16,7 @@ import { ContainerModule } from './containers';
 import { State, InteralStateType } from './core';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 
+
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -23,7 +24,7 @@ const APP_PROVIDERS = [
 ];
 
 type StoreType = {
-  state: InteralStateType,
+  state: InternalStateType,
   restoreInputValues: () => void,
   disposeOldHosts: () => void
 };
