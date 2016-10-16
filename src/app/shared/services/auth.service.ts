@@ -34,7 +34,7 @@ export class AuthService extends Service<RestAdapter> {
   login(credentials: CredentialsBasic): Observable<KongModel> {
 
     let encoded: string = btoa(
-      `${credentials.username.value.split('@')[0]}:${credentials.password.value}`
+      `${credentials.username.value}:${credentials.password.value}`
     );
 
     return this._performLogin({ key: encoded, user: credentials.username.value });
@@ -54,7 +54,7 @@ export class AuthService extends Service<RestAdapter> {
 
     try {
       let local = JSON.parse(this.persistence.get(SYMBOLS.USER));
-      local.user = local.user.split('@')[0];
+      local.user = local.user;
 
       localData = local;
     } catch (error) {

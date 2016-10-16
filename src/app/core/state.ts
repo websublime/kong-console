@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { set, get, has, cloneDeep } from 'lodash';
 
-export interface InteralStateType {
+export interface InternalStateType {
   [key: string]: any;
 }
 
 @Injectable()
 export class State {
-  _state: InteralStateType = {};
+  _state: InternalStateType = {};
   private _subject: Subject<any>;
 
   constructor() {
@@ -47,7 +47,7 @@ export class State {
     return this._subject.asObservable();
   }
 
-  private _clone(object: InteralStateType) {
+  private _clone(object: InternalStateType) {
     return cloneDeep(object);
   }
 }

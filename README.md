@@ -35,10 +35,10 @@ curl -d 'username=kong_admin&custom_id=8a0f4c41-a9a9-4f84-8bd4-d9b9085b4569' htt
 
 ## Admin credential
 
-Add user credentials to logon. Current on login you need to append to the username an ending email. Example: king@email.com.
+Add user credentials to logon. Your user should be an email (mandatory).
 
 ```
-curl -X POST http://localhost:8001/consumers/kong_admin/basic-auth --data 'username=king' --data 'password=12345678'
+curl -X POST http://localhost:8001/consumers/kong_admin/basic-auth --data 'username=king@email.com' --data 'password=12345678'
 ```
 
 ## Cors
